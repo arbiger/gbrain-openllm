@@ -1,5 +1,21 @@
 # Sub-Agent Model Routing
 
+## Goal
+
+Route sub-agents to the cheapest model that can do the job. Save 10-40x on
+costs without sacrificing quality.
+
+## What the User Gets
+
+Without this: every sub-agent runs on Opus ($15/MTok). Entity detection on
+every message costs $3-5/day. Research tasks cost $10+ each.
+
+With this: entity detection runs on Sonnet ($3/MTok, 5x cheaper). Research
+runs on DeepSeek ($0.50/MTok, 30x cheaper). Main session stays on Opus for
+quality. Total cost drops 70-80%.
+
+---
+
 Not every task needs your most expensive model. Route sub-agents to the right
 model for the job.
 

@@ -1,5 +1,20 @@
 # Skill Development Cycle
 
+## Goal
+
+Turn every repeating task into a durable, automated skill. If you ask twice,
+it should already be running on a cron.
+
+## What the User Gets
+
+Without this: ad-hoc work that the agent forgets how to do. You ask "enrich
+this person" and the agent invents a new process each time. Quality varies.
+
+With this: every capability is codified, tested, and scheduled. Enrichment
+runs the same way every time. New patterns get skill-ified within a day.
+
+---
+
 Never do one-off work. Everything repeatable becomes a durable skill.
 
 ## The Rule

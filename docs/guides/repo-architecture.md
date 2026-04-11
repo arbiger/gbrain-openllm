@@ -1,5 +1,20 @@
 # Two-Repo Architecture: Agent Behavior vs World Knowledge
 
+## Goal
+
+Separate agent behavior (replaceable) from world knowledge (permanent) into
+two repos with strict boundaries.
+
+## What the User Gets
+
+Without this: agent config and world knowledge are mixed together. Switch agents
+and you lose your knowledge. Switch knowledge tools and you lose your agent setup.
+
+With this: your brain (14,700+ files of people, companies, meetings, ideas)
+survives any agent swap. Your agent config survives any knowledge tool swap.
+
+---
+
 Your AI agent setup should use two separate repositories with strict separation.
 
 ## The Boundary Test

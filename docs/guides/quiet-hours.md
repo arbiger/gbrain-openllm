@@ -1,5 +1,21 @@
 # Quiet Hours and Timezone-Aware Delivery
 
+## Goal
+
+Hold all notifications during sleep hours. Merge held messages into the
+morning briefing. Adjust automatically when the user travels.
+
+## What the User Gets
+
+Without this: 3 AM pings from cron jobs. One bad notification and the user
+disables the entire system.
+
+With this: the brain works overnight (dream cycle, collectors, enrichment)
+but notifications are held until morning. Travel to Tokyo? The system adjusts
+automatically from your calendar, no config change needed.
+
+---
+
 Your brain never sleeps, but your notifications should.
 
 ## Quiet Hours Gate

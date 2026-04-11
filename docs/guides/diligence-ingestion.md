@@ -1,5 +1,22 @@
 # Diligence Ingestion: Data Room to Brain Pages
 
+## Goal
+
+Turn pitch decks, financial models, and data room materials into searchable,
+cross-referenced brain pages with bull/bear analysis.
+
+## What the User Gets
+
+Without this: pitch decks sit in email attachments. Financial models in Google
+Drive. No cross-reference to the company brain page. You can't search "what
+were the key metrics from Acme Corp's Series A deck?"
+
+With this: every data room document is extracted, diarized, cross-referenced to
+the company page, and searchable. Index.md gives you the bull/bear case at a
+glance. `gbrain query "Acme Corp revenue growth"` finds the exact chart.
+
+---
+
 When you receive pitch decks, financial models, cap tables, or investor memos,
 this pipeline turns them into searchable, cross-referenced brain pages.
 

@@ -1,88 +1,103 @@
-## 5. Enrichment Pipeline -- 7-Step Protocol
+# Enrichment Pipeline
 
-When to enrich: entity mentioned in conversation, meeting attendees, email threads,
-social interactions, new contacts, whenever the brain page is thin or missing.
+## Goal
+Enrich brain pages from external APIs with tiered spend -- full pipeline for key people, light touch for passing mentions, raw data preserved for auditability.
 
-### Tier System
+## What the User Gets
+Without this: brain pages are thin shells with only what the user manually typed, API calls are wasted on nobodies, and enrichment data vanishes after the agent session ends. With this: key people have rich, multi-source portraits; spend scales to importance; raw API responses are preserved for re-processing; and cross-references connect the entire graph.
 
-Scale API spend to importance. Don't blow 20 API calls on a passing mention.
+## Implementation
 
-| Tier | Who | Effort | API Calls |
-|------|-----|--------|-----------|
-| **Tier 1** | Key people and companies: inner circle, business partners, portfolio companies | Full pipeline, ALL data sources | 10-15 |
-| **Tier 2** | Notable: people you interact with occasionally | Web search + social + brain cross-reference | 3-5 |
-| **Tier 3** | Minor mentions: everyone else worth tracking | Brain cross-reference + social lookup if handle known | 1-2 |
+```
+on enrich(entity, trigger):
+    # trigger: meeting mention, email thread, social interaction, user request
 
-### The 7 Steps
+    # Step 1: Identify entities from the incoming signal
+    entities = extract_entities(signal)
+    #   people names, company names, associations
 
-**Step 1: Identify entities.** From the incoming signal (meeting, email, tweet), extract
-people names, company names, and what they're associated with.
+    # Step 2: Check brain state -- UPDATE or CREATE path?
+    for entity in entities:
+        existing = gbrain search "{entity.name}"
+        if existing:
+            page = gbrain get <entity_slug>
+            path = "UPDATE"
+        else:
+            path = "CREATE"
 
-**Step 2: Check brain state.** Does a page exist? If yes, read it -- you're on the
-UPDATE path. If no, you're on the CREATE path. Check `gbrain search` first.
+    # Step 3: Determine tier -- scale spend to importance
+    tier = classify_tier(entity):
+        # Tier 1 (10-15 API calls): key people, inner circle, business partners,
+        #         portfolio companies. Full pipeline, ALL data sources.
+        # Tier 2 (3-5 API calls): notable people, occasional interactions.
+        #         Web search + social + brain cross-reference.
+        # Tier 3 (1-2 API calls): minor mentions, everyone else worth tracking.
+        #         Brain cross-reference + social lookup if handle known.
 
-**Step 3: Extract signal from source.** Don't just pull facts -- pull texture:
+    # Step 4: Run external lookups (priority order, stop when enough signal)
+    data = {}
+    data["brain"] = gbrain search "{entity.name}"          # Always first (free)
+    if tier <= 2:
+        data["web"] = brave_search("{entity.name}")        # Background, press, talks
+    if tier <= 2:
+        data["twitter"] = twitter_lookup(entity.handle)    # Beliefs, building, network
+    if tier == 1:
+        data["linkedin"] = crustdata_enrich(entity.name)   # Career, connections
+        data["research"] = happenstance_research(entity)   # Career arcs, web presence
+        data["funding"] = captain_api(entity.company)      # Funding, valuation, team
+        data["meetings"] = circleback_search(entity.name)  # Transcript search
+        data["contacts"] = google_contacts(entity.email)   # Contact data
 
-- What opinion did they express? -> What They Believe
-- What are they building or shipping? -> What They're Building
-- Did they express emotion? -> What Makes Them Tick
-- Who did they engage with? -> Network / Relationship
-- Is this a recurring topic? -> Hobby Horses
-- What did they commit to? -> Open Threads
-- What was their energy? -> Trajectory
+    # Step 5: Store raw data (auditable, re-processable)
+    gbrain put_raw_data <entity_slug> \
+        --data '{"sources": {"crustdata": {"fetched_at": "...", "data": {...}}, ...}}'
+    # Overwrite on re-enrichment, don't append
 
-**Step 4: Data source lookups.** For CREATE or thin pages, run structured lookups.
-The order matters -- stop when you have enough signal for the entity's tier.
+    # Step 6: Write to brain page
+    if path == "CREATE":
+        gbrain put <entity_slug> --content "<compiled_truth_from_all_sources>"
+        gbrain add_timeline_entry <entity_slug> --entry "Page created via enrichment"
+    elif path == "UPDATE":
+        # Append timeline, update compiled truth ONLY if materially new
+        gbrain add_timeline_entry <entity_slug> --entry "Enriched: {new_signal}"
+        # Flag contradictions -- don't silently resolve them
 
-Priority order:
+    # Step 7: Cross-reference the graph
+    gbrain add_link <person_slug> <company_slug>       # person -> company
+    gbrain add_link <company_slug> <person_slug>       # company -> person
+    gbrain add_link <person_slug> <deal_slug>          # person -> deal
+    # Every entity page links to every other entity page that references it
 
-1. **Brain cross-reference** (free, highest-value -- always first): `gbrain search "name"` to find mentions across meetings, other people pages, company pages.
-2. **Web search** via [Brave](https://brave.com/search/api/) or [Exa](https://exa.ai): background, press, talks, funding.
-3. **X/Twitter deep lookup** (enterprise API or scraping): beliefs, building, hobby horses, network, trajectory.
-4. **People enrichment:** [Crustdata](https://crustdata.com) (LinkedIn data), [Happenstance](https://happenstance.com) (web research, career arcs).
-5. **Company/funding data:** [Captain](https://captaindata.co) API (Pitchbook-grade funding, valuation, team data).
-6. **Meeting history:** [Circleback](https://circleback.ai) (transcript search, attendee lookup).
-7. **Contact data** (Google Contacts, CRM sync).
+# People page sections (not a LinkedIn profile -- a living portrait):
+#   Executive Summary, State, What They Believe, What They're Building,
+#   What Motivates Them, Assessment, Trajectory, Relationship, Contact, Timeline
+# Facts are table stakes. TEXTURE is the value.
 
-**X/Twitter lookup is underrated.** When you have someone's handle, their tweets are
-the single best source for: what they believe (opinions expressed unprompted), what
-they're building (shipping announcements), hobby horses (recurring topics), who they
-engage with (reply patterns, amplification), and trajectory (posting frequency, tone
-shifts). This goes into the brain page's "What They Believe" and "Hobby Horses" sections.
+# Extract texture, not just facts:
+#   Opinion expressed?        -> What They Believe
+#   Building or shipping?     -> What They're Building
+#   Emotion expressed?        -> What Makes Them Tick
+#   Who did they engage with? -> Network / Relationship
+#   Recurring topic?          -> Hobby Horses
+#   Committed to something?   -> Open Threads
+#   Energy level?             -> Trajectory
+```
 
-**Step 5: Save raw data.** Every API response gets saved to a `.raw/` sidecar alongside
-the brain page. JSON with `sources.{provider}.fetched_at` and `.data`. Overwrite on
-re-enrichment, don't append.
+## Tricky Spots
 
-**Step 6: Write to brain.** CREATE path: use the page template from your brain's
-schema, fill compiled truth from all data gathered, add first timeline entry. UPDATE
-path: append timeline, update compiled truth if the new signal materially changes the
-picture. Flag contradictions -- don't silently resolve them.
+1. **Don't overwrite human-written assessments.** If the user wrote an Assessment section with their own read on someone, API enrichment NEVER overwrites it. API data goes into State, Contact, Timeline. The user's assessment is sacrosanct.
+2. **Don't re-enrich the same page more than once per week.** Check `put_raw_data` timestamps before running the pipeline again. Enrichment is expensive and data doesn't change that fast.
+3. **LinkedIn connection count < 20 means wrong person.** Crustdata sometimes returns a different person with the same name. If the LinkedIn profile has fewer than 20 connections, it's almost certainly a false match. Discard it.
+4. **X/Twitter is the most underrated data source.** When you have someone's handle, their tweets reveal beliefs, what they're building, hobby horses, network (reply patterns), and trajectory (posting frequency, tone shifts). This is richer than LinkedIn for "What They Believe" and "What Makes Them Tick."
+5. **Cross-references are not optional.** After enriching a person, update their company page. After enriching a company, update founder pages. An enriched page without cross-links is a dead end in the graph.
 
-**Step 7: Cross-reference.** After updating a person page: update their company page,
-update deal pages, add back-links. After updating a company page: update founder pages,
-update deal pages. Every entity page should link to every other entity page that
-references it.
+## How to Verify
 
-### People Pages
-
-A person page isn't a LinkedIn profile. It's a living portrait:
-
-- **Executive Summary** -- How do you know them? Why do they matter?
-- **State** -- Role, company, relationship, key context
-- **What They Believe** -- Ideology, worldview, first principles
-- **What They're Building** -- Current projects, features shipped
-- **What Motivates Them** -- Ambition drivers, career arc
-- **Assessment** -- Strengths, weaknesses, net read
-- **Trajectory** -- Ascending, plateauing, pivoting, declining?
-- **Relationship** -- History, temperature, open threads
-- **Contact** -- Email, phone, X handle, LinkedIn
-- **Timeline** -- Reverse chronological, append-only, never rewritten
-
-Facts are table stakes. Texture is the value.
+1. Enrich a Tier 1 person. Run `gbrain get <slug>` and confirm the page has Executive Summary, State, What They Believe, Contact, and Timeline sections populated from multiple sources.
+2. Run `gbrain get_raw_data <slug>`. Confirm raw API responses are stored with `sources.{provider}.fetched_at` timestamps.
+3. Run `gbrain get_links <slug>`. Confirm cross-reference links exist to the person's company page, deal pages, and related entities.
+4. Check a page that was enriched AND has a user-written Assessment. Confirm the Assessment section was preserved, not overwritten by API data.
+5. Try to re-enrich the same person. Confirm the system checks the `fetched_at` timestamp and skips if less than a week old.
 
 ---
-
----
-
 *Part of the [GBrain Skillpack](../GBRAIN_SKILLPACK.md).*

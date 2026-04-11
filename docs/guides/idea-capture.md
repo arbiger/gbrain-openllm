@@ -1,7 +1,22 @@
 # Idea Capture: Originals, Depth, and Distribution
 
-The originals folder is the highest-value content in the brain. It captures
-WHAT YOU THINK, not just what you found.
+## Goal
+
+Capture the user's original thinking with exact phrasing, deep context, and
+cross-links. The originals folder is the highest-value content in the brain.
+
+## What the User Gets
+
+Without this: brilliant ideas said in conversation disappear. The agent heard
+"the ambition-to-lifespan ratio has never been more broken" and forgot it.
+
+With this: every original observation is captured verbatim, cross-linked to
+the people and ideas that shaped it, and rated for publishing potential. Your
+intellectual archive grows with every conversation.
+
+---
+
+The originals folder captures WHAT YOU THINK, not just what you found.
 
 ## The Authorship Test
 
