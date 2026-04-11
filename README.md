@@ -293,69 +293,6 @@ The Supabase connection URL is configured during `gbrain init --supabase`. The O
 
 Without an OpenAI key, search still works (keyword only, no vector search). Without an Anthropic key, search still works (no multi-query expansion, no LLM chunking).
 
-### With OpenClaw or Hermes Agent (recommended)
-
-To install, paste this into [OpenClaw](https://openclaw.ai) or [Hermes Agent](https://github.com/NousResearch/hermes-agent) and we'll work with you to do the rest:
-
-```
-Set up gbrain (https://github.com/garrytan/gbrain) as my
-knowledge brain.
-
-1. Make sure bun is installed:
-   curl -fsSL https://bun.sh/install | bash
-   Then run: bun add github:garrytan/gbrain
-
-2. Run: gbrain init --supabase
-   (follow the wizard to connect my Supabase database)
-
-3. Scan ~/git/ and ~/Documents/ for markdown repos,
-   pick the best one, and run: gbrain import <path> --no-embed
-
-4. Run a query against the imported data to prove search works
-
-5. Read docs/GBRAIN_RECOMMENDED_SCHEMA.md and offer to
-   restructure my knowledge base
-
-6. Read docs/GBRAIN_SKILLPACK.md and update all your skills
-   with the production agent patterns: brain-agent loop,
-   entity detection, source attribution, iron law back-linking,
-   and the enrichment pipeline
-
-7. Set up a daily cron for `gbrain check-update`.
-   Notify me on new features only, not patches.
-   Never auto-install, just tell me what's new.
-
-8. Set up automatic sync so the vector DB stays current
-   with the brain repo. Read GBRAIN_SKILLPACK.md Section 18
-   for approaches (cron, --watch, webhook). Pick what fits
-   your environment. Always chain:
-   gbrain sync --repo <path> && gbrain embed --stale
-   Verify: push a change, confirm it appears in search.
-
-9. Run the verification runbook (docs/GBRAIN_VERIFY.md)
-   to confirm everything works: schema, sync, embeddings,
-   brain-first lookup.
-```
-
-OpenClaw will install gbrain, walk through Supabase setup, discover your markdown files, import them, and prove search works with a query from your data.
-
-After setup, you talk to your brain through OpenClaw:
-
-```
-Search the brain for everything we know about [topic]
-Ingest my meeting notes from today
-Give me a briefing for my meetings tomorrow
-How many pages are in the brain now?
-```
-
-GBrain keeps your brain current. After setup, `gbrain sync --watch` polls your git repo and imports only what changed. Binary files (images, PDFs, audio) can be moved to cloud storage with `gbrain files mirror` to slim down your git repo.
-
-> **Supabase settings:** GBrain connects directly to Postgres (not the REST API).
-> You need the **Shared Pooler connection string**, not the project URL or anon key.
-> Find it: go to your project, click **Get Connected** next to the project URL,
-> then **Direct Connection String** > **Session Pooler**, and copy the
-> **Shared Pooler** connection string.
-
 ### GBrain without OpenClaw
 
 GBrain works with any AI agent, any MCP client, or no agent at all. Three paths:
