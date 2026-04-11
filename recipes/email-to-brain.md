@@ -4,7 +4,7 @@ name: Email-to-Brain
 version: 0.7.0
 description: Gmail messages flow into brain pages. Deterministic collector pulls emails, agent analyzes and enriches entities.
 category: sense
-requires: []
+requires: [credential-gateway]
 secrets:
   - name: CLAWVISOR_URL
     description: ClawVisor gateway URL (Option A — recommended, handles OAuth for you)

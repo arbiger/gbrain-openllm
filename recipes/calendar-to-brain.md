@@ -4,7 +4,7 @@ name: Calendar-to-Brain
 version: 0.7.0
 description: Google Calendar events become searchable brain pages. Daily files with attendees, locations, and meeting prep context.
 category: sense
-requires: []
+requires: [credential-gateway]
 secrets:
   - name: CLAWVISOR_URL
     description: ClawVisor gateway URL (Option A — recommended, handles OAuth for you)

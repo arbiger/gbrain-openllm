@@ -4,7 +4,7 @@ name: Voice-to-Brain
 version: 0.7.0
 description: Phone calls create brain pages via Twilio + OpenAI Realtime + GBrain MCP. Callers talk, brain pages appear.
 category: sense
-requires: []
+requires: [ngrok-tunnel]
 secrets:
   - name: TWILIO_ACCOUNT_SID
     description: Twilio account SID (starts with AC)

@@ -71,15 +71,18 @@ Never do anything twice. If you look someone up once, that lookup lives in the b
 
 Your brain gets new senses as they're built. Run `gbrain integrations` to see what's available.
 
-| Recipe | Category | What It Does |
+| Recipe | Requires | What It Does |
 |--------|----------|-------------|
-| [Voice-to-Brain](recipes/twilio-voice-brain.md) | Sense | Phone calls create brain pages via Twilio + OpenAI Realtime |
-| [Email-to-Brain](recipes/email-to-brain.md) | Sense | Gmail messages flow into entity pages via deterministic collector |
-| [X-to-Brain](recipes/x-to-brain.md) | Sense | Twitter monitoring with deletion detection + engagement velocity |
-| [Calendar-to-Brain](recipes/calendar-to-brain.md) | Sense | Google Calendar events become searchable daily brain pages |
-| [Meeting Sync](recipes/meeting-sync.md) | Sense | Circleback transcripts auto-import with attendee propagation |
+| [Public Tunnel](recipes/ngrok-tunnel.md) | — | Fixed URL for MCP + voice (ngrok Hobby $8/mo) |
+| [Credential Gateway](recipes/credential-gateway.md) | — | Gmail + Calendar access (ClawVisor or Google OAuth) |
+| [Voice-to-Brain](recipes/twilio-voice-brain.md) | ngrok-tunnel | Phone calls → brain pages (Twilio + OpenAI Realtime) |
+| [Email-to-Brain](recipes/email-to-brain.md) | credential-gateway | Gmail → entity pages (deterministic collector) |
+| [X-to-Brain](recipes/x-to-brain.md) | — | Twitter → brain pages (timeline + mentions + deletions) |
+| [Calendar-to-Brain](recipes/calendar-to-brain.md) | credential-gateway | Google Calendar → searchable daily pages |
+| [Meeting Sync](recipes/meeting-sync.md) | — | Circleback transcripts → brain pages with attendees |
 
-Run `gbrain integrations` to see what's configured and `gbrain check-update` for new recipes.
+Run `gbrain integrations` to see status. Dependencies are resolved automatically:
+if you install voice-to-brain, the agent sets up ngrok-tunnel first.
 
 Your agent sets up each integration for you. It reads the recipe, asks for API keys, validates each one, and runs a smoke test. [Markdown is code](docs/ethos/THIN_HARNESS_FAT_SKILLS.md) — the recipe IS the installer.
 
@@ -402,15 +405,17 @@ These are standalone markdown instruction sets. Load them into your agent's cont
 
 Run `gbrain integrations` to see available recipes. Your agent reads the recipe and walks you through setup.
 
-| Recipe | Category | What It Does |
+| Recipe | Requires | What It Does |
 |--------|----------|-------------|
-| [voice-to-brain](recipes/twilio-voice-brain.md) | Sense | Phone calls → brain pages (Twilio + OpenAI Realtime) |
-| [email-to-brain](recipes/email-to-brain.md) | Sense | Gmail → entity pages (deterministic collector) |
-| [x-to-brain](recipes/x-to-brain.md) | Sense | Twitter → brain pages (timeline + mentions + deletions) |
-| [calendar-to-brain](recipes/calendar-to-brain.md) | Sense | Google Calendar → searchable daily pages |
-| [meeting-sync](recipes/meeting-sync.md) | Sense | Circleback transcripts → brain pages with attendees |
+| [ngrok-tunnel](recipes/ngrok-tunnel.md) | — | Fixed public URL ($8/mo) |
+| [credential-gateway](recipes/credential-gateway.md) | — | Gmail + Calendar access |
+| [voice-to-brain](recipes/twilio-voice-brain.md) | ngrok-tunnel | Phone calls → brain pages |
+| [email-to-brain](recipes/email-to-brain.md) | credential-gateway | Gmail → entity pages |
+| [x-to-brain](recipes/x-to-brain.md) | — | Twitter → brain pages |
+| [calendar-to-brain](recipes/calendar-to-brain.md) | credential-gateway | Google Calendar → daily pages |
+| [meeting-sync](recipes/meeting-sync.md) | — | Circleback → meeting pages |
 
-Run `gbrain integrations` for status. See [Getting Data In](docs/integrations/README.md) for the full guide.
+Run `gbrain integrations` for status. Dependencies resolve automatically.
 
 #### As a TypeScript library
 
