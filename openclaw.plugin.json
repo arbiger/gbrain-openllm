@@ -24,7 +24,7 @@
     }
   },
   "mcpServers": {
-    "gbrain": {
+    "gbrain-openllm": {
       "command": "./bin/gbrain",
       "args": ["serve"]
     }
