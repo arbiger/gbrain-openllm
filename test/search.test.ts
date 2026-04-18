@@ -136,7 +136,7 @@ describe('cosineSimilarity', () => {
   });
 
   test('works with high-dimensional vectors', () => {
-    const dim = 1536;
+    const dim = 1024;
     const a = new Float32Array(dim).fill(1);
     const b = new Float32Array(dim).fill(1);
     expect(cosineSimilarity(a, b)).toBeCloseTo(1.0, 5);
