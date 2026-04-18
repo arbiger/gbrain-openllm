@@ -6,7 +6,7 @@ import { homedir } from 'os';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-import { saveConfig, loadConfig, toEngineConfig, type GBrainConfig } from '../core/config.ts';
+import { saveConfig, loadConfig, toEngineConfig, type GBrainConfig, createDefaultOpenClawConfig } from '../core/config.ts';
 import { createEngine } from '../core/engine-factory.ts';
 
 export async function runInit(args: string[]) {
@@ -111,9 +111,9 @@ async function initPGLite(opts: { jsonOutput: boolean; apiKey: string | null; cu
   await engine.initSchema();
 
   const config: GBrainConfig = {
+    ...createDefaultOpenClawConfig(),
     engine: 'pglite',
     database_path: dbPath,
-    ...(opts.apiKey ? { openai_api_key: opts.apiKey } : {}),
   };
   saveConfig(config);
 
@@ -193,7 +193,7 @@ async function initPostgres(opts: { databaseUrl: string; jsonOutput: boolean; ap
   const config: GBrainConfig = {
     engine: 'postgres',
     database_url: databaseUrl,
-    ...(opts.apiKey ? { openai_api_key: opts.apiKey } : {}),
+    ...createDefaultOpenClawConfig(),
   };
   saveConfig(config);
   console.log('Config saved to ~/.gbrain/config.json');
