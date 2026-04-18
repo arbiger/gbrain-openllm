@@ -1,19 +1,25 @@
 {
-  "name": "gbrain",
-  "version": "0.4.1",
-  "description": "Personal knowledge brain with Postgres + pgvector hybrid search",
+  "name": "gbrain-openllm",
+  "version": "0.12.0",
+  "description": "GBrain fork with OpenClaw-style provider support - omlx primary LLM + cloud fallback",
   "family": "bundle-plugin",
   "configSchema": {
     "database_url": {
       "type": "string",
-      "required": true,
+      "required": false,
       "description": "PostgreSQL connection URL (Supabase recommended)",
       "uiHints": { "sensitive": true }
     },
     "openai_api_key": {
       "type": "string",
       "required": false,
-      "description": "OpenAI API key for embeddings (uses OPENAI_API_KEY env var if not set)",
+      "description": "OpenAI API key for embeddings fallback",
+      "uiHints": { "sensitive": true }
+    },
+    "minimax_api_key": {
+      "type": "string",
+      "required": false,
+      "description": "MiniMax API key for LLM fallback",
       "uiHints": { "sensitive": true }
     }
   },
