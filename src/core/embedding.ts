@@ -119,14 +119,14 @@ export async function embed_omlx(text: string): Promise<Float32Array> {
   const config = loadConfig();
   const primary = config ? getEmbeddingProvider(config) : null;
   if (!primary) throw new Error('omlx provider not configured');
-  return embedWithProvider(primary.provider, primary.model, [text.slice(0, MAX_CHARS)])[0];
+  return (await embedWithProvider(primary.provider, primary.model, [text.slice(0, MAX_CHARS)]))[0];
 }
 
 export async function embed_openai(text: string): Promise<Float32Array> {
   const config = loadConfig();
   const fallback = config ? getEmbeddingFallback(config) : null;
   if (!fallback) throw new Error('openai fallback not configured');
-  return embedWithProvider(fallback.provider, fallback.model, [text.slice(0, MAX_CHARS)])[0];
+  return (await embedWithProvider(fallback.provider, fallback.model, [text.slice(0, MAX_CHARS)]))[0];
 }
 
 export { MAX_CHARS as EMBEDDING_MAX_CHARS };
