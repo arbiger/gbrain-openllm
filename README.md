@@ -1,3 +1,25 @@
+# GBrain OpenLLM Fork
+
+> **Fork Date**: 2026-04-18
+> **Fork Version**: 0.12.0-arbiger-openllm
+> **Forked From**: [garrytan/gbrain](https://github.com/garrytan/gbrain) (v0.12.0, commit `81b3f7a`)
+> **Purpose**: OpenClaw-style provider support with local LLM primary + cloud fallback
+
+---
+
+This fork extends GBrain with **OpenClaw-style provider configuration** for flexible embedding and LLM provider selection:
+
+- **Primary Embedding**: omlx `bge-m3-mlx-fp16` (1024 dims, local, free)
+- **Fallback Embedding**: OpenAI `text-embedding-3-large` (1536 dims, cloud)
+- **Primary LLM**: omlx `gemma-4-26b-a4b-it-oQ4` (local, free)
+- **Fallback LLM**: MiniMax `MiniMax-M2.7` (cloud)
+
+This enables fully local AI inference via omlx while maintaining cloud fallbacks for reliability.
+
+For the original GBrain project by Garry (YC President/CEO), see: https://github.com/garrytan/gbrain
+
+---
+
 # GBrain
 
 Your AI agent is smart but forgetful. GBrain gives it a brain.
