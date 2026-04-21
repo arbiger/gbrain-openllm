@@ -2,11 +2,7 @@ import { PGlite } from '@electric-sql/pglite';
 import { vector } from '@electric-sql/pglite/vector';
 import { pg_trgm } from '@electric-sql/pglite/contrib/pg_trgm';
 import type { Transaction } from '@electric-sql/pglite';
-<<<<<<< HEAD
-import type { BrainEngine } from './engine.ts';
-=======
 import type { BrainEngine, LinkBatchInput, TimelineBatchInput } from './engine.ts';
->>>>>>> upstream/master
 import { MAX_SEARCH_LIMIT, clampSearchLimit } from './engine.ts';
 import { runMigrations } from './migrate.ts';
 import { PGLITE_SCHEMA_SQL } from './pglite-schema.ts';
@@ -325,22 +321,6 @@ export class PGLiteEngine implements BrainEngine {
   }
 
   // Links
-<<<<<<< HEAD
-  async addLink(from: string, to: string, context?: string, linkType?: string): Promise<void> {
-    await this.db.query(
-      `INSERT INTO links (from_page_id, to_page_id, link_type, context)
-       SELECT f.id, t.id, $3, $4
-       FROM pages f, pages t
-       WHERE f.slug = $1 AND t.slug = $2
-       ON CONFLICT (from_page_id, to_page_id, link_type) DO UPDATE SET
-         context = EXCLUDED.context`,
-      [from, to, linkType || '', context || '']
-    );
-  }
-
-  async removeLink(from: string, to: string, linkType?: string): Promise<void> {
-    if (linkType !== undefined) {
-=======
   async addLink(
     from: string,
     to: string,
@@ -402,7 +382,6 @@ export class PGLiteEngine implements BrainEngine {
         [from, to, linkType, linkSource]
       );
     } else if (linkType !== undefined) {
->>>>>>> upstream/master
       await this.db.query(
         `DELETE FROM links
          WHERE from_page_id = (SELECT id FROM pages WHERE slug = $1)
@@ -410,8 +389,6 @@ export class PGLiteEngine implements BrainEngine {
            AND link_type = $3`,
         [from, to, linkType]
       );
-<<<<<<< HEAD
-=======
     } else if (linkSource !== undefined) {
       await this.db.query(
         `DELETE FROM links
@@ -420,7 +397,6 @@ export class PGLiteEngine implements BrainEngine {
            AND link_source IS NOT DISTINCT FROM $3`,
         [from, to, linkSource]
       );
->>>>>>> upstream/master
     } else {
       await this.db.query(
         `DELETE FROM links
@@ -433,12 +409,6 @@ export class PGLiteEngine implements BrainEngine {
 
   async getLinks(slug: string): Promise<Link[]> {
     const { rows } = await this.db.query(
-<<<<<<< HEAD
-      `SELECT f.slug as from_slug, t.slug as to_slug, l.link_type, l.context
-       FROM links l
-       JOIN pages f ON f.id = l.from_page_id
-       JOIN pages t ON t.id = l.to_page_id
-=======
       `SELECT f.slug as from_slug, t.slug as to_slug,
               l.link_type, l.context, l.link_source,
               o.slug as origin_slug, l.origin_field
@@ -446,7 +416,6 @@ export class PGLiteEngine implements BrainEngine {
        JOIN pages f ON f.id = l.from_page_id
        JOIN pages t ON t.id = l.to_page_id
        LEFT JOIN pages o ON o.id = l.origin_page_id
->>>>>>> upstream/master
        WHERE f.slug = $1`,
       [slug]
     );
@@ -455,12 +424,6 @@ export class PGLiteEngine implements BrainEngine {
 
   async getBacklinks(slug: string): Promise<Link[]> {
     const { rows } = await this.db.query(
-<<<<<<< HEAD
-      `SELECT f.slug as from_slug, t.slug as to_slug, l.link_type, l.context
-       FROM links l
-       JOIN pages f ON f.id = l.from_page_id
-       JOIN pages t ON t.id = l.to_page_id
-=======
       `SELECT f.slug as from_slug, t.slug as to_slug,
               l.link_type, l.context, l.link_source,
               o.slug as origin_slug, l.origin_field
@@ -468,15 +431,12 @@ export class PGLiteEngine implements BrainEngine {
        JOIN pages f ON f.id = l.from_page_id
        JOIN pages t ON t.id = l.to_page_id
        LEFT JOIN pages o ON o.id = l.origin_page_id
->>>>>>> upstream/master
        WHERE t.slug = $1`,
       [slug]
     );
     return rows as unknown as Link[];
   }
 
-<<<<<<< HEAD
-=======
   async findByTitleFuzzy(
     name: string,
     dirPrefix?: string,
@@ -502,7 +462,6 @@ export class PGLiteEngine implements BrainEngine {
     return { slug: row.slug, similarity: row.sim };
   }
 
->>>>>>> upstream/master
   async traverseGraph(slug: string, depth: number = 5): Promise<GraphNode[]> {
     // Cycle prevention: visited array tracks page IDs already in the path.
     // Prevents exponential blowup on cyclic subgraphs (e.g., A->B->A).
@@ -522,16 +481,12 @@ export class PGLiteEngine implements BrainEngine {
       )
       SELECT DISTINCT g.slug, g.title, g.type, g.depth,
         coalesce(
-<<<<<<< HEAD
-          (SELECT jsonb_agg(jsonb_build_object('to_slug', p3.slug, 'link_type', l2.link_type))
-=======
           -- jsonb_agg(DISTINCT ...) collapses duplicate (to_slug, link_type)
           -- edges that originate from different provenance (markdown body
           -- vs frontmatter vs auto-extracted). Presentation-only dedup;
           -- the links table still preserves every provenance row. See
           -- plan Bug 6/10.
           (SELECT jsonb_agg(DISTINCT jsonb_build_object('to_slug', p3.slug, 'link_type', l2.link_type))
->>>>>>> upstream/master
            FROM links l2
            JOIN pages p3 ON p3.id = l2.to_page_id
            WHERE l2.from_page_id = g.id),
@@ -729,8 +684,6 @@ export class PGLiteEngine implements BrainEngine {
     );
   }
 
-<<<<<<< HEAD
-=======
   async addTimelineEntriesBatch(entries: TimelineBatchInput[]): Promise<number> {
     if (entries.length === 0) return 0;
     // unnest() pattern: 5 array-typed bound parameters regardless of batch size.
@@ -753,7 +706,6 @@ export class PGLiteEngine implements BrainEngine {
     return result.rows.length;
   }
 
->>>>>>> upstream/master
   async getTimeline(slug: string, opts?: TimelineOpts): Promise<TimelineEntry[]> {
     const limit = opts?.limit || 100;
 
@@ -903,11 +855,8 @@ export class PGLiteEngine implements BrainEngine {
         (SELECT count(*) FROM pages p
          WHERE p.updated_at < (SELECT MAX(te.created_at) FROM timeline_entries te WHERE te.page_id = p.id)
         ) as stale_pages,
-<<<<<<< HEAD
-=======
         -- Bug 11 — orphan = islanded (no inbound AND no outbound).
         -- See BrainHealth.orphan_pages docstring; docs updated to match this.
->>>>>>> upstream/master
         (SELECT count(*) FROM pages p
          WHERE NOT EXISTS (SELECT 1 FROM links l WHERE l.to_page_id = p.id)
            AND NOT EXISTS (SELECT 1 FROM links l WHERE l.from_page_id = p.id)
@@ -948,12 +897,6 @@ export class PGLiteEngine implements BrainEngine {
     const timelineCoverageDensity = pageCount > 0 ? Math.min(pagesWithTimeline / pageCount, 1) : 0;
     const noOrphans = pageCount > 0 ? 1 - (orphanPages / pageCount) : 1;
     const noDeadLinks = pageCount > 0 ? 1 - Math.min(deadLinks / pageCount, 1) : 1;
-<<<<<<< HEAD
-    const brainScore = pageCount === 0 ? 0 : Math.round(
-      (embedCoverage * 0.35 + linkDensity * 0.25 + timelineCoverageDensity * 0.15 +
-       noOrphans * 0.15 + noDeadLinks * 0.10) * 100
-    );
-=======
     // Bug 11 — per-component points. Sum equals brainScore by construction
     // so `doctor` can render a breakdown that adds up to the total.
     const embedCoverageScore = pageCount === 0 ? 0 : Math.round(embedCoverage * 35);
@@ -962,7 +905,6 @@ export class PGLiteEngine implements BrainEngine {
     const noOrphansScore = pageCount === 0 ? 0 : Math.round(noOrphans * 15);
     const noDeadLinksScore = pageCount === 0 ? 0 : Math.round(noDeadLinks * 10);
     const brainScore = embedCoverageScore + linkDensityScore + timelineCoverageScore + noOrphansScore + noDeadLinksScore;
->>>>>>> upstream/master
 
     return {
       page_count: pageCount,
@@ -971,24 +913,18 @@ export class PGLiteEngine implements BrainEngine {
       orphan_pages: orphanPages,
       missing_embeddings: Number(r.missing_embeddings),
       brain_score: brainScore,
-<<<<<<< HEAD
-=======
       dead_links: deadLinks,
->>>>>>> upstream/master
       link_coverage: Number(r.link_coverage),
       timeline_coverage: Number(r.timeline_coverage),
       most_connected: (connected as { slug: string; link_count: number }[]).map(c => ({
         slug: c.slug,
         link_count: Number(c.link_count),
       })),
-<<<<<<< HEAD
-=======
       embed_coverage_score: embedCoverageScore,
       link_density_score: linkDensityScore,
       timeline_coverage_score: timelineCoverageScore,
       no_orphans_score: noOrphansScore,
       no_dead_links_score: noDeadLinksScore,
->>>>>>> upstream/master
     };
   }
 

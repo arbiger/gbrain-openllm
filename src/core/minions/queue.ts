@@ -15,8 +15,6 @@ import type {
 } from './types.ts';
 import { rowToMinionJob, rowToInboxMessage, rowToAttachment } from './types.ts';
 import { validateAttachment } from './attachments.ts';
-<<<<<<< HEAD
-=======
 import { isProtectedJobName } from './protected-names.ts';
 
 /** Options for opting into protected-job-name submission. Passed as a separate
@@ -27,7 +25,6 @@ export interface TrustedSubmitOpts {
    *  Set only by the CLI path and by `submit_job` when `ctx.remote === false`. */
   allowProtectedSubmit?: boolean;
 }
->>>>>>> upstream/master
 
 const MIGRATION_VERSION = 7;
 
@@ -68,12 +65,6 @@ export class MinionQueue {
    * to 'waiting-children' atomically. Idempotency_key dedups via PG unique
    * partial index; same key returns the existing row (no second insert).
    */
-<<<<<<< HEAD
-  async add(name: string, data?: Record<string, unknown>, opts?: Partial<MinionJobInput>): Promise<MinionJob> {
-    if (!name || name.trim().length === 0) {
-      throw new Error('Job name cannot be empty');
-    }
-=======
   async add(
     name: string,
     data?: Record<string, unknown>,
@@ -93,7 +84,6 @@ export class MinionQueue {
         `(pass {allowProtectedSubmit: true} as the 4th arg to MinionQueue.add)`,
       );
     }
->>>>>>> upstream/master
     await this.ensureSchema();
 
     const childStatus: MinionJobStatus = opts?.delay ? 'delayed' : 'waiting';
@@ -144,13 +134,6 @@ export class MinionQueue {
 
       // 3. Insert child. Use ON CONFLICT for idempotency; if a concurrent submit
       //    raced past the fast-path SELECT, the unique index catches it here.
-<<<<<<< HEAD
-      const insertSql = opts?.idempotency_key
-        ? `INSERT INTO minion_jobs (name, queue, status, priority, data, max_attempts, backoff_type,
-            backoff_delay, backoff_jitter, delay_until, parent_job_id, on_child_fail,
-            depth, max_children, timeout_ms, remove_on_complete, remove_on_fail, idempotency_key)
-           VALUES ($1, $2, $3, $4, $5::jsonb, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
-=======
       //    v12 adds quiet_hours + stagger_key passed through from opts.
       const insertSql = opts?.idempotency_key
         ? `INSERT INTO minion_jobs (name, queue, status, priority, data, max_attempts, backoff_type,
@@ -158,19 +141,10 @@ export class MinionQueue {
             depth, max_children, timeout_ms, remove_on_complete, remove_on_fail, idempotency_key,
             quiet_hours, stagger_key)
            VALUES ($1, $2, $3, $4, $5::jsonb, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19::jsonb, $20)
->>>>>>> upstream/master
            ON CONFLICT (idempotency_key) WHERE idempotency_key IS NOT NULL DO NOTHING
            RETURNING *`
         : `INSERT INTO minion_jobs (name, queue, status, priority, data, max_attempts, backoff_type,
             backoff_delay, backoff_jitter, delay_until, parent_job_id, on_child_fail,
-<<<<<<< HEAD
-            depth, max_children, timeout_ms, remove_on_complete, remove_on_fail, idempotency_key)
-           VALUES ($1, $2, $3, $4, $5::jsonb, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
-           RETURNING *`;
-
-      const params = [
-        name.trim(),
-=======
             depth, max_children, timeout_ms, remove_on_complete, remove_on_fail, idempotency_key,
             quiet_hours, stagger_key)
            VALUES ($1, $2, $3, $4, $5::jsonb, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19::jsonb, $20)
@@ -178,7 +152,6 @@ export class MinionQueue {
 
       const params = [
         jobName,
->>>>>>> upstream/master
         opts?.queue ?? 'default',
         childStatus,
         opts?.priority ?? 0,
@@ -196,11 +169,8 @@ export class MinionQueue {
         opts?.remove_on_complete ?? false,
         opts?.remove_on_fail ?? false,
         opts?.idempotency_key ?? null,
-<<<<<<< HEAD
-=======
         opts?.quiet_hours ?? null,
         opts?.stagger_key ?? null,
->>>>>>> upstream/master
       ];
 
       const inserted = await tx.executeRaw<Record<string, unknown>>(insertSql, params);

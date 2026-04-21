@@ -36,11 +36,6 @@ describe('doctor command', () => {
 
   test('runDoctor accepts null engine for filesystem-only mode', async () => {
     const { runDoctor } = await import('../src/commands/doctor.ts');
-<<<<<<< HEAD
-    // runDoctor should accept null engine — it runs filesystem checks only
-    // We can't call it directly (it calls process.exit), but we verify the signature
-    expect(runDoctor.length).toBe(2); // engine, args
-=======
     // runDoctor should accept null engine — it runs filesystem checks only.
     // Signature is (engine, args, dbSource?) — third param is optional and
     // used by --fast to distinguish "no config" from "user skipped DB check".
@@ -94,6 +89,5 @@ describe('doctor command', () => {
     expect(source).toMatch(/table:\s*'raw_data'.*col:\s*'data'/);
     expect(source).toMatch(/table:\s*'ingest_log'.*col:\s*'pages_updated'/);
     expect(source).toMatch(/table:\s*'files'.*col:\s*'metadata'/);
->>>>>>> upstream/master
   });
 });

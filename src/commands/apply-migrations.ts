@@ -14,18 +14,12 @@
 
 import { VERSION } from '../version.ts';
 import { loadConfig } from '../core/config.ts';
-<<<<<<< HEAD
-import { loadCompletedMigrations, type CompletedMigrationEntry } from '../core/preferences.ts';
-import { migrations, compareVersions, type Migration, type OrchestratorOpts } from './migrations/index.ts';
-
-=======
 import { loadCompletedMigrations, appendCompletedMigration, type CompletedMigrationEntry } from '../core/preferences.ts';
 import { migrations, compareVersions, type Migration, type OrchestratorOpts } from './migrations/index.ts';
 
 /** Bug 3 — max consecutive partials before we wedge a migration. */
 const MAX_CONSECUTIVE_PARTIALS = 3;
 
->>>>>>> upstream/master
 interface ApplyMigrationsArgs {
   list: boolean;
   dryRun: boolean;
@@ -35,11 +29,8 @@ interface ApplyMigrationsArgs {
   specificMigration?: string;
   hostDir?: string;
   noAutopilotInstall: boolean;
-<<<<<<< HEAD
-=======
   /** Bug 3 — explicit reset for a wedged migration. Writes a 'retry' marker. */
   forceRetry?: string;
->>>>>>> upstream/master
   help: boolean;
 }
 
@@ -63,10 +54,7 @@ function parseArgs(args: string[]): ApplyMigrationsArgs {
     specificMigration: val('--migration'),
     hostDir: val('--host-dir'),
     noAutopilotInstall: has('--no-autopilot-install'),
-<<<<<<< HEAD
-=======
     forceRetry: val('--force-retry'),
->>>>>>> upstream/master
     help: has('--help') || has('-h'),
   };
 }
@@ -81,13 +69,10 @@ Usage:
   gbrain apply-migrations --list         Show applied + pending migrations.
   gbrain apply-migrations --migration vX.Y.Z
                                          Force-run a specific migration by version.
-<<<<<<< HEAD
-=======
   gbrain apply-migrations --force-retry vX.Y.Z
                                          Clear a wedged migration (3+ consecutive
                                          partials). Writes a 'retry' marker so the
                                          next run treats it as fresh.
->>>>>>> upstream/master
 
 Flags:
   --mode <always|pain_triggered|off>     Set minion_mode without prompting.
@@ -119,16 +104,6 @@ function indexCompleted(entries: CompletedMigrationEntry[]): CompletedIndex {
     : { byVersion: new Map() };
 }
 
-<<<<<<< HEAD
-/** Returns the resolved status for a migration based on its entries. */
-function statusForVersion(
-  version: string,
-  idx: CompletedIndex,
-): 'complete' | 'partial' | 'pending' {
-  const entries = idx.byVersion.get(version) ?? [];
-  if (entries.length === 0) return 'pending';
-  if (entries.some(e => e.status === 'complete')) return 'complete';
-=======
 /**
  * Returns the resolved status for a migration based on its entries.
  *
@@ -161,7 +136,6 @@ function statusForVersion(
     else break;
   }
   if (consecutive >= MAX_CONSECUTIVE_PARTIALS) return 'wedged';
->>>>>>> upstream/master
   if (entries.some(e => e.status === 'partial')) return 'partial';
   return 'pending';
 }
@@ -171,10 +145,7 @@ interface Plan {
   partial: Migration[];
   pending: Migration[];
   skippedFuture: Migration[];
-<<<<<<< HEAD
-=======
   wedged: Migration[];
->>>>>>> upstream/master
 }
 
 /**
@@ -191,11 +162,7 @@ interface Plan {
  * skip v0.11.0 when running v0.11.1. Compare against completed.jsonl.
  */
 function buildPlan(idx: CompletedIndex, installed: string, filterVersion?: string): Plan {
-<<<<<<< HEAD
-  const plan: Plan = { applied: [], partial: [], pending: [], skippedFuture: [] };
-=======
   const plan: Plan = { applied: [], partial: [], pending: [], skippedFuture: [], wedged: [] };
->>>>>>> upstream/master
   for (const m of migrations) {
     if (filterVersion && m.version !== filterVersion) continue;
     if (compareVersions(m.version, installed) > 0) {
@@ -205,10 +172,7 @@ function buildPlan(idx: CompletedIndex, installed: string, filterVersion?: strin
     const status = statusForVersion(m.version, idx);
     if (status === 'complete') plan.applied.push(m);
     else if (status === 'partial') plan.partial.push(m);
-<<<<<<< HEAD
-=======
     else if (status === 'wedged') plan.wedged.push(m);
->>>>>>> upstream/master
     else plan.pending.push(m);
   }
   return plan;
@@ -221,10 +185,7 @@ function printList(plan: Plan, installed: string): void {
   const rows: Array<{ status: string; m: Migration }> = [
     ...plan.applied.map(m => ({ status: 'applied', m })),
     ...plan.partial.map(m => ({ status: 'partial', m })),
-<<<<<<< HEAD
-=======
     ...plan.wedged.map(m => ({ status: 'wedged', m })),
->>>>>>> upstream/master
     ...plan.pending.map(m => ({ status: 'pending', m })),
     ...plan.skippedFuture.map(m => ({ status: 'future', m })),
   ];
@@ -303,8 +264,6 @@ export async function runApplyMigrations(args: string[]): Promise<void> {
     return;
   }
 
-<<<<<<< HEAD
-=======
   // Bug 3 — --force-retry: write an explicit reset marker for a wedged
   // migration, then return. User re-runs `gbrain apply-migrations --yes`
   // to actually re-attempt.
@@ -319,13 +278,10 @@ export async function runApplyMigrations(args: string[]): Promise<void> {
     return;
   }
 
->>>>>>> upstream/master
   const completed = loadCompletedMigrations();
   const idx = indexCompleted(completed);
   const plan = buildPlan(idx, installed, cli.specificMigration);
 
-<<<<<<< HEAD
-=======
   // Bug 3 — surface wedged migrations as a loud, actionable error.
   if (plan.wedged.length > 0) {
     for (const m of plan.wedged) {
@@ -339,7 +295,6 @@ export async function runApplyMigrations(args: string[]): Promise<void> {
     // Don't exit — applied/partial/pending are still worth reporting and running.
   }
 
->>>>>>> upstream/master
   if (cli.specificMigration && plan.applied.length + plan.partial.length + plan.pending.length + plan.skippedFuture.length === 0) {
     console.error(`No migration registered with version "${cli.specificMigration}". Run \`gbrain apply-migrations --list\` to see registered versions.`);
     process.exit(2);
@@ -357,14 +312,11 @@ export async function runApplyMigrations(args: string[]): Promise<void> {
   // Run each orchestrator in registry order. An orchestrator failure aborts
   // the rest of the chain; fixing the failure and re-running picks up where
   // we left off (per-phase idempotency markers + resume from "partial").
-<<<<<<< HEAD
-=======
   //
   // Bug 3 — the RUNNER owns the ledger write now. Orchestrators return their
   // result; we persist it here with a canonical shape. If the write fails,
   // surface the error and DO NOT proceed to the next migration (a silent
   // ledger drop was the root cause of the original infinite-retry symptom).
->>>>>>> upstream/master
   let failed = false;
   for (const m of toRun) {
     console.log(`\n=== Applying migration v${m.version}: ${m.featurePitch.headline} ===`);
@@ -372,11 +324,6 @@ export async function runApplyMigrations(args: string[]): Promise<void> {
       const result = await m.orchestrator(orchestratorOptsFrom(cli));
       if (result.status === 'failed') {
         console.error(`Migration v${m.version} reported status=failed.`);
-<<<<<<< HEAD
-        failed = true;
-        break;
-      }
-=======
         // Record the attempt as 'partial' (not 'complete') so the cap counts
         // it. Don't let a failed orchestrator look like it never ran.
         try {
@@ -416,7 +363,6 @@ export async function runApplyMigrations(args: string[]): Promise<void> {
         break;
       }
 
->>>>>>> upstream/master
       if (result.status === 'partial') {
         console.log(`Migration v${m.version} finished as PARTIAL. Re-run \`gbrain apply-migrations --yes\` after resolving any pending host-work items.`);
       } else {
@@ -425,13 +371,10 @@ export async function runApplyMigrations(args: string[]): Promise<void> {
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       console.error(`Migration v${m.version} threw: ${msg}`);
-<<<<<<< HEAD
-=======
       // Same partial-on-throw treatment so the cap counts runaway failures.
       try {
         appendCompletedMigration({ version: m.version, status: 'partial' });
       } catch { /* swallow ledger-write failure on throw path */ }
->>>>>>> upstream/master
       failed = true;
       break;
     }

@@ -23,13 +23,9 @@ interface Migration {
 
 // Migrations are embedded here, not loaded from files.
 // Add new migrations at the end. Never modify existing ones.
-<<<<<<< HEAD
-const MIGRATIONS: Migration[] = [
-=======
 // Exported for tests that structurally assert migration contents (e.g., "v9 must
 // pre-create idx_timeline_dedup_helper before the DELETE..."). Read-only contract.
 export const MIGRATIONS: Migration[] = [
->>>>>>> upstream/master
   // Version 1 is the baseline (schema.sql creates everything with IF NOT EXISTS).
   {
     version: 2,
@@ -236,11 +232,6 @@ export const MIGRATIONS: Migration[] = [
     // Idempotent for both upgrade and fresh-install paths.
     // Fresh installs already have links_from_to_type_unique from schema.sql; we drop it
     // (along with the legacy from-to-only constraint) before re-adding it cleanly.
-<<<<<<< HEAD
-    sql: `
-      ALTER TABLE links DROP CONSTRAINT IF EXISTS links_from_page_id_to_page_id_key;
-      ALTER TABLE links DROP CONSTRAINT IF EXISTS links_from_to_type_unique;
-=======
     // Helper btree on the dedup columns turns the DELETE...USING self-join from O(n²)
     // into O(n log n). Without it, a brain with 80K+ duplicate link rows hits
     // Supabase Management API's 60s ceiling during upgrade.
@@ -249,16 +240,12 @@ export const MIGRATIONS: Migration[] = [
       ALTER TABLE links DROP CONSTRAINT IF EXISTS links_from_to_type_unique;
       CREATE INDEX IF NOT EXISTS idx_links_dedup_helper
         ON links(from_page_id, to_page_id, link_type);
->>>>>>> upstream/master
       DELETE FROM links a USING links b
         WHERE a.from_page_id = b.from_page_id
           AND a.to_page_id = b.to_page_id
           AND a.link_type = b.link_type
           AND a.id > b.id;
-<<<<<<< HEAD
-=======
       DROP INDEX IF EXISTS idx_links_dedup_helper;
->>>>>>> upstream/master
       ALTER TABLE links ADD CONSTRAINT links_from_to_type_unique
         UNIQUE(from_page_id, to_page_id, link_type);
     `,
@@ -268,25 +255,18 @@ export const MIGRATIONS: Migration[] = [
     name: 'timeline_dedup_index',
     // Idempotent: CREATE UNIQUE INDEX IF NOT EXISTS handles fresh + upgrade.
     // Dedup any existing duplicates first so the index can be created.
-<<<<<<< HEAD
-    sql: `
-=======
     // Helper btree turns the DELETE...USING self-join from O(n²) into O(n log n).
     // Without it, a brain with 80K+ duplicate timeline rows hits Supabase
     // Management API's 60s ceiling. See migration v8 for the same pattern.
     sql: `
       CREATE INDEX IF NOT EXISTS idx_timeline_dedup_helper
         ON timeline_entries(page_id, date, summary);
->>>>>>> upstream/master
       DELETE FROM timeline_entries a USING timeline_entries b
         WHERE a.page_id = b.page_id
           AND a.date = b.date
           AND a.summary = b.summary
           AND a.id > b.id;
-<<<<<<< HEAD
-=======
       DROP INDEX IF EXISTS idx_timeline_dedup_helper;
->>>>>>> upstream/master
       CREATE UNIQUE INDEX IF NOT EXISTS idx_timeline_dedup
         ON timeline_entries(page_id, date, summary);
     `,
@@ -304,8 +284,6 @@ export const MIGRATIONS: Migration[] = [
       DROP FUNCTION IF EXISTS update_page_search_vector_from_timeline();
     `,
   },
-<<<<<<< HEAD
-=======
   {
     version: 11,
     name: 'links_provenance_columns',
@@ -427,7 +405,6 @@ export const MIGRATIONS: Migration[] = [
         ON minion_jobs(stagger_key) WHERE stagger_key IS NOT NULL;
     `,
   },
->>>>>>> upstream/master
 ];
 
 export const LATEST_VERSION = MIGRATIONS.length > 0

@@ -33,9 +33,6 @@ export interface Preferences {
 export interface CompletedMigrationEntry {
   version: string;
   ts?: string;
-<<<<<<< HEAD
-  status: 'complete' | 'partial';
-=======
   /**
    * - `complete`  — orchestrator finished cleanly. Terminal state; future
    *   runs no-op this version unless `retry` is appended.
@@ -47,16 +44,12 @@ export interface CompletedMigrationEntry {
    *   version as fresh again.
    */
   status: 'complete' | 'partial' | 'retry';
->>>>>>> upstream/master
   mode?: MinionMode;
   files_rewritten?: number;
   autopilot_installed?: boolean;
   install_target?: string;
   apply_migrations_pending?: boolean;
-<<<<<<< HEAD
-=======
   phases?: Array<{ name: string; status: string; detail?: string }>;
->>>>>>> upstream/master
   [key: string]: unknown;
 }
 
@@ -121,10 +114,6 @@ export function savePreferences(prefs: Preferences): void {
  */
 export function appendCompletedMigration(entry: CompletedMigrationEntry): void {
   if (!entry.version) throw new Error('appendCompletedMigration: version required');
-<<<<<<< HEAD
-  if (entry.status !== 'complete' && entry.status !== 'partial') {
-    throw new Error(`appendCompletedMigration: status must be 'complete' or 'partial', got "${entry.status}"`);
-=======
   if (entry.status !== 'complete' && entry.status !== 'partial' && entry.status !== 'retry') {
     throw new Error(`appendCompletedMigration: status must be 'complete', 'partial', or 'retry', got "${entry.status}"`);
   }
@@ -139,7 +128,6 @@ export function appendCompletedMigration(entry: CompletedMigrationEntry): void {
     if (prior.length > 0 && prior[prior.length - 1].status === 'complete') {
       return; // no-op — already terminal
     }
->>>>>>> upstream/master
   }
   const full: CompletedMigrationEntry = {
     ts: new Date().toISOString(),

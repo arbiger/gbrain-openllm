@@ -1,28 +1,3 @@
-<<<<<<< HEAD
-# GBrain OpenLLM Fork
-
-> **Fork Date**: 2026-04-18
-> **Fork Version**: 0.12.0-arbiger-openllm
-> **Forked From**: [garrytan/gbrain](https://github.com/garrytan/gbrain) (v0.12.0, commit `81b3f7a`)
-> **Purpose**: OpenClaw-style provider support with local LLM primary + cloud fallback
-
----
-
-This fork extends GBrain with **OpenClaw-style provider configuration** for flexible embedding and LLM provider selection:
-
-- **Primary Embedding**: omlx `bge-m3-mlx-fp16` (1024 dims, local, free)
-- **Fallback Embedding**: OpenAI `text-embedding-3-large` (1536 dims, cloud)
-- **Primary LLM**: omlx `gemma-4-26b-a4b-it-oQ4` (local, free)
-- **Fallback LLM**: MiniMax `MiniMax-M2.7` (cloud)
-
-This enables fully local AI inference via omlx while maintaining cloud fallbacks for reliability.
-
-For the original GBrain project by Garry (YC President/CEO), see: https://github.com/garrytan/gbrain
-
----
-
-=======
->>>>>>> upstream/master
 # GBrain
 
 Your AI agent is smart but forgetful. GBrain gives it a brain.
@@ -241,11 +216,8 @@ gbrain skillpack-check | jq       # full JSON: {healthy, summary, actions[], doc
 
 If anything's off, `actions[]` tells you the exact command to run. For deeper troubleshooting: [`docs/guides/minions-fix.md`](docs/guides/minions-fix.md).
 
-<<<<<<< HEAD
-=======
 Moving gateway crons to Minions (deterministic scripts, zero LLM tokens per fire): [`docs/guides/minions-shell-jobs.md`](docs/guides/minions-shell-jobs.md).
 
->>>>>>> upstream/master
 ## Skillify: your skills tree stops being a black box
 
 Hermes and similar agent frameworks auto-create skills as a background behavior. Fine until you don't know what the agent shipped. Checklists decay. Tests drift. Resolver entries get stale. Six months later you've got an opaque pile of "skills" that nobody has read, nobody has tested, and nobody is sure still work.
@@ -560,21 +532,14 @@ JOBS (Minions)
 
 ADMIN
   gbrain doctor [--json] [--fast]       Health checks (resolver, skills, DB, embeddings)
-<<<<<<< HEAD
-  gbrain doctor --fix                   Auto-fix resolver issues
-=======
   gbrain doctor --fix [--dry-run]       Auto-fix DRY violations (delegate inlined rules to conventions)
->>>>>>> upstream/master
   gbrain stats                          Brain statistics
   gbrain serve                          MCP server (stdio)
   gbrain integrations                   Integration recipe dashboard
   gbrain check-backlinks check|fix      Back-link enforcement
   gbrain lint [--fix]                   LLM artifact detection
-<<<<<<< HEAD
-=======
   gbrain repair-jsonb [--dry-run]       Repair v0.12.0 double-encoded JSONB (Postgres)
   gbrain orphans [--json] [--count]     Find pages with zero inbound wikilinks
->>>>>>> upstream/master
   gbrain transcribe <audio>             Transcribe audio (Groq Whisper)
   gbrain research init <name>           Scaffold a data-research recipe
   gbrain research list                  Show available recipes

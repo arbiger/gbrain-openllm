@@ -224,8 +224,6 @@ heuristics won't find them — file an issue with a sample page.
 
 ---
 
-<<<<<<< HEAD
-=======
 ## 8. JSONB Frontmatter Integrity (v0.12.2)
 
 Postgres-backed brains created before v0.12.2 had double-encoded JSONB columns
@@ -263,7 +261,6 @@ If this returns rows on a brain with person pages, the JSONB path is healthy.
 
 ---
 
->>>>>>> upstream/master
 ## Quick Verification (all checks in one pass)
 
 ```bash
@@ -287,16 +284,10 @@ gbrain check-update --json
 
 # 7. Knowledge graph populated (links + timeline > 0)
 gbrain stats | grep -E 'links|timeline'
-<<<<<<< HEAD
-```
-
-If all seven return successfully, the installation is healthy. For the full
-=======
 
 # 8. JSONB integrity (v0.12.2 — Postgres only, PGLite always 0)
 gbrain repair-jsonb --dry-run --json
 ```
 
 If all eight return successfully, the installation is healthy. For the full
->>>>>>> upstream/master
 end-to-end sync test (4c), push a real change and verify it appears in search.

@@ -1,8 +1,5 @@
 import { describe, test, expect } from "bun:test";
 import { join } from "path";
-<<<<<<< HEAD
-import { checkResolvable, parseResolverEntries } from "../src/core/check-resolvable.ts";
-=======
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "fs";
 import { tmpdir } from "os";
 import {
@@ -10,7 +7,6 @@ import {
   parseResolverEntries,
   extractDelegationTargets,
 } from "../src/core/check-resolvable.ts";
->>>>>>> upstream/master
 
 const SKILLS_DIR = join(import.meta.dir, "..", "skills");
 
@@ -136,8 +132,6 @@ describe("checkResolvable — real skills directory", () => {
     expect(report.summary.reachable + report.summary.unreachable).toBe(report.summary.total_skills);
   });
 });
-<<<<<<< HEAD
-=======
 
 // ---------------------------------------------------------------------------
 // DRY detection — proximity-based suppression
@@ -268,4 +262,3 @@ function afterEachCleanup(fn: () => void) {
   afterEach(fn);
 }
 
->>>>>>> upstream/master

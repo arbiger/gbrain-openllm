@@ -136,15 +136,6 @@ function extractTriggers(skillContent: string): string[] {
     .filter(Boolean);
 }
 
-<<<<<<< HEAD
-/** Scan for inlined cross-cutting rules that should reference convention files. */
-const CROSS_CUTTING_PATTERNS = [
-  { pattern: /iron\s*law.*back-?link/i, convention: 'conventions/quality.md', label: 'Iron Law back-linking' },
-  { pattern: /citation.*format.*\[Source:/i, convention: 'conventions/quality.md', label: 'citation format rules' },
-  { pattern: /notability.*gate/i, convention: 'conventions/quality.md', label: 'notability gate' },
-];
-
-=======
 /**
  * Scan for inlined cross-cutting rules that should reference convention
  * files. Each pattern can list multiple valid delegation targets — e.g.,
@@ -206,7 +197,6 @@ export function extractDelegationTargets(content: string): DelegationRef[] {
   return refs;
 }
 
->>>>>>> upstream/master
 // ---------------------------------------------------------------------------
 // Main function
 // ---------------------------------------------------------------------------
@@ -381,34 +371,16 @@ export function checkResolvable(skillsDir: string): ResolvableReport {
     }
   }
 
-<<<<<<< HEAD
-  // 5. DRY detection — inlined cross-cutting rules
-=======
   // 5. DRY detection — inlined cross-cutting rules.
   // A match is suppressed when the skill references one of the pattern's
   // accepted convention files within DRY_PROXIMITY_LINES lines of the match.
   // This catches the common case where a skill delegates at a section
   // header but still contains prose mentioning the rule by name.
->>>>>>> upstream/master
   for (const skill of manifest) {
     const skillPath = join(skillsDir, skill.path);
     if (!existsSync(skillPath)) continue;
     try {
       const content = readFileSync(skillPath, 'utf-8');
-<<<<<<< HEAD
-      for (const { pattern, convention, label } of CROSS_CUTTING_PATTERNS) {
-        if (pattern.test(content)) {
-          // Check if the skill also references the convention file
-          if (!content.includes(convention)) {
-            issues.push({
-              type: 'dry_violation',
-              severity: 'warning',
-              skill: skill.name,
-              message: `Skill '${skill.name}' inlines ${label} instead of referencing '${convention}'`,
-              action: `Replace inlined rules with a reference to '${convention}'`,
-            });
-          }
-=======
       const delegations = extractDelegationTargets(content);
       for (const { pattern, conventions, label } of CROSS_CUTTING_PATTERNS) {
         const globalRe = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g');
@@ -427,7 +399,6 @@ export function checkResolvable(skillsDir: string): ResolvableReport {
             action: `Replace inlined rules with a reference to one of: ${conventions.join(', ')}`,
           });
           break; // one issue per pattern per skill
->>>>>>> upstream/master
         }
       }
     } catch {
@@ -447,10 +418,7 @@ export function checkResolvable(skillsDir: string): ResolvableReport {
     },
   };
 }
-<<<<<<< HEAD
-=======
 
 // Re-export auto-fix so callers have one canonical entry point.
 export { autoFixDryViolations } from './dry-fix.ts';
 export type { AutoFixOptions, AutoFixReport, FixOutcome } from './dry-fix.ts';
->>>>>>> upstream/master

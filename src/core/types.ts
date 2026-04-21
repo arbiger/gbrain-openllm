@@ -1,9 +1,5 @@
 // Page types
-<<<<<<< HEAD
-export type PageType = 'person' | 'company' | 'deal' | 'yc' | 'civic' | 'project' | 'concept' | 'source' | 'media';
-=======
 export type PageType = 'person' | 'company' | 'deal' | 'yc' | 'civic' | 'project' | 'concept' | 'source' | 'media' | 'writing' | 'analysis' | 'guide' | 'hardware' | 'architecture';
->>>>>>> upstream/master
 
 export interface Page {
   id: number;
@@ -86,8 +82,6 @@ export interface Link {
   to_slug: string;
   link_type: string;
   context: string;
-<<<<<<< HEAD
-=======
   /**
    * Provenance (v0.13+). NULL = legacy row (pre-v0.13, unknown source).
    * 'markdown' = extracted from `[Name](path)` refs. 'frontmatter' = extracted
@@ -108,7 +102,6 @@ export interface Link {
    * 'investors'). Used for debug output and the `unresolved` response list.
    */
   origin_field?: string | null;
->>>>>>> upstream/master
 }
 
 export interface GraphNode {
@@ -188,13 +181,6 @@ export interface BrainHealth {
   page_count: number;
   embed_coverage: number;
   stale_pages: number;
-<<<<<<< HEAD
-  /** Pages with zero inbound links. Definition aligned across PGLite and Postgres. */
-  orphan_pages: number;
-  missing_embeddings: number;
-  /** Composite quality score (0-10). Computed from coverage, staleness, orphans. */
-  brain_score: number;
-=======
   /**
    * Islanded pages — zero inbound AND zero outbound links. A hub page
    * that has references out but no back-references is NOT an orphan under
@@ -217,15 +203,12 @@ export interface BrainHealth {
    * DELETEs can produce dangling references.
    */
   dead_links: number;
->>>>>>> upstream/master
   /** Fraction of entity pages (person/company) with >= 1 inbound link. */
   link_coverage: number;
   /** Fraction of entity pages (person/company) with >= 1 structured timeline entry. */
   timeline_coverage: number;
   /** Top 5 entities by total link count (in + out). */
   most_connected: Array<{ slug: string; link_count: number }>;
-<<<<<<< HEAD
-=======
   /**
    * Per-component contribution to brain_score. Sum equals brain_score by
    * construction. Displayed by `gbrain doctor` when brain_score < 100.
@@ -238,7 +221,6 @@ export interface BrainHealth {
   timeline_coverage_score: number;   // 0-15
   no_orphans_score: number;          // 0-15
   no_dead_links_score: number;       // 0-10
->>>>>>> upstream/master
 }
 
 // Ingest log

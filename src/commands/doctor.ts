@@ -2,13 +2,9 @@ import type { BrainEngine } from '../core/engine.ts';
 import * as db from '../core/db.ts';
 import { LATEST_VERSION } from '../core/migrate.ts';
 import { checkResolvable } from '../core/check-resolvable.ts';
-<<<<<<< HEAD
-import { loadCompletedMigrations } from '../core/preferences.ts';
-=======
 import { autoFixDryViolations, type AutoFixReport, type FixOutcome } from '../core/dry-fix.ts';
 import { loadCompletedMigrations } from '../core/preferences.ts';
 import type { DbUrlSource } from '../core/config.ts';
->>>>>>> upstream/master
 import { join } from 'path';
 import { existsSync, readFileSync, readdirSync } from 'fs';
 
@@ -23,13 +19,6 @@ export interface Check {
  * Run doctor with filesystem-first, DB-second architecture.
  * Filesystem checks (resolver, conformance) run without engine.
  * DB checks run only if engine is provided.
-<<<<<<< HEAD
- */
-export async function runDoctor(engine: BrainEngine | null, args: string[]) {
-  const jsonOutput = args.includes('--json');
-  const fastMode = args.includes('--fast');
-  const checks: Check[] = [];
-=======
  *
  * `dbSource` is passed only from the `--fast` and DB-unavailable paths in
  * cli.ts so we can emit a precise "why no DB check" message. When null, the
@@ -43,7 +32,6 @@ export async function runDoctor(engine: BrainEngine | null, args: string[], dbSo
   const dryRun = args.includes('--dry-run');
   const checks: Check[] = [];
   let autoFixReport: AutoFixReport | null = null;
->>>>>>> upstream/master
 
   // --- Filesystem checks (always run, no DB needed) ---
 
@@ -51,8 +39,6 @@ export async function runDoctor(engine: BrainEngine | null, args: string[], dbSo
   const repoRoot = findRepoRoot();
   if (repoRoot) {
     const skillsDir = join(repoRoot, 'skills');
-<<<<<<< HEAD
-=======
 
     // --fix: run auto-repair BEFORE checkResolvable so the post-fix scan
     // reflects the new state. Auto-fix only targets DRY violations today;
@@ -62,7 +48,6 @@ export async function runDoctor(engine: BrainEngine | null, args: string[], dbSo
       printAutoFixReport(autoFixReport, dryRun, jsonOutput);
     }
 
->>>>>>> upstream/master
     const report = checkResolvable(skillsDir);
     if (report.ok && report.issues.length === 0) {
       checks.push({
@@ -131,8 +116,6 @@ export async function runDoctor(engine: BrainEngine | null, args: string[], dbSo
     // handles the "schema v7+ but no prefs" case.
   }
 
-<<<<<<< HEAD
-=======
   // 3b. Upgrade-error trail (v0.13+). `gbrain upgrade` silently swallows
   // best-effort failures in `gbrain post-upgrade`; the failure record is
   // appended to ~/.gbrain/upgrade-errors.jsonl so we can surface it here
@@ -190,14 +173,10 @@ export async function runDoctor(engine: BrainEngine | null, args: string[], dbSo
     // Best-effort. A broken JSONL should not stop doctor.
   }
 
->>>>>>> upstream/master
   // --- DB checks (skip if --fast or no engine) ---
 
   if (fastMode || !engine) {
     if (!engine) {
-<<<<<<< HEAD
-      checks.push({ name: 'connection', status: 'warn', message: 'No database configured (filesystem checks only)' });
-=======
       // Pick the precise message. When dbSource is provided, we know
       // whether a URL exists (env or config-file) — the caller simply
       // skipped the connection. When null, there really is no config
@@ -211,7 +190,6 @@ export async function runDoctor(engine: BrainEngine | null, args: string[], dbSo
         msg = 'No database configured (filesystem checks only). Set GBRAIN_DATABASE_URL or run `gbrain init`.';
       }
       checks.push({ name: 'connection', status: 'warn', message: msg });
->>>>>>> upstream/master
     }
     const earlyFail1 = outputResults(checks, jsonOutput);
     process.exit(earlyFail1 ? 1 : 0);
@@ -300,10 +278,6 @@ export async function runDoctor(engine: BrainEngine | null, args: string[], dbSo
   }
 
   // 8. Graph health (link + timeline coverage on entity pages).
-<<<<<<< HEAD
-  // dead_links removed in v0.10.1: ON DELETE CASCADE on link FKs makes it always 0.
-=======
->>>>>>> upstream/master
   try {
     const health = await engine.getHealth();
     const linkPct = ((health.link_coverage ?? 0) * 100).toFixed(0);
@@ -317,8 +291,6 @@ export async function runDoctor(engine: BrainEngine | null, args: string[], dbSo
         message: `Entity link coverage ${linkPct}%, timeline ${timelinePct}%. Run: gbrain link-extract && gbrain timeline-extract`,
       });
     }
-<<<<<<< HEAD
-=======
 
     // Bug 11 — brain_score breakdown. When the total is < 100, show which
     // components contributed the deficit so users know what to fix.
@@ -340,13 +312,10 @@ export async function runDoctor(engine: BrainEngine | null, args: string[], dbSo
     } else {
       checks.push({ name: 'brain_score', status: 'ok', message: `Brain score 100/100` });
     }
->>>>>>> upstream/master
   } catch {
     checks.push({ name: 'graph_coverage', status: 'warn', message: 'Could not check graph coverage' });
   }
 
-<<<<<<< HEAD
-=======
   // 9. Integrity sample scan (v0.13 knowledge runtime).
   // Read-only — no network, no writes, no resolver calls. Samples the first
   // 500 pages by slug order and surfaces bare-tweet + dead-link counts as a
@@ -446,7 +415,6 @@ export async function runDoctor(engine: BrainEngine | null, args: string[], dbSo
     checks.push({ name: 'markdown_body_completeness', status: 'ok', message: 'Skipped (raw_data unavailable)' });
   }
 
->>>>>>> upstream/master
   const hasFail = outputResults(checks, jsonOutput);
 
   // Features teaser (non-JSON, non-failing only)
@@ -465,8 +433,6 @@ export async function runDoctor(engine: BrainEngine | null, args: string[], dbSo
 // Helpers
 // ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-=======
 /** Print the auto-fix report in human-readable form. JSON output goes through
  *  outputResults alongside the check list; this is the pretty-print path. */
 function printAutoFixReport(report: AutoFixReport, dryRun: boolean, jsonOutput: boolean): void {
@@ -497,7 +463,6 @@ function printAutoFixReport(report: AutoFixReport, dryRun: boolean, jsonOutput: 
   if (dryRun && n > 0) console.log('\nRun without --dry-run to apply.');
 }
 
->>>>>>> upstream/master
 /** Find the GBrain repo root by walking up from cwd looking for skills/RESOLVER.md */
 function findRepoRoot(): string | null {
   let dir = process.cwd();

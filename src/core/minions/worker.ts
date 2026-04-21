@@ -20,8 +20,6 @@ import { UnrecoverableError } from './types.ts';
 import { MinionQueue } from './queue.ts';
 import { calculateBackoff } from './backoff.ts';
 import { randomUUID } from 'crypto';
-<<<<<<< HEAD
-=======
 import { evaluateQuietHours, type QuietHoursConfig } from './quiet-hours.ts';
 
 /**
@@ -34,7 +32,6 @@ function readQuietHoursConfig(job: MinionJob): QuietHoursConfig | null {
   if (!cfg || typeof cfg !== 'object') return null;
   return cfg as QuietHoursConfig;
 }
->>>>>>> upstream/master
 
 /** Per-job in-flight state (isolated per job, not shared on the worker). */
 interface InFlightJob {
@@ -52,8 +49,6 @@ export class MinionWorker {
   private inFlight = new Map<number, InFlightJob>();
   private workerId = randomUUID();
 
-<<<<<<< HEAD
-=======
   /** Fires only on worker process SIGTERM/SIGINT. Handlers that need to run
    *  shutdown-specific cleanup (e.g. shell handler's SIGTERM→SIGKILL sequence on
    *  its child) subscribe via `ctx.shutdownSignal`. Separated from the per-job
@@ -61,7 +56,6 @@ export class MinionWorker {
    *  deploy restart — they still get the full 30s cleanup race instead. */
   private shutdownAbort = new AbortController();
 
->>>>>>> upstream/master
   private opts: Required<MinionWorkerOpts>;
 
   constructor(
@@ -101,12 +95,6 @@ export class MinionWorker {
     await this.queue.ensureSchema();
     this.running = true;
 
-<<<<<<< HEAD
-    // Graceful shutdown
-    const shutdown = () => {
-      console.log('Minion worker shutting down...');
-      this.running = false;
-=======
     // Graceful shutdown. Fires shutdownAbort so handlers subscribed to
     // `ctx.shutdownSignal` (currently: shell handler) can run their own cleanup
     // BEFORE the 30s cleanup race expires. Non-shell handlers ignore shutdown
@@ -117,7 +105,6 @@ export class MinionWorker {
       if (!this.shutdownAbort.signal.aborted) {
         this.shutdownAbort.abort(new Error('shutdown'));
       }
->>>>>>> upstream/master
     };
     process.on('SIGTERM', shutdown);
     process.on('SIGINT', shutdown);
@@ -161,9 +148,6 @@ export class MinionWorker {
           );
 
           if (job) {
-<<<<<<< HEAD
-            this.launchJob(job, lockToken);
-=======
             // Quiet-hours gate: evaluated at claim time, not dispatch.
             // Config lives on the job record (jsonb column added in
             // schema migration v12). Worker releases the job back to the
@@ -175,7 +159,6 @@ export class MinionWorker {
             } else {
               this.launchJob(job, lockToken);
             }
->>>>>>> upstream/master
           } else if (this.inFlight.size === 0) {
             // No jobs and nothing in flight, poll
             await new Promise(resolve => setTimeout(resolve, this.opts.pollInterval));
@@ -207,8 +190,6 @@ export class MinionWorker {
     }
   }
 
-<<<<<<< HEAD
-=======
   /**
    * Called when a claimed job falls inside its quiet-hours window. The
    * claim already set status='active' and held the lock; we reverse the
@@ -263,7 +244,6 @@ export class MinionWorker {
     }
   }
 
->>>>>>> upstream/master
   /** Stop the worker gracefully. */
   stop(): void {
     this.running = false;
@@ -279,11 +259,7 @@ export class MinionWorker {
       if (!renewed) {
         console.warn(`Lock lost for job ${job.id}, aborting execution`);
         clearInterval(lockTimer);
-<<<<<<< HEAD
-        abort.abort();
-=======
         abort.abort(new Error('lock-lost'));
->>>>>>> upstream/master
       }
     }, this.opts.lockDuration / 2);
 
@@ -297,11 +273,7 @@ export class MinionWorker {
       timeoutTimer = setTimeout(() => {
         if (!abort.signal.aborted) {
           console.warn(`Job ${job.id} (${job.name}) hit per-job timeout (${job.timeout_ms}ms), aborting`);
-<<<<<<< HEAD
-          abort.abort();
-=======
           abort.abort(new Error('timeout'));
->>>>>>> upstream/master
         }
       }, job.timeout_ms);
     }
@@ -328,25 +300,18 @@ export class MinionWorker {
       return;
     }
 
-<<<<<<< HEAD
-    // Build job context with per-job AbortSignal
-=======
     // Build job context with per-job AbortSignal + shared shutdown signal.
     // Most handlers only care about `signal` (timeout / cancel / lock-loss).
     // `shutdownSignal` is separate: fires only on worker process SIGTERM/SIGINT.
     // Handlers that need to run cleanup before worker exit (shell handler's
     // SIGTERM→5s→SIGKILL on its child) subscribe to shutdownSignal too.
->>>>>>> upstream/master
     const context: MinionJobContext = {
       id: job.id,
       name: job.name,
       data: job.data,
       attempts_made: job.attempts_made,
       signal: abort.signal,
-<<<<<<< HEAD
-=======
       shutdownSignal: this.shutdownAbort.signal,
->>>>>>> upstream/master
       updateProgress: async (progress: unknown) => {
         await this.queue.updateProgress(job.id, lockToken, progress);
       },
@@ -396,15 +361,6 @@ export class MinionWorker {
     } catch (err) {
       clearInterval(lockTimer);
 
-<<<<<<< HEAD
-      // If aborted (paused or lock lost), don't try to fail the job
-      if (abort.signal.aborted) {
-        console.log(`Job ${job.id} (${job.name}) aborted (paused or lock lost)`);
-        return;
-      }
-
-      const errorText = err instanceof Error ? err.message : String(err);
-=======
       // If the per-job abort fired, derive the reason from signal.reason (set
       // by whichever site aborted: 'timeout' / 'cancel' / 'lock-lost'). We call
       // failJob unconditionally — the DB match on status='active' + lock_token
@@ -422,7 +378,6 @@ export class MinionWorker {
         errorText = err instanceof Error ? err.message : String(err);
       }
 
->>>>>>> upstream/master
       const isUnrecoverable = err instanceof UnrecoverableError;
       const attemptsExhausted = job.attempts_made + 1 >= job.max_attempts;
 

@@ -1,9 +1,5 @@
 import postgres from 'postgres';
-<<<<<<< HEAD
-import type { BrainEngine } from './engine.ts';
-=======
 import type { BrainEngine, LinkBatchInput, TimelineBatchInput } from './engine.ts';
->>>>>>> upstream/master
 import { MAX_SEARCH_LIMIT, clampSearchLimit } from './engine.ts';
 import { runMigrations } from './migrate.ts';
 import { SCHEMA_SQL } from './schema-embedded.ts';
@@ -21,11 +17,7 @@ import type {
 } from './types.ts';
 import { GBrainError } from './types.ts';
 import * as db from './db.ts';
-<<<<<<< HEAD
-import { validateSlug, contentHash, rowToPage, rowToChunk, rowToSearchResult } from './utils.ts';
-=======
 import { validateSlug, contentHash, rowToPage, rowToChunk, rowToSearchResult, parseEmbedding, tryParseEmbedding } from './utils.ts';
->>>>>>> upstream/master
 
 export class PostgresEngine implements BrainEngine {
   private _sql: ReturnType<typeof postgres> | null = null;
@@ -39,13 +31,6 @@ export class PostgresEngine implements BrainEngine {
   // Lifecycle
   async connect(config: EngineConfig & { poolSize?: number }): Promise<void> {
     if (config.poolSize) {
-<<<<<<< HEAD
-      // Instance-level connection for worker isolation
-      const url = config.database_url;
-      if (!url) throw new GBrainError('No database URL', 'database_url is missing', 'Provide --url');
-      this._sql = postgres(url, {
-        max: config.poolSize,
-=======
       // Instance-level connection for worker isolation. resolvePoolSize lets
       // GBRAIN_POOL_SIZE cap below the caller's requested size when set — the
       // env var is a user escape hatch, so it wins.
@@ -54,7 +39,6 @@ export class PostgresEngine implements BrainEngine {
       const size = Math.min(config.poolSize, db.resolvePoolSize(config.poolSize));
       this._sql = postgres(url, {
         max: size,
->>>>>>> upstream/master
         idle_timeout: 20,
         connect_timeout: 10,
         types: { bigint: postgres.BigInt },
@@ -123,11 +107,7 @@ export class PostgresEngine implements BrainEngine {
 
     const rows = await sql`
       INSERT INTO pages (slug, type, title, compiled_truth, timeline, frontmatter, content_hash, updated_at)
-<<<<<<< HEAD
-      VALUES (${slug}, ${page.type}, ${page.title}, ${page.compiled_truth}, ${page.timeline || ''}, ${JSON.stringify(frontmatter)}::jsonb, ${hash}, now())
-=======
       VALUES (${slug}, ${page.type}, ${page.title}, ${page.compiled_truth}, ${page.timeline || ''}, ${sql.json(frontmatter)}, ${hash}, now())
->>>>>>> upstream/master
       ON CONFLICT (slug) DO UPDATE SET
         type = EXCLUDED.type,
         title = EXCLUDED.title,
@@ -211,13 +191,6 @@ export class PostgresEngine implements BrainEngine {
     const detailLow = opts?.detail === 'low';
 
     // Search-only timeout: prevents DoS via expensive queries without
-<<<<<<< HEAD
-    // affecting long-running operations like embed --all or bulk import
-    await sql`SET statement_timeout = '8s'`;
-    try {
-      // CTE: rank pages by FTS score, then pick the best chunk per page in SQL
-      const rows = await sql`
-=======
     // affecting long-running operations like embed --all or bulk import.
     // SET LOCAL inside sql.begin() scopes the GUC to the transaction so
     // it can never leak onto a pooled connection returned to other
@@ -229,7 +202,6 @@ export class PostgresEngine implements BrainEngine {
       await sql`SET LOCAL statement_timeout = '8s'`;
       // CTE: rank pages by FTS score, then pick the best chunk per page in SQL
       return await sql`
->>>>>>> upstream/master
         WITH ranked_pages AS (
           SELECT p.id, p.slug, p.title, p.type,
             ts_rank(p.search_vector, websearch_to_tsquery('english', ${query})) AS score
@@ -255,15 +227,8 @@ export class PostgresEngine implements BrainEngine {
         FROM best_chunks
         ORDER BY score DESC
       `;
-<<<<<<< HEAD
-      return rows.map(rowToSearchResult);
-    } finally {
-      await sql`SET statement_timeout = '0'`;
-    }
-=======
     });
     return rows.map(rowToSearchResult);
->>>>>>> upstream/master
   }
 
   async searchVector(embedding: Float32Array, opts?: SearchOpts): Promise<SearchResult[]> {
@@ -280,19 +245,12 @@ export class PostgresEngine implements BrainEngine {
 
     const vecStr = '[' + Array.from(embedding).join(',') + ']';
 
-<<<<<<< HEAD
-    // Search-only timeout (see searchKeyword for rationale)
-    await sql`SET statement_timeout = '8s'`;
-    try {
-      const rows = await sql`
-=======
     // Search-only timeout (see searchKeyword for rationale). SET LOCAL +
     // sql.begin ensures the GUC stays transaction-scoped on the pooled
     // connection.
     const rows = await sql.begin(async sql => {
       await sql`SET LOCAL statement_timeout = '8s'`;
       return await sql`
->>>>>>> upstream/master
         SELECT
           p.slug, p.id as page_id, p.title, p.type,
           cc.id as chunk_id, cc.chunk_index, cc.chunk_text, cc.chunk_source,
@@ -308,15 +266,8 @@ export class PostgresEngine implements BrainEngine {
         LIMIT ${limit}
         OFFSET ${offset}
       `;
-<<<<<<< HEAD
-      return rows.map(rowToSearchResult);
-    } finally {
-      await sql`SET statement_timeout = '0'`;
-    }
-=======
     });
     return rows.map(rowToSearchResult);
->>>>>>> upstream/master
   }
 
   async getEmbeddingsByChunkIds(ids: number[]): Promise<Map<number, Float32Array>> {
@@ -328,12 +279,8 @@ export class PostgresEngine implements BrainEngine {
     `;
     const result = new Map<number, Float32Array>();
     for (const row of rows) {
-<<<<<<< HEAD
-      if (row.embedding) result.set(row.id as number, row.embedding as Float32Array);
-=======
       const embedding = tryParseEmbedding(row.embedding);
       if (embedding) result.set(row.id as number, embedding);
->>>>>>> upstream/master
     }
     return result;
   }
@@ -411,9 +358,6 @@ export class PostgresEngine implements BrainEngine {
   }
 
   // Links
-<<<<<<< HEAD
-  async addLink(from: string, to: string, context?: string, linkType?: string): Promise<void> {
-=======
   async addLink(
     from: string,
     to: string,
@@ -423,7 +367,6 @@ export class PostgresEngine implements BrainEngine {
     originSlug?: string,
     originField?: string,
   ): Promise<void> {
->>>>>>> upstream/master
     const sql = this.sql;
     // Pre-check existence so we can throw a clear error (ON CONFLICT DO UPDATE
     // returns 0 rows when source SELECT is empty, indistinguishable from missing page).
@@ -435,21 +378,6 @@ export class PostgresEngine implements BrainEngine {
     if (exists.length === 0) {
       throw new Error(`addLink failed: page "${from}" or "${to}" not found`);
     }
-<<<<<<< HEAD
-    await sql`
-      INSERT INTO links (from_page_id, to_page_id, link_type, context)
-      SELECT f.id, t.id, ${linkType || ''}, ${context || ''}
-      FROM pages f, pages t
-      WHERE f.slug = ${from} AND t.slug = ${to}
-      ON CONFLICT (from_page_id, to_page_id, link_type) DO UPDATE SET
-        context = EXCLUDED.context
-    `;
-  }
-
-  async removeLink(from: string, to: string, linkType?: string): Promise<void> {
-    const sql = this.sql;
-    if (linkType !== undefined) {
-=======
     // Default link_source to 'markdown' for back-compat with pre-v0.13 callers.
     // origin_page_id resolves from originSlug via the pages join (NULL if no slug).
     const src = linkSource ?? 'markdown';
@@ -506,14 +434,11 @@ export class PostgresEngine implements BrainEngine {
     // Build up filters dynamically. linkType + linkSource are independent
     // optional constraints; all four combinations are valid.
     if (linkType !== undefined && linkSource !== undefined) {
->>>>>>> upstream/master
       await sql`
         DELETE FROM links
         WHERE from_page_id = (SELECT id FROM pages WHERE slug = ${from})
           AND to_page_id = (SELECT id FROM pages WHERE slug = ${to})
           AND link_type = ${linkType}
-<<<<<<< HEAD
-=======
           AND link_source IS NOT DISTINCT FROM ${linkSource}
       `;
     } else if (linkType !== undefined) {
@@ -529,7 +454,6 @@ export class PostgresEngine implements BrainEngine {
         WHERE from_page_id = (SELECT id FROM pages WHERE slug = ${from})
           AND to_page_id = (SELECT id FROM pages WHERE slug = ${to})
           AND link_source IS NOT DISTINCT FROM ${linkSource}
->>>>>>> upstream/master
       `;
     } else {
       await sql`
@@ -543,12 +467,6 @@ export class PostgresEngine implements BrainEngine {
   async getLinks(slug: string): Promise<Link[]> {
     const sql = this.sql;
     const rows = await sql`
-<<<<<<< HEAD
-      SELECT f.slug as from_slug, t.slug as to_slug, l.link_type, l.context
-      FROM links l
-      JOIN pages f ON f.id = l.from_page_id
-      JOIN pages t ON t.id = l.to_page_id
-=======
       SELECT f.slug as from_slug, t.slug as to_slug,
              l.link_type, l.context, l.link_source,
              o.slug as origin_slug, l.origin_field
@@ -556,7 +474,6 @@ export class PostgresEngine implements BrainEngine {
       JOIN pages f ON f.id = l.from_page_id
       JOIN pages t ON t.id = l.to_page_id
       LEFT JOIN pages o ON o.id = l.origin_page_id
->>>>>>> upstream/master
       WHERE f.slug = ${slug}
     `;
     return rows as unknown as Link[];
@@ -565,12 +482,6 @@ export class PostgresEngine implements BrainEngine {
   async getBacklinks(slug: string): Promise<Link[]> {
     const sql = this.sql;
     const rows = await sql`
-<<<<<<< HEAD
-      SELECT f.slug as from_slug, t.slug as to_slug, l.link_type, l.context
-      FROM links l
-      JOIN pages f ON f.id = l.from_page_id
-      JOIN pages t ON t.id = l.to_page_id
-=======
       SELECT f.slug as from_slug, t.slug as to_slug,
              l.link_type, l.context, l.link_source,
              o.slug as origin_slug, l.origin_field
@@ -578,14 +489,11 @@ export class PostgresEngine implements BrainEngine {
       JOIN pages f ON f.id = l.from_page_id
       JOIN pages t ON t.id = l.to_page_id
       LEFT JOIN pages o ON o.id = l.origin_page_id
->>>>>>> upstream/master
       WHERE t.slug = ${slug}
     `;
     return rows as unknown as Link[];
   }
 
-<<<<<<< HEAD
-=======
   async findByTitleFuzzy(
     name: string,
     dirPrefix?: string,
@@ -616,7 +524,6 @@ export class PostgresEngine implements BrainEngine {
     return { slug: row.slug, similarity: row.sim };
   }
 
->>>>>>> upstream/master
   async traverseGraph(slug: string, depth: number = 5): Promise<GraphNode[]> {
     const sql = this.sql;
     // Cycle prevention: visited array tracks page IDs already in the path.
@@ -636,9 +543,6 @@ export class PostgresEngine implements BrainEngine {
       )
       SELECT DISTINCT g.slug, g.title, g.type, g.depth,
         coalesce(
-<<<<<<< HEAD
-          (SELECT jsonb_agg(jsonb_build_object('to_slug', p3.slug, 'link_type', l2.link_type))
-=======
           -- jsonb_agg(DISTINCT ...) collapses duplicate (to_slug, link_type)
           -- edges that originate from different provenance (markdown body
           -- vs frontmatter vs auto-extracted). The underlying links table
@@ -647,7 +551,6 @@ export class PostgresEngine implements BrainEngine {
           -- aggregation. traversePaths has its own in-memory dedup at a
           -- different layer. See plan Bug 6/10.
           (SELECT jsonb_agg(DISTINCT jsonb_build_object('to_slug', p3.slug, 'link_type', l2.link_type))
->>>>>>> upstream/master
            FROM links l2
            JOIN pages p3 ON p3.id = l2.to_page_id
            WHERE l2.from_page_id = g.id),
@@ -843,8 +746,6 @@ export class PostgresEngine implements BrainEngine {
     `;
   }
 
-<<<<<<< HEAD
-=======
   async addTimelineEntriesBatch(entries: TimelineBatchInput[]): Promise<number> {
     if (entries.length === 0) return 0;
     const sql = this.sql;
@@ -867,7 +768,6 @@ export class PostgresEngine implements BrainEngine {
     return result.length;
   }
 
->>>>>>> upstream/master
   async getTimeline(slug: string, opts?: TimelineOpts): Promise<TimelineEntry[]> {
     const sql = this.sql;
     const limit = opts?.limit || 100;
@@ -904,11 +804,7 @@ export class PostgresEngine implements BrainEngine {
     const sql = this.sql;
     const result = await sql`
       INSERT INTO raw_data (page_id, source, data)
-<<<<<<< HEAD
-      SELECT id, ${source}, ${JSON.stringify(data)}::jsonb
-=======
       SELECT id, ${source}, ${sql.json(data as Record<string, unknown>)}
->>>>>>> upstream/master
       FROM pages WHERE slug = ${slug}
       ON CONFLICT (page_id, source) DO UPDATE SET
         data = EXCLUDED.data,
@@ -1007,18 +903,12 @@ export class PostgresEngine implements BrainEngine {
 
   async getHealth(): Promise<BrainHealth> {
     const sql = this.sql;
-<<<<<<< HEAD
-    // dead_links omitted (always 0 under ON DELETE CASCADE on link FKs).
-    // orphan_pages now matches PGLite definition: no inbound links (regardless of outbound).
-    // stale_pages aligned to PGLite definition (page updated_at < latest timeline entry).
-=======
     // Bug 11 doc-drift fix — orphan_pages means "islanded" (no inbound AND
     // no outbound links), aligning both engines with the user-facing
     // definition. The type comment previously said "no inbound" but the
     // SQL required both — docs now match code so users can trust the
     // number. A hub page that links out to many but has no back-references
     // is working as intended, not an orphan.
->>>>>>> upstream/master
     const [h] = await sql`
       WITH entity_pages AS (
         SELECT id, slug FROM pages WHERE type IN ('person', 'company')
@@ -1066,15 +956,6 @@ export class PostgresEngine implements BrainEngine {
 
     // brain_score: 0-100 weighted average
     const linkDensity = pageCount > 0 ? Math.min(linkCount / pageCount, 1) : 0;
-<<<<<<< HEAD
-    const timelineCoverage = pageCount > 0 ? Math.min(pagesWithTimeline / pageCount, 1) : 0;
-    const noOrphans = pageCount > 0 ? 1 - (orphanPages / pageCount) : 1;
-    const noDeadLinks = pageCount > 0 ? 1 - Math.min(deadLinks / pageCount, 1) : 1;
-    const brainScore = pageCount === 0 ? 0 : Math.round(
-      (embedCoverage * 0.35 + linkDensity * 0.25 + timelineCoverage * 0.15 +
-       noOrphans * 0.15 + noDeadLinks * 0.10) * 100
-    );
-=======
     const timelineCoverageWhole = pageCount > 0 ? Math.min(pagesWithTimeline / pageCount, 1) : 0;
     const noOrphans = pageCount > 0 ? 1 - (orphanPages / pageCount) : 1;
     const noDeadLinks = pageCount > 0 ? 1 - Math.min(deadLinks / pageCount, 1) : 1;
@@ -1085,7 +966,6 @@ export class PostgresEngine implements BrainEngine {
     const noOrphansScore = pageCount === 0 ? 0 : Math.round(noOrphans * 15);
     const noDeadLinksScore = pageCount === 0 ? 0 : Math.round(noDeadLinks * 10);
     const brainScore = embedCoverageScore + linkDensityScore + timelineCoverageScore + noOrphansScore + noDeadLinksScore;
->>>>>>> upstream/master
 
     return {
       page_count: pageCount,
@@ -1094,24 +974,18 @@ export class PostgresEngine implements BrainEngine {
       orphan_pages: orphanPages,
       missing_embeddings: Number(h.missing_embeddings),
       brain_score: brainScore,
-<<<<<<< HEAD
-=======
       dead_links: deadLinks,
->>>>>>> upstream/master
       link_coverage: Number(h.link_coverage),
       timeline_coverage: Number(h.timeline_coverage),
       most_connected: (connected as { slug: string; link_count: number }[]).map(c => ({
         slug: c.slug,
         link_count: Number(c.link_count),
       })),
-<<<<<<< HEAD
-=======
       embed_coverage_score: embedCoverageScore,
       link_density_score: linkDensityScore,
       timeline_coverage_score: timelineCoverageScore,
       no_orphans_score: noOrphansScore,
       no_dead_links_score: noDeadLinksScore,
->>>>>>> upstream/master
     };
   }
 
@@ -1120,11 +994,7 @@ export class PostgresEngine implements BrainEngine {
     const sql = this.sql;
     await sql`
       INSERT INTO ingest_log (source_type, source_ref, pages_updated, summary)
-<<<<<<< HEAD
-      VALUES (${entry.source_type}, ${entry.source_ref}, ${JSON.stringify(entry.pages_updated)}::jsonb, ${entry.summary})
-=======
       VALUES (${entry.source_type}, ${entry.source_ref}, ${sql.json(entry.pages_updated)}, ${entry.summary})
->>>>>>> upstream/master
     `;
   }
 

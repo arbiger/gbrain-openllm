@@ -75,13 +75,10 @@ export interface MinionJob {
   remove_on_fail: boolean;
   idempotency_key: string | null;
 
-<<<<<<< HEAD
-=======
   // v12: scheduler polish — quiet-hours gate + deterministic stagger
   quiet_hours: Record<string, unknown> | null;
   stagger_key: string | null;
 
->>>>>>> upstream/master
   // Results
   result: Record<string, unknown> | null;
   progress: unknown | null;
@@ -123,8 +120,6 @@ export interface MinionJobInput {
   max_spawn_depth?: number;
   /** Global dedup key. Same key returns the existing job, no second row created. */
   idempotency_key?: string;
-<<<<<<< HEAD
-=======
 
   // v12: scheduler polish
   /**
@@ -138,7 +133,6 @@ export interface MinionJobInput {
    * their claim order is decorrelated by hash-based minute-offset. Optional.
    */
   stagger_key?: string;
->>>>>>> upstream/master
 }
 
 /** Constructor options for MinionQueue (v7). */
@@ -165,10 +159,6 @@ export interface MinionJobContext {
   name: string;
   data: Record<string, unknown>;
   attempts_made: number;
-<<<<<<< HEAD
-  /** AbortSignal for cooperative cancellation (fires on pause or lock loss). */
-  signal: AbortSignal;
-=======
   /** AbortSignal for cooperative cancellation (fires on timeout, cancel, pause, or lock loss). */
   signal: AbortSignal;
   /** AbortSignal that fires only on worker process SIGTERM/SIGINT. Handlers sensitive
@@ -176,7 +166,6 @@ export interface MinionJobContext {
    *  sequence on its child) listen to this in addition to `signal`. Most handlers can
    *  ignore it — workers give them the full 30s cleanup race to finish naturally. */
   shutdownSignal: AbortSignal;
->>>>>>> upstream/master
   /** Update structured progress (not just 0-100). */
   updateProgress(progress: unknown): Promise<void>;
   /** Accumulate token usage for this job. */
@@ -329,11 +318,8 @@ export function rowToMinionJob(row: Record<string, unknown>): MinionJob {
     remove_on_complete: row.remove_on_complete === true,
     remove_on_fail: row.remove_on_fail === true,
     idempotency_key: (row.idempotency_key as string) || null,
-<<<<<<< HEAD
-=======
     quiet_hours: row.quiet_hours ? (typeof row.quiet_hours === 'string' ? JSON.parse(row.quiet_hours) : row.quiet_hours) as Record<string, unknown> : null,
     stagger_key: (row.stagger_key as string) || null,
->>>>>>> upstream/master
     result: row.result ? (typeof row.result === 'string' ? JSON.parse(row.result) : row.result) as Record<string, unknown> : null,
     progress: row.progress ? (typeof row.progress === 'string' ? JSON.parse(row.progress) : row.progress) : null,
     error_text: (row.error_text as string) || null,

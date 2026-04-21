@@ -43,8 +43,6 @@ export function rowToPage(row: Record<string, unknown>): Page {
   };
 }
 
-<<<<<<< HEAD
-=======
 /**
  * Normalize an embedding value into a Float32Array.
  *
@@ -112,7 +110,6 @@ export function tryParseEmbedding(value: unknown): Float32Array | null {
   }
 }
 
->>>>>>> upstream/master
 export function rowToChunk(row: Record<string, unknown>, includeEmbedding = false): Chunk {
   return {
     id: row.id as number,
@@ -120,11 +117,7 @@ export function rowToChunk(row: Record<string, unknown>, includeEmbedding = fals
     chunk_index: row.chunk_index as number,
     chunk_text: row.chunk_text as string,
     chunk_source: row.chunk_source as 'compiled_truth' | 'timeline',
-<<<<<<< HEAD
-    embedding: includeEmbedding && row.embedding ? row.embedding as Float32Array : null,
-=======
     embedding: includeEmbedding ? parseEmbedding(row.embedding) : null,
->>>>>>> upstream/master
     model: row.model as string,
     token_count: row.token_count as number | null,
     embedded_at: row.embedded_at ? new Date(row.embedded_at as string) : null,

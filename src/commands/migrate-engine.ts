@@ -236,18 +236,12 @@ export async function runMigrateEngine(sourceEngine: BrainEngine, args: string[]
 
   // Clean up
   clearManifest();
-<<<<<<< HEAD
-  await targetEngine.disconnect();
-=======
->>>>>>> upstream/master
 
   console.log(`\nMigration complete. ${migrated} pages transferred.`);
   console.log(`Config updated to engine: ${opts.targetEngine}`);
   if (config.engine === 'pglite' && config.database_path) {
     console.log(`Original PGLite brain preserved at ${config.database_path} (backup).`);
   }
-<<<<<<< HEAD
-=======
 
   // Post-migrate verification: confirm the target is healthy before we
   // leave the user. Catches incomplete copies, schema drift, and missing
@@ -302,5 +296,4 @@ async function verifyTarget(engine: BrainEngine, expectedPages: number): Promise
   }
 
   console.log('  Full health check: gbrain doctor');
->>>>>>> upstream/master
 }

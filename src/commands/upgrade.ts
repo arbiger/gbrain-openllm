@@ -1,9 +1,5 @@
 import { execSync } from 'child_process';
-<<<<<<< HEAD
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
-=======
 import { existsSync, readFileSync, writeFileSync, mkdirSync, appendFileSync } from 'fs';
->>>>>>> upstream/master
 import { join } from 'path';
 import { VERSION } from '../version.ts';
 
@@ -65,10 +61,6 @@ export async function runUpgrade(args: string[]) {
     // autopilot install) on a v0.11.0→v0.11.1 jump. Codex H7.
     try {
       execSync('gbrain post-upgrade', { stdio: 'inherit', timeout: 300_000 });
-<<<<<<< HEAD
-    } catch {
-      // post-upgrade is best-effort, don't fail the upgrade
-=======
     } catch (e) {
       // post-upgrade is best-effort, don't fail the upgrade. BUT leave a
       // trail so `gbrain doctor` can surface it and give the user a clear
@@ -81,7 +73,6 @@ export async function runUpgrade(args: string[]) {
         error: e instanceof Error ? e.message : String(e),
         hint: 'Run: gbrain apply-migrations --yes',
       });
->>>>>>> upstream/master
     }
     // Run features scan to show what's new and what to fix
     try {
@@ -103,8 +94,6 @@ function verifyUpgrade(): string {
   }
 }
 
-<<<<<<< HEAD
-=======
 /**
  * Append a structured record to ~/.gbrain/upgrade-errors.jsonl when a
  * best-effort phase of the upgrade fails (e.g., `gbrain post-upgrade`
@@ -138,7 +127,6 @@ export function recordUpgradeError(record: {
   }
 }
 
->>>>>>> upstream/master
 function saveUpgradeState(oldVersion: string, newVersion: string) {
   try {
     const dir = join(process.env.HOME || '', '.gbrain');

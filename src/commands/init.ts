@@ -6,11 +6,7 @@ import { homedir } from 'os';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-<<<<<<< HEAD
-import { saveConfig, loadConfig, toEngineConfig, type GBrainConfig, createDefaultOpenClawConfig } from '../core/config.ts';
-=======
 import { saveConfig, loadConfig, toEngineConfig, type GBrainConfig } from '../core/config.ts';
->>>>>>> upstream/master
 import { createEngine } from '../core/engine-factory.ts';
 
 export async function runInit(args: string[]) {
@@ -111,38 +107,6 @@ async function initPGLite(opts: { jsonOutput: boolean; apiKey: string | null; cu
   console.log(`Setting up local brain with PGLite (no server needed)...`);
 
   const engine = await createEngine({ engine: 'pglite' });
-<<<<<<< HEAD
-  await engine.connect({ database_path: dbPath, engine: 'pglite' });
-  await engine.initSchema();
-
-  const config: GBrainConfig = {
-    ...createDefaultOpenClawConfig(),
-    engine: 'pglite',
-    database_path: dbPath,
-  };
-  saveConfig(config);
-
-  const stats = await engine.getStats();
-  await engine.disconnect();
-
-  if (opts.jsonOutput) {
-    console.log(JSON.stringify({ status: 'success', engine: 'pglite', path: dbPath, pages: stats.page_count }));
-  } else {
-    console.log(`\nBrain ready at ${dbPath}`);
-    console.log(`${stats.page_count} pages. Engine: PGLite (local Postgres).`);
-    if (stats.page_count > 0) {
-      console.log('');
-      console.log('Existing brain detected. To wire up the v0.10.3 knowledge graph:');
-      console.log('  gbrain extract links --source db        (typed link backfill)');
-      console.log('  gbrain extract timeline --source db     (structured timeline backfill)');
-      console.log('  gbrain stats                            (verify links > 0)');
-    } else {
-      console.log('Next: gbrain import <dir>');
-    }
-    console.log('');
-    console.log('When you outgrow local: gbrain migrate --to supabase');
-    reportModStatus();
-=======
   try {
     await engine.connect({ database_path: dbPath, engine: 'pglite' });
     await engine.initSchema();
@@ -176,7 +140,6 @@ async function initPGLite(opts: { jsonOutput: boolean; apiKey: string | null; cu
     }
   } finally {
     try { await engine.disconnect(); } catch { /* best-effort */ }
->>>>>>> upstream/master
   }
 }
 
@@ -197,66 +160,6 @@ async function initPostgres(opts: { databaseUrl: string; jsonOutput: boolean; ap
   console.log('Connecting to database...');
   const engine = await createEngine({ engine: 'postgres' });
   try {
-<<<<<<< HEAD
-    await engine.connect({ database_url: databaseUrl });
-  } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : String(e);
-    if (databaseUrl.includes('supabase.co') && (msg.includes('ECONNREFUSED') || msg.includes('ETIMEDOUT'))) {
-      console.error('Connection failed. Supabase direct connections (db.*.supabase.co:5432) are IPv6 only.');
-      console.error('Use the Session pooler connection string instead (port 6543).');
-    }
-    throw e;
-  }
-
-  // Check and auto-create pgvector extension
-  try {
-    const conn = (engine as any).sql || (await import('../core/db.ts')).getConnection();
-    const ext = await conn`SELECT extname FROM pg_extension WHERE extname = 'vector'`;
-    if (ext.length === 0) {
-      console.log('pgvector extension not found. Attempting to create...');
-      try {
-        await conn`CREATE EXTENSION IF NOT EXISTS vector`;
-        console.log('pgvector extension created successfully.');
-      } catch {
-        console.error('Could not auto-create pgvector extension. Run manually in SQL Editor:');
-        console.error('  CREATE EXTENSION vector;');
-        await engine.disconnect();
-        process.exit(1);
-      }
-    }
-  } catch {
-    // Non-fatal
-  }
-
-  console.log('Running schema migration...');
-  await engine.initSchema();
-
-  const config: GBrainConfig = {
-    engine: 'postgres',
-    database_url: databaseUrl,
-    ...createDefaultOpenClawConfig(),
-  };
-  saveConfig(config);
-  console.log('Config saved to ~/.gbrain/config.json');
-
-  const stats = await engine.getStats();
-  await engine.disconnect();
-
-  if (opts.jsonOutput) {
-    console.log(JSON.stringify({ status: 'success', engine: 'postgres', pages: stats.page_count }));
-  } else {
-    console.log(`\nBrain ready. ${stats.page_count} pages. Engine: Postgres (Supabase).`);
-    if (stats.page_count > 0) {
-      console.log('');
-      console.log('Existing brain detected. To wire up the v0.10.3 knowledge graph:');
-      console.log('  gbrain extract links --source db        (typed link backfill)');
-      console.log('  gbrain extract timeline --source db     (structured timeline backfill)');
-      console.log('  gbrain stats                            (verify links > 0)');
-    } else {
-      console.log('Next: gbrain import <dir>');
-    }
-    reportModStatus();
-=======
     try {
       await engine.connect({ database_url: databaseUrl });
     } catch (e: unknown) {
@@ -318,7 +221,6 @@ async function initPostgres(opts: { databaseUrl: string; jsonOutput: boolean; ap
     }
   } finally {
     try { await engine.disconnect(); } catch { /* best-effort */ }
->>>>>>> upstream/master
   }
 }
 

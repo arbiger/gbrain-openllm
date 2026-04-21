@@ -84,8 +84,6 @@ board" — likely an advisor-role page prior plus verb-pattern combinations.
 
 ## P1
 
-<<<<<<< HEAD
-=======
 ### Minions shell jobs — Phase 2 scheduling (deferred from v0.13.0)
 
 **What:** `minion_schedules` table + autopilot-cycle scanner that submits due shell jobs.
@@ -123,7 +121,6 @@ board" — likely an advisor-role page prior plus verb-pattern combinations.
 
 **Depends on:** v0.12.1 ships first.
 
->>>>>>> upstream/master
 ### Batch embedding queue across files
 **What:** Shared embedding queue that collects chunks from all parallel import workers and flushes to OpenAI in batches of 100, instead of each worker batching independently.
 
@@ -231,8 +228,6 @@ board" — likely an advisor-role page prior plus verb-pattern combinations.
 
 ## P2
 
-<<<<<<< HEAD
-=======
 ### Minions: `gbrain jobs stats --orphaned` (deferred from v0.13.0)
 
 **What:** New CLI flag / output column surfacing jobs that are waiting with no registered handler on any live worker.
@@ -277,7 +272,6 @@ board" — likely an advisor-role page prior plus verb-pattern combinations.
 
 **Depends on:** First shell-job author who actually needs it. Don't pre-build the flag.
 
->>>>>>> upstream/master
 ### Security hardening follow-ups (deferred from security-wave-3)
 **What:** Close remaining security gaps identified during the v0.9.4 Codex outside-voice review that didn't make the wave's in-scope cut.
 
@@ -370,8 +364,6 @@ board" — likely an advisor-role page prior plus verb-pattern combinations.
 **Priority:** P2
 **Depends on:** Nothing.
 
-<<<<<<< HEAD
-=======
 ### Doctor --fix polish from v0.14.1 adversarial review
 **What:** Six deferred findings from v0.14.1 ship-time adversarial review on `src/core/dry-fix.ts`:
 1. **TOCTOU between read and write.** `attemptFix` reads once, writes later. Concurrent editor saves silently overwritten. Fix: re-read immediately before write and compare snapshot, or `O_EXCL` tempfile + rename.
@@ -393,7 +385,6 @@ board" — likely an advisor-role page prior plus verb-pattern combinations.
 **Priority:** P2
 **Depends on:** Nothing.
 
->>>>>>> upstream/master
 ## Completed
 
 ### Implement AWS Signature V4 for S3 storage backend

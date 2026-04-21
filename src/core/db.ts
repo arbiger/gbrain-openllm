@@ -5,8 +5,6 @@ import { SCHEMA_SQL } from './schema-embedded.ts';
 let sql: ReturnType<typeof postgres> | null = null;
 let connectedUrl: string | null = null;
 
-<<<<<<< HEAD
-=======
 /**
  * Default pool size for Postgres connections. Users on the Supabase transaction
  * pooler (port 6543) or any multi-tenant pooler can lower this to avoid
@@ -25,7 +23,6 @@ export function resolvePoolSize(explicit?: number): number {
   return DEFAULT_POOL_SIZE_FALLBACK;
 }
 
->>>>>>> upstream/master
 export function getConnection(): ReturnType<typeof postgres> {
   if (!sql) {
     throw new GBrainError(
@@ -57,11 +54,7 @@ export async function connect(config: EngineConfig): Promise<void> {
 
   try {
     sql = postgres(url, {
-<<<<<<< HEAD
-      max: 10,
-=======
       max: resolvePoolSize(),
->>>>>>> upstream/master
       idle_timeout: 20,
       connect_timeout: 10,
       types: {

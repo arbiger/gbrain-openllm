@@ -1,12 +1,7 @@
 # Upgrading Downstream Agents
 
-<<<<<<< HEAD
-GBrain ships skills in `skills/`. Downstream agents (Wintermute, OpenClaw deployments,
-custom agent forks) often **copy** these skill files into their own workspace and
-=======
 GBrain ships skills in `skills/`. Downstream agents (custom OpenClaw deployments,
 agent forks of any kind) often **copy** these skill files into their own workspace and
->>>>>>> upstream/master
 diverge over time — adding agent-specific phases, removing irrelevant ones, tightening
 language. Once that happens, gbrain can't push updates to those forks. The agent has
 to apply the diffs by hand.
@@ -18,11 +13,7 @@ Cross-reference against your fork's local skill files.
 
 `gbrain upgrade` ships the new binary. `gbrain post-upgrade [--execute --yes]` runs
 the schema migrations and backfills the data. But the **skill files themselves**
-<<<<<<< HEAD
-that tell the agent how to behave — those are user-owned. If your `~/git/wintermute/workspace/skills/brain-ops/SKILL.md`
-=======
 that tell the agent how to behave — those are user-owned. If your `~/git/<your-agent>/workspace/skills/brain-ops/SKILL.md`
->>>>>>> upstream/master
 says `# Based on gbrain v0.10.0` at the top, it doesn't know about v0.12.0 features.
 
 The agent will keep manually calling `gbrain link` after every `put_page` (now redundant —
@@ -31,11 +22,7 @@ not know to backfill the structured timeline.
 
 ## How to apply
 
-<<<<<<< HEAD
-1. Identify your forked skill files. For Wintermute: `~/git/wintermute/workspace/skills/`.
-=======
 1. Identify your forked skill files. Typically at `~/git/<your-agent>/workspace/skills/` or wherever your agent's skill directory lives.
->>>>>>> upstream/master
 2. For each skill listed below, find the matching phase/section in your fork.
 3. Apply the diff (paste the new block in the indicated location).
 4. Update the version banner at the top of your fork (`# Based on gbrain v0.12.0`).
@@ -168,11 +155,7 @@ Timeline entries still need explicit `gbrain timeline-add` calls.
 
 1. **Bump the version banner** at the top of each forked file:
    ```
-<<<<<<< HEAD
-   # Based on gbrain v0.12.0 skills/<skill-name>, extended with Wintermute-specific config
-=======
    # Based on gbrain v0.12.0 skills/<skill-name>, extended with <your-agent>-specific config
->>>>>>> upstream/master
    ```
 
 2. **Run the v0.12.0 backfill** (this populates the graph for your existing brain):
@@ -194,8 +177,6 @@ Timeline entries still need explicit `gbrain timeline-add` calls.
    ```
    Should return an indented tree of typed edges.
 
-<<<<<<< HEAD
-=======
 ---
 
 ## v0.12.2 hotfix (data-correctness, no skill edits)
@@ -377,7 +358,6 @@ upcoming `gbrain crontab-to-minions <file>` helper is P1 in TODOS.
 
 ---
 
->>>>>>> upstream/master
 ## Future versions
 
 When gbrain ships a new version, this doc will be updated with the diffs for that

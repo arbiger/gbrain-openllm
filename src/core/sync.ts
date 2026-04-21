@@ -133,8 +133,6 @@ export function pathToSlug(filePath: string, repoPrefix?: string): string {
   if (repoPrefix) slug = `${repoPrefix}/${slug}`;
   return slug.toLowerCase();
 }
-<<<<<<< HEAD
-=======
 
 // ─────────────────────────────────────────────────────────────────
 // Sync failure tracking — Bug 9
@@ -259,4 +257,3 @@ export function acknowledgeSyncFailures(): number {
 export function unacknowledgedSyncFailures(): SyncFailure[] {
   return loadSyncFailures().filter(f => !f.acknowledged);
 }
->>>>>>> upstream/master

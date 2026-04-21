@@ -27,13 +27,6 @@ export interface EntityRef {
 }
 
 /**
-<<<<<<< HEAD
- * Match `[Name](path)` markdown links pointing to `people/` or `companies/`
- * (and other entity directories). Accepts both filesystem-relative format
- * (`[Name](../people/slug.md)`) AND engine-slug format (`[Name](people/slug)`).
- *
- * Captures: name, dir (people/companies/...), slug.
-=======
  * Directory prefix whitelist. These are the top-level slug dirs the extractor
  * recognizes as entity references. Upstream canonical + our extensions:
  *   - Gbrain canonical: people, companies, meetings, concepts, deal, civic, project, source, media, yc, projects
@@ -48,14 +41,10 @@ const DIR_PATTERN = '(?:people|companies|meetings|concepts|deal|civic|project|pr
  * AND engine-slug format (`[Name](people/slug)`).
  *
  * Captures: name, slug (dir/name, possibly deeper).
->>>>>>> upstream/master
  *
  * The regex permits an optional `../` prefix (any number) and an optional
  * `.md` suffix so the same function works for both filesystem and DB content.
  */
-<<<<<<< HEAD
-const ENTITY_REF_RE = /\[([^\]]+)\]\((?:\.\.\/)*((?:people|companies|meetings|concepts|deal|civic|project|source|media|yc)\/([^)\s]+?))(?:\.md)?\)/g;
-=======
 const ENTITY_REF_RE = new RegExp(
   `\\[([^\\]]+)\\]\\((?:\\.\\.\\/)*(${DIR_PATTERN}\\/[^)\\s]+?)(?:\\.md)?\\)`,
   'g',
@@ -73,7 +62,6 @@ const WIKILINK_RE = new RegExp(
   `\\[\\[(${DIR_PATTERN}\\/[^|\\]#]+?)(?:#[^|\\]]*?)?(?:\\|([^\\]]+?))?\\]\\]`,
   'g',
 );
->>>>>>> upstream/master
 
 /**
  * Strip fenced code blocks (```...```) and inline code (`...`) from markdown,
@@ -121,18 +109,6 @@ function stripCodeBlocks(content: string): string {
 export function extractEntityRefs(content: string): EntityRef[] {
   const stripped = stripCodeBlocks(content);
   const refs: EntityRef[] = [];
-<<<<<<< HEAD
-  let m: RegExpExecArray | null;
-  // Fresh regex per call (g-flag state is per-instance).
-  const re = new RegExp(ENTITY_REF_RE.source, ENTITY_REF_RE.flags);
-  while ((m = re.exec(stripped)) !== null) {
-    const name = m[1];
-    const fullPath = m[2];
-    const slug = fullPath; // dir/slug
-    const dir = fullPath.split('/')[0];
-    refs.push({ name, slug, dir });
-  }
-=======
   let match: RegExpExecArray | null;
 
   // 1. Markdown links: [Name](path)
@@ -157,15 +133,12 @@ export function extractEntityRefs(content: string): EntityRef[] {
     refs.push({ name: displayName, slug, dir });
   }
 
->>>>>>> upstream/master
   return refs;
 }
 
 // ─── Link candidates (richer than EntityRef) ────────────────────
 
 export interface LinkCandidate {
-<<<<<<< HEAD
-=======
   /**
    * Source page slug for the edge. When omitted, callers default to
    * "the page being written" (operations.ts runAutoLink) or "the page
@@ -175,15 +148,12 @@ export interface LinkCandidate {
    * fromSlug is `people/pedro-franceschi`, not the company.
    */
   fromSlug?: string;
->>>>>>> upstream/master
   /** Target page slug (no .md, no ../). */
   targetSlug: string;
   /** Inferred relationship type. */
   linkType: string;
   /** Surrounding text (up to ~80 chars) used for inference + storage. */
   context: string;
-<<<<<<< HEAD
-=======
   /**
    * Provenance (v0.13+). Defaults to 'markdown' on older call sites;
    * frontmatter-derived candidates set 'frontmatter'; user-created edges
@@ -210,7 +180,6 @@ export interface LinkCandidate {
 export interface PageLinksResult {
   candidates: LinkCandidate[];
   unresolved: UnresolvedFrontmatterRef[];
->>>>>>> upstream/master
 }
 
 /**
@@ -219,18 +188,6 @@ export interface PageLinksResult {
  * Sources:
  *   1. Markdown entity refs in compiled_truth + timeline (extractEntityRefs).
  *   2. Bare slug references in text (people/slug, companies/slug).
-<<<<<<< HEAD
- *   3. Frontmatter `source:` field (creates a 'source' link).
- *
- * Within-page dedup: multiple mentions of the same (targetSlug, linkType)
- * collapse to one candidate. The first occurrence's context wins.
- */
-export function extractPageLinks(
-  content: string,
-  frontmatter: Record<string, unknown>,
-  pageType: PageType,
-): LinkCandidate[] {
-=======
  *   3. Frontmatter fields → typed graph edges (v0.13: company, investors,
  *      attendees, key_people, etc.). See FRONTMATTER_LINK_MAP.
  *
@@ -249,7 +206,6 @@ export async function extractPageLinks(
   pageType: PageType,
   resolver: SlugResolver,
 ): Promise<PageLinksResult> {
->>>>>>> upstream/master
   const candidates: LinkCandidate[] = [];
 
   // 1. Markdown entity refs.
@@ -264,10 +220,7 @@ export async function extractPageLinks(
       targetSlug: ref.slug,
       linkType: inferLinkType(pageType, context, content, ref.slug),
       context,
-<<<<<<< HEAD
-=======
       linkSource: 'markdown',
->>>>>>> upstream/master
     });
   }
 
@@ -275,14 +228,10 @@ export async function extractPageLinks(
   // Limited to the same entity directories ENTITY_REF_RE covers.
   // Code blocks are stripped first — slugs in code samples are not real refs.
   const strippedContent = stripCodeBlocks(content);
-<<<<<<< HEAD
-  const bareRe = /\b((?:people|companies|meetings|concepts|deal|civic|project|source|media|yc)\/[a-z0-9][a-z0-9-]*)\b/g;
-=======
   const bareRe = new RegExp(
     `\\b(${DIR_PATTERN}\\/[a-z0-9][a-z0-9/-]*[a-z0-9])\\b`,
     'g',
   );
->>>>>>> upstream/master
   let m: RegExpExecArray | null;
   while ((m = bareRe.exec(strippedContent)) !== null) {
     // Skip matches that are part of a markdown link (already handled above).
@@ -293,27 +242,6 @@ export async function extractPageLinks(
       targetSlug: m[1],
       linkType: inferLinkType(pageType, context, content, m[1]),
       context,
-<<<<<<< HEAD
-    });
-  }
-
-  // 3. Frontmatter source field.
-  const source = frontmatter.source;
-  if (typeof source === 'string' && source.length > 0 && /^[a-z][a-z0-9-]*\/[a-z0-9][a-z0-9-]*$/.test(source)) {
-    candidates.push({
-      targetSlug: source,
-      linkType: 'source',
-      context: `frontmatter source: ${source}`,
-    });
-  }
-
-  // Within-page dedup: same (targetSlug, linkType) collapses to one entry.
-  // First occurrence wins (preserves the most natural/earliest context).
-  const seen = new Set<string>();
-  const result: LinkCandidate[] = [];
-  for (const c of candidates) {
-    const key = `${c.targetSlug}\u0000${c.linkType}`;
-=======
       linkSource: 'markdown',
     });
   }
@@ -329,16 +257,11 @@ export async function extractPageLinks(
   const result: LinkCandidate[] = [];
   for (const c of candidates) {
     const key = `${c.fromSlug ?? ''}\u0000${c.targetSlug}\u0000${c.linkType}\u0000${c.linkSource ?? ''}`;
->>>>>>> upstream/master
     if (seen.has(key)) continue;
     seen.add(key);
     result.push(c);
   }
-<<<<<<< HEAD
-  return result;
-=======
   return { candidates: result, unresolved: fm.unresolved };
->>>>>>> upstream/master
 }
 
 /** Excerpt a window of `width` chars around `idx`, collapsed to one line. */
@@ -428,8 +351,6 @@ export function inferLinkType(pageType: PageType, context: string, globalContext
   return 'mentions';
 }
 
-<<<<<<< HEAD
-=======
 // ─── Frontmatter link extraction (v0.13) ────────────────────────
 //
 // YAML frontmatter on entity pages carries rich relationship data:
@@ -696,7 +617,6 @@ export async function extractFrontmatterLinks(
   return { candidates, unresolved };
 }
 
->>>>>>> upstream/master
 // ─── Timeline parsing ───────────────────────────────────────────
 
 export interface TimelineCandidate {
@@ -794,8 +714,6 @@ export async function isAutoLinkEnabled(engine: BrainEngine): Promise<boolean> {
   const normalized = val.trim().toLowerCase();
   return !['false', '0', 'no', 'off'].includes(normalized);
 }
-<<<<<<< HEAD
-=======
 
 /**
  * Read the auto_timeline config flag. Defaults to TRUE (on by default).
@@ -809,4 +727,3 @@ export async function isAutoTimelineEnabled(engine: BrainEngine): Promise<boolea
   const normalized = val.trim().toLowerCase();
   return !['false', '0', 'no', 'off'].includes(normalized);
 }
->>>>>>> upstream/master

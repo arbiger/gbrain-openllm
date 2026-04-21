@@ -3,13 +3,6 @@ import { execFileSync } from 'child_process';
 import { join, relative } from 'path';
 import type { BrainEngine } from '../core/engine.ts';
 import { importFile } from '../core/import-file.ts';
-<<<<<<< HEAD
-import { buildSyncManifest, isSyncable, pathToSlug } from '../core/sync.ts';
-import type { SyncManifest } from '../core/sync.ts';
-
-export interface SyncResult {
-  status: 'up_to_date' | 'synced' | 'first_sync' | 'dry_run';
-=======
 import {
   buildSyncManifest,
   isSyncable,
@@ -22,7 +15,6 @@ import type { SyncManifest } from '../core/sync.ts';
 
 export interface SyncResult {
   status: 'up_to_date' | 'synced' | 'first_sync' | 'dry_run' | 'blocked_by_failures';
->>>>>>> upstream/master
   fromCommit: string | null;
   toCommit: string;
   added: number;
@@ -31,10 +23,7 @@ export interface SyncResult {
   renamed: number;
   chunksCreated: number;
   pagesAffected: string[];
-<<<<<<< HEAD
-=======
   failedFiles?: number; // count of parse failures (Bug 9)
->>>>>>> upstream/master
 }
 
 export interface SyncOpts {
@@ -44,13 +33,10 @@ export interface SyncOpts {
   noPull?: boolean;
   noEmbed?: boolean;
   noExtract?: boolean;
-<<<<<<< HEAD
-=======
   /** Bug 9 — acknowledge + skip past current failure set (CLI --skip-failed). */
   skipFailed?: boolean;
   /** Bug 9 — re-attempt unacknowledged failures explicitly (CLI --retry-failed). */
   retryFailed?: boolean;
->>>>>>> upstream/master
 }
 
 function git(repoPath: string, ...args: string[]): string {
@@ -229,31 +215,6 @@ export async function performSync(engine: BrainEngine, opts: SyncOpts): Promise<
     pagesAffected.push(newSlug);
   }
 
-<<<<<<< HEAD
-  // Process adds and modifies
-  const useTransaction = (filtered.added.length + filtered.modified.length) > 10;
-  const processAddsModifies = async () => {
-    for (const path of [...filtered.added, ...filtered.modified]) {
-      const filePath = join(repoPath, path);
-      if (!existsSync(filePath)) continue;
-      try {
-        const result = await importFile(engine, filePath, path, { noEmbed });
-        if (result.status === 'imported') {
-          chunksCreated += result.chunks;
-          pagesAffected.push(result.slug);
-        }
-      } catch (e: unknown) {
-        const msg = e instanceof Error ? e.message : String(e);
-        console.error(`  Warning: skipped ${path}: ${msg}`);
-      }
-    }
-  };
-
-  if (useTransaction) {
-    await engine.transaction(async () => { await processAddsModifies(); });
-  } else {
-    await processAddsModifies();
-=======
   // Process adds and modifies.
   //
   // NOTE: do NOT wrap this loop in engine.transaction(). importFromContent
@@ -282,13 +243,10 @@ export async function performSync(engine: BrainEngine, opts: SyncOpts): Promise<
       console.error(`  Warning: skipped ${path}: ${msg}`);
       failedFiles.push({ path, error: msg });
     }
->>>>>>> upstream/master
   }
 
   const elapsed = Date.now() - start;
 
-<<<<<<< HEAD
-=======
   // Bug 9 — gate the sync bookmark on success. If any per-file parse
   // failed, record it to ~/.gbrain/sync-failures.jsonl and DO NOT advance
   // sync.last_commit. The next sync re-walks the same diff and re-attempts
@@ -325,7 +283,6 @@ export async function performSync(engine: BrainEngine, opts: SyncOpts): Promise<
     }
   }
 
->>>>>>> upstream/master
   // Update sync state AFTER all changes succeed
   await engine.setConfig('sync.last_commit', headCommit);
   await engine.setConfig('sync.last_run', new Date().toISOString());
@@ -384,9 +341,6 @@ async function performFullSync(
   const { runImport } = await import('./import.ts');
   const importArgs = [repoPath];
   if (opts.noEmbed) importArgs.push('--no-embed');
-<<<<<<< HEAD
-  await runImport(engine, importArgs);
-=======
   const result = await runImport(engine, importArgs, { commit: headCommit });
 
   // Bug 9 — gate the full-sync bookmark on success. runImport already
@@ -415,7 +369,6 @@ async function performFullSync(
     const acked = acknowledgeSyncFailures();
     if (acked > 0) console.error(`  Acknowledged ${acked} failure(s) and advancing past them.`);
   }
->>>>>>> upstream/master
 
   // Persist sync state so next sync is incremental (C1 fix: was missing)
   await engine.setConfig('sync.last_commit', headCommit);
@@ -449,10 +402,6 @@ export async function runSync(engine: BrainEngine, args: string[]) {
   const full = args.includes('--full');
   const noPull = args.includes('--no-pull');
   const noEmbed = args.includes('--no-embed');
-<<<<<<< HEAD
-
-  const opts: SyncOpts = { repoPath, dryRun, full, noPull, noEmbed };
-=======
   const skipFailed = args.includes('--skip-failed');
   const retryFailed = args.includes('--retry-failed');
 
@@ -471,7 +420,6 @@ export async function runSync(engine: BrainEngine, args: string[]) {
       // Don't acknowledge them yet — they must succeed to clear.
     }
   }
->>>>>>> upstream/master
 
   if (!watch) {
     const result = await performSync(engine, opts);
@@ -519,13 +467,10 @@ function printSyncResult(result: SyncResult) {
       break;
     case 'dry_run':
       break; // already printed in performSync
-<<<<<<< HEAD
-=======
     case 'blocked_by_failures':
       console.log(`Sync BLOCKED at ${result.toCommit.slice(0, 8)}: ${result.failedFiles ?? 0} file(s) failed to parse.`);
       console.log(`  See ~/.gbrain/sync-failures.jsonl for details, or run 'gbrain doctor'.`);
       console.log(`  Fix the files then re-run 'gbrain sync', or 'gbrain sync --skip-failed' to move on.`);
       break;
->>>>>>> upstream/master
   }
 }

@@ -34,11 +34,7 @@ CREATE TABLE IF NOT EXISTS content_chunks (
   chunk_index   INTEGER NOT NULL,
   chunk_text    TEXT    NOT NULL,
   chunk_source  TEXT    NOT NULL DEFAULT 'compiled_truth',
-<<<<<<< HEAD
-  embedding     vector(1024),
-=======
   embedding     vector(1536),
->>>>>>> upstream/master
   model         TEXT    NOT NULL DEFAULT 'text-embedding-3-large',
   token_count   INTEGER,
   embedded_at   TIMESTAMPTZ,
@@ -52,16 +48,6 @@ CREATE INDEX IF NOT EXISTS idx_chunks_embedding ON content_chunks USING hnsw (em
 -- ============================================================
 -- links: cross-references between pages
 -- ============================================================
-<<<<<<< HEAD
-CREATE TABLE IF NOT EXISTS links (
-  id           SERIAL PRIMARY KEY,
-  from_page_id INTEGER NOT NULL REFERENCES pages(id) ON DELETE CASCADE,
-  to_page_id   INTEGER NOT NULL REFERENCES pages(id) ON DELETE CASCADE,
-  link_type    TEXT    NOT NULL DEFAULT '',
-  context      TEXT    NOT NULL DEFAULT '',
-  created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
-  CONSTRAINT links_from_to_type_unique UNIQUE(from_page_id, to_page_id, link_type)
-=======
 -- Provenance model (v0.13):
 --   link_source       — 'markdown' | 'frontmatter' | 'manual' | NULL
 --                       (NULL = legacy row written before v0.13; unknown source)
@@ -88,16 +74,12 @@ CREATE TABLE IF NOT EXISTS links (
   -- NULL origin_page_id (markdown/manual edges) would be treated as unique.
   CONSTRAINT links_from_to_type_source_origin_unique
     UNIQUE NULLS NOT DISTINCT (from_page_id, to_page_id, link_type, link_source, origin_page_id)
->>>>>>> upstream/master
 );
 
 CREATE INDEX IF NOT EXISTS idx_links_from ON links(from_page_id);
 CREATE INDEX IF NOT EXISTS idx_links_to ON links(to_page_id);
-<<<<<<< HEAD
-=======
 CREATE INDEX IF NOT EXISTS idx_links_source ON links(link_source);
 CREATE INDEX IF NOT EXISTS idx_links_origin ON links(origin_page_id);
->>>>>>> upstream/master
 
 -- ============================================================
 -- tags
@@ -179,13 +161,8 @@ CREATE TABLE IF NOT EXISTS config (
 
 INSERT INTO config (key, value) VALUES
   ('version', '1'),
-<<<<<<< HEAD
-  ('embedding_model', 'bge-m3-mlx-fp16'),
-  ('embedding_dimensions', '1024'),
-=======
   ('embedding_model', 'text-embedding-3-large'),
   ('embedding_dimensions', '1536'),
->>>>>>> upstream/master
   ('chunk_strategy', 'semantic')
 ON CONFLICT (key) DO NOTHING;
 
@@ -299,11 +276,7 @@ CREATE TABLE IF NOT EXISTS minion_jobs (
   backoff_delay    INTEGER     NOT NULL DEFAULT 1000,
   backoff_jitter   REAL        NOT NULL DEFAULT 0.2,
   stalled_counter  INTEGER     NOT NULL DEFAULT 0,
-<<<<<<< HEAD
-  max_stalled      INTEGER     NOT NULL DEFAULT 1,
-=======
   max_stalled      INTEGER     NOT NULL DEFAULT 3,
->>>>>>> upstream/master
   lock_token       TEXT,
   lock_until       TIMESTAMPTZ,
   delay_until      TIMESTAMPTZ,

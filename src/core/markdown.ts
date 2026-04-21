@@ -22,16 +22,6 @@ export interface ParsedMarkdown {
  *   tags: [startups, growth]
  *   ---
  *   Compiled truth content here...
-<<<<<<< HEAD
- *   ---
- *   Timeline content here...
- *
- * The first --- pair is YAML frontmatter (handled by gray-matter).
- * After frontmatter, the body is split at the first standalone ---
- * (a line containing only --- with optional whitespace).
- * Everything before is compiled_truth, everything after is timeline.
- * If no body --- exists, all content is compiled_truth.
-=======
  *
  *   <!-- timeline -->
  *   Timeline content here...
@@ -42,7 +32,6 @@ export interface ParsedMarkdown {
  * or a plain `---` immediately preceding a `## Timeline` / `## History`
  * heading (backward-compat for existing files). A bare `---` in body text
  * is treated as a markdown horizontal rule, not a timeline separator.
->>>>>>> upstream/master
  */
 export function parseMarkdown(content: string, filePath?: string): ParsedMarkdown {
   const { data: frontmatter, content: body } = matter(content);
@@ -75,28 +64,6 @@ export function parseMarkdown(content: string, filePath?: string): ParsedMarkdow
 }
 
 /**
-<<<<<<< HEAD
- * Split body content at first standalone --- separator.
- * Returns compiled_truth (before) and timeline (after).
- */
-export function splitBody(body: string): { compiled_truth: string; timeline: string } {
-  // Match a line that is only --- (with optional whitespace)
-  // Must not be at the very start (that would be frontmatter)
-  const lines = body.split('\n');
-  let splitIndex = -1;
-
-  for (let i = 0; i < lines.length; i++) {
-    const trimmed = lines[i].trim();
-    if (trimmed === '---') {
-      // Skip if this is the very first non-empty line (leftover from frontmatter parsing)
-      const beforeContent = lines.slice(0, i).join('\n').trim();
-      if (beforeContent.length > 0) {
-        splitIndex = i;
-        break;
-      }
-    }
-  }
-=======
  * Split body content at the first recognized timeline sentinel.
  * Returns compiled_truth (before) and timeline (after).
  *
@@ -112,7 +79,6 @@ export function splitBody(body: string): { compiled_truth: string; timeline: str
 export function splitBody(body: string): { compiled_truth: string; timeline: string } {
   const lines = body.split('\n');
   const splitIndex = findTimelineSplitIndex(lines);
->>>>>>> upstream/master
 
   if (splitIndex === -1) {
     return { compiled_truth: body, timeline: '' };
@@ -123,8 +89,6 @@ export function splitBody(body: string): { compiled_truth: string; timeline: str
   return { compiled_truth, timeline };
 }
 
-<<<<<<< HEAD
-=======
 function findTimelineSplitIndex(lines: string[]): number {
   for (let i = 0; i < lines.length; i++) {
     const trimmed = lines[i].trim();
@@ -152,7 +116,6 @@ function findTimelineSplitIndex(lines: string[]): number {
   return -1;
 }
 
->>>>>>> upstream/master
 /**
  * Serialize a page back to markdown format.
  * Produces: frontmatter + compiled_truth + --- + timeline
@@ -177,11 +140,7 @@ export function serializeMarkdown(
 
   let body = compiled_truth;
   if (timeline) {
-<<<<<<< HEAD
-    body += '\n\n---\n\n' + timeline;
-=======
     body += '\n\n<!-- timeline -->\n\n' + timeline;
->>>>>>> upstream/master
   }
 
   return yamlContent + '\n\n' + body + '\n';
@@ -190,10 +149,6 @@ export function serializeMarkdown(
 function inferType(filePath?: string): PageType {
   if (!filePath) return 'concept';
 
-<<<<<<< HEAD
-  // Normalize: add leading / for consistent matching
-  const lower = ('/' + filePath).toLowerCase();
-=======
   // Normalize: add leading / for consistent matching.
   // Wiki subtypes and /writing/ check FIRST — they're stronger signals than
   // ancestor directories. e.g. `projects/blog/writing/essay.md` is a piece of
@@ -206,7 +161,6 @@ function inferType(filePath?: string): PageType {
   if (lower.includes('/wiki/hardware/')) return 'hardware';
   if (lower.includes('/wiki/architecture/')) return 'architecture';
   if (lower.includes('/wiki/concepts/') || lower.includes('/wiki/concept/')) return 'concept';
->>>>>>> upstream/master
   if (lower.includes('/people/') || lower.includes('/person/')) return 'person';
   if (lower.includes('/companies/') || lower.includes('/company/')) return 'company';
   if (lower.includes('/deals/') || lower.includes('/deal/')) return 'deal';

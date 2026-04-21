@@ -18,12 +18,6 @@
 
 import { readFileSync, readdirSync, lstatSync, existsSync } from 'fs';
 import { join, relative, dirname } from 'path';
-<<<<<<< HEAD
-import type { BrainEngine } from '../core/engine.ts';
-import type { PageType } from '../core/types.ts';
-import { parseMarkdown } from '../core/markdown.ts';
-import { extractPageLinks, parseTimelineEntries, inferLinkType } from '../core/link-extraction.ts';
-=======
 import type { BrainEngine, LinkBatchInput, TimelineBatchInput } from '../core/engine.ts';
 import type { PageType } from '../core/types.ts';
 import { parseMarkdown } from '../core/markdown.ts';
@@ -39,7 +33,6 @@ import {
 // count but safe at any future schema width and keeps per-batch error blast radius
 // small (a malformed row aborts at most 100, not thousands).
 const BATCH_SIZE = 100;
->>>>>>> upstream/master
 
 // --- Types ---
 
@@ -87,23 +80,6 @@ export function walkMarkdownFiles(dir: string): { path: string; relPath: string 
 
 // --- Link extraction ---
 
-<<<<<<< HEAD
-/** Extract markdown links to .md files (relative paths only) */
-export function extractMarkdownLinks(content: string): { name: string; relTarget: string }[] {
-  const results: { name: string; relTarget: string }[] = [];
-  const pattern = /\[([^\]]+)\]\(([^)]+\.md)\)/g;
-  let match;
-  while ((match = pattern.exec(content)) !== null) {
-    const target = match[2];
-    if (target.includes('://')) continue; // skip external URLs
-    results.push({ name: match[1], relTarget: target });
-  }
-  return results;
-}
-
-/** Infer link type from directory structure */
-function inferLinkType(fromDir: string, toDir: string, frontmatter?: Record<string, unknown>): string {
-=======
 /**
  * Extract markdown links to .md files (relative paths only).
  *
@@ -183,7 +159,6 @@ export function resolveSlug(fileDir: string, relTarget: string, allSlugs: Set<st
  * migration normalizes any legacy rows on existing brains.
  */
 function inferTypeByDir(fromDir: string, toDir: string, frontmatter?: Record<string, unknown>): string {
->>>>>>> upstream/master
   const from = fromDir.split('/')[0];
   const to = toDir.split('/')[0];
   if (from === 'people' && to === 'companies') {
@@ -192,36 +167,8 @@ function inferTypeByDir(fromDir: string, toDir: string, frontmatter?: Record<str
   }
   if (from === 'people' && to === 'deals') return 'involved_in';
   if (from === 'deals' && to === 'companies') return 'deal_for';
-<<<<<<< HEAD
-  if (from === 'meetings' && to === 'people') return 'attendee';
-  return 'mention';
-}
-
-/** Extract links from frontmatter fields */
-function extractFrontmatterLinks(slug: string, fm: Record<string, unknown>): ExtractedLink[] {
-  const links: ExtractedLink[] = [];
-  const fieldMap: Record<string, { dir: string; type: string }> = {
-    company: { dir: 'companies', type: 'works_at' },
-    companies: { dir: 'companies', type: 'works_at' },
-    investors: { dir: 'companies', type: 'invested_in' },
-    attendees: { dir: 'people', type: 'attendee' },
-    founded: { dir: 'companies', type: 'founded' },
-  };
-  for (const [field, config] of Object.entries(fieldMap)) {
-    const value = fm[field];
-    if (!value) continue;
-    const slugs = Array.isArray(value) ? value : [value];
-    for (const s of slugs) {
-      if (typeof s !== 'string') continue;
-      const toSlug = `${config.dir}/${s.toLowerCase().replace(/\s+/g, '-')}`;
-      links.push({ from_slug: slug, to_slug: toSlug, link_type: config.type, context: `frontmatter.${field}` });
-    }
-  }
-  return links;
-=======
   if (from === 'meetings' && to === 'people') return 'attended';
   return 'mentions';
->>>>>>> upstream/master
 }
 
 /** Parse frontmatter using the project's gray-matter-based parser */
@@ -234,12 +181,6 @@ function parseFrontmatterFromContent(content: string, relPath: string): Record<s
   }
 }
 
-<<<<<<< HEAD
-/** Full link extraction from a single markdown file */
-export function extractLinksFromFile(
-  content: string, relPath: string, allSlugs: Set<string>,
-): ExtractedLink[] {
-=======
 /**
  * Full link extraction from a single markdown file (FS-source path).
  *
@@ -253,34 +194,22 @@ export async function extractLinksFromFile(
   content: string, relPath: string, allSlugs: Set<string>,
   opts?: { includeFrontmatter?: boolean },
 ): Promise<ExtractedLink[]> {
->>>>>>> upstream/master
   const links: ExtractedLink[] = [];
   const slug = relPath.replace('.md', '');
   const fileDir = dirname(relPath);
   const fm = parseFrontmatterFromContent(content, relPath);
 
   for (const { name, relTarget } of extractMarkdownLinks(content)) {
-<<<<<<< HEAD
-    const resolved = join(fileDir, relTarget).replace('.md', '');
-    if (allSlugs.has(resolved)) {
-      links.push({
-        from_slug: slug, to_slug: resolved,
-        link_type: inferLinkType(fileDir, dirname(resolved), fm),
-=======
     const resolved = resolveSlug(fileDir, relTarget, allSlugs);
     if (resolved !== null) {
       links.push({
         from_slug: slug, to_slug: resolved,
         link_type: inferTypeByDir(fileDir, dirname(resolved), fm),
->>>>>>> upstream/master
         context: `markdown link: [${name}]`,
       });
     }
   }
 
-<<<<<<< HEAD
-  links.push(...extractFrontmatterLinks(slug, fm));
-=======
   if (opts?.includeFrontmatter) {
     // Synthetic sync-ish resolver: only does step 1 (already a slug) and
     // step 2 (dir-hint + slugify), backed by the Set of all known slugs.
@@ -320,7 +249,6 @@ export async function extractLinksFromFile(
     }
   }
 
->>>>>>> upstream/master
   return links;
 }
 
@@ -411,13 +339,10 @@ export async function runExtract(engine: BrainEngine, args: string[]) {
   const since = (sinceIdx >= 0 && sinceIdx + 1 < args.length) ? args[sinceIdx + 1] : undefined;
   const dryRun = args.includes('--dry-run');
   const jsonMode = args.includes('--json');
-<<<<<<< HEAD
-=======
   // --include-frontmatter: v0.13 flag. Default OFF for back-compat. The
   // v0_13_0 migration orchestrator runs this once under the hood; users
   // opt in for subsequent runs.
   const includeFrontmatter = args.includes('--include-frontmatter');
->>>>>>> upstream/master
 
   // Validate --since upfront. Without this, an invalid date like
   // `--since yesterday` produces NaN which silently passes the filter check
@@ -455,11 +380,7 @@ export async function runExtract(engine: BrainEngine, args: string[]) {
       // can opt in via mode + source.
       result = { links_created: 0, timeline_entries_created: 0, pages_processed: 0 };
       if (subcommand === 'links' || subcommand === 'all') {
-<<<<<<< HEAD
-        const r = await extractLinksFromDB(engine, dryRun, jsonMode, typeFilter, since);
-=======
         const r = await extractLinksFromDB(engine, dryRun, jsonMode, typeFilter, since, { includeFrontmatter });
->>>>>>> upstream/master
         result.links_created = r.created;
         result.pages_processed = r.pages;
       }
@@ -494,36 +415,6 @@ async function extractLinksFromDir(
   const files = walkMarkdownFiles(brainDir);
   const allSlugs = new Set(files.map(f => f.relPath.replace('.md', '')));
 
-<<<<<<< HEAD
-  // Load existing links for O(1) dedup
-  const existing = new Set<string>();
-  try {
-    const pages = await engine.listPages({ limit: 100000 });
-    for (const page of pages) {
-      for (const link of await engine.getLinks(page.slug)) {
-        existing.add(`${link.from_slug}::${link.to_slug}`);
-      }
-    }
-  } catch { /* fresh brain */ }
-
-  let created = 0;
-  for (let i = 0; i < files.length; i++) {
-    try {
-      const content = readFileSync(files[i].path, 'utf-8');
-      const links = extractLinksFromFile(content, files[i].relPath, allSlugs);
-      for (const link of links) {
-        const key = `${link.from_slug}::${link.to_slug}`;
-        if (existing.has(key)) continue;
-        existing.add(key);
-        if (dryRun) {
-          if (!jsonMode) console.log(`  ${link.from_slug} → ${link.to_slug} (${link.link_type})`);
-          created++;
-        } else {
-          try {
-            await engine.addLink(link.from_slug, link.to_slug, link.context, link.link_type);
-            created++;
-          } catch { /* UNIQUE or page not found */ }
-=======
   // Dedup in dry-run only — DB enforces uniqueness via ON CONFLICT in batch writes.
   // Without this, the same link extracted from N files would print N times in --dry-run.
   const dryRunSeen = dryRun ? new Set<string>() : null;
@@ -560,7 +451,6 @@ async function extractLinksFromDir(
         } else {
           batch.push(link);
           if (batch.length >= BATCH_SIZE) await flush();
->>>>>>> upstream/master
         }
       }
     } catch { /* skip unreadable */ }
@@ -568,10 +458,7 @@ async function extractLinksFromDir(
       process.stderr.write(JSON.stringify({ event: 'progress', phase: 'extracting_links', done: i + 1, total: files.length }) + '\n');
     }
   }
-<<<<<<< HEAD
-=======
   await flush();
->>>>>>> upstream/master
 
   if (!jsonMode) {
     const label = dryRun ? '(dry run) would create' : 'created';
@@ -585,20 +472,6 @@ async function extractTimelineFromDir(
 ): Promise<{ created: number; pages: number }> {
   const files = walkMarkdownFiles(brainDir);
 
-<<<<<<< HEAD
-  // Load existing timeline entries for O(1) dedup
-  const existing = new Set<string>();
-  try {
-    const pages = await engine.listPages({ limit: 100000 });
-    for (const page of pages) {
-      for (const entry of await engine.getTimeline(page.slug)) {
-        existing.add(`${page.slug}::${entry.date}::${entry.summary}`);
-      }
-    }
-  } catch { /* fresh brain */ }
-
-  let created = 0;
-=======
   // Dedup in dry-run only — DB enforces uniqueness via ON CONFLICT in batch writes.
   const dryRunSeen = dryRun ? new Set<string>() : null;
 
@@ -620,25 +493,11 @@ async function extractTimelineFromDir(
     }
   }
 
->>>>>>> upstream/master
   for (let i = 0; i < files.length; i++) {
     try {
       const content = readFileSync(files[i].path, 'utf-8');
       const slug = files[i].relPath.replace('.md', '');
       for (const entry of extractTimelineFromContent(content, slug)) {
-<<<<<<< HEAD
-        const key = `${entry.slug}::${entry.date}::${entry.summary}`;
-        if (existing.has(key)) continue;
-        existing.add(key);
-        if (dryRun) {
-          if (!jsonMode) console.log(`  ${entry.slug}: ${entry.date} — ${entry.summary}`);
-          created++;
-        } else {
-          try {
-            await engine.addTimelineEntry(entry.slug, { date: entry.date, source: entry.source, summary: entry.summary, detail: entry.detail });
-            created++;
-          } catch { /* page not in DB or constraint */ }
-=======
         if (dryRunSeen) {
           const key = `${entry.slug}::${entry.date}::${entry.summary}`;
           if (dryRunSeen.has(key)) continue;
@@ -648,7 +507,6 @@ async function extractTimelineFromDir(
         } else {
           batch.push({ slug: entry.slug, date: entry.date, source: entry.source, summary: entry.summary, detail: entry.detail });
           if (batch.length >= BATCH_SIZE) await flush();
->>>>>>> upstream/master
         }
       }
     } catch { /* skip unreadable */ }
@@ -656,10 +514,7 @@ async function extractTimelineFromDir(
       process.stderr.write(JSON.stringify({ event: 'progress', phase: 'extracting_timeline', done: i + 1, total: files.length }) + '\n');
     }
   }
-<<<<<<< HEAD
-=======
   await flush();
->>>>>>> upstream/master
 
   if (!jsonMode) {
     const label = dryRun ? '(dry run) would create' : 'created';
@@ -679,11 +534,7 @@ export async function extractLinksForSlugs(engine: BrainEngine, repoPath: string
     if (!existsSync(filePath)) continue;
     try {
       const content = readFileSync(filePath, 'utf-8');
-<<<<<<< HEAD
-      for (const link of extractLinksFromFile(content, slug + '.md', allSlugs)) {
-=======
       for (const link of await extractLinksFromFile(content, slug + '.md', allSlugs)) {
->>>>>>> upstream/master
         try { await engine.addLink(link.from_slug, link.to_slug, link.context, link.link_type); created++; } catch { /* skip */ }
       }
     } catch { /* skip */ }
@@ -719,9 +570,6 @@ async function extractLinksFromDB(
   jsonMode: boolean,
   typeFilter: PageType | undefined,
   since: string | undefined,
-<<<<<<< HEAD
-): Promise<{ created: number; pages: number }> {
-=======
   opts?: { includeFrontmatter?: boolean },
 ): Promise<{ created: number; pages: number; unresolved: UnresolvedFrontmatterRef[] }> {
   const includeFrontmatter = opts?.includeFrontmatter ?? false;
@@ -734,13 +582,10 @@ async function extractLinksFromDB(
   const nullResolver = {
     resolve: async () => null as string | null,
   };
->>>>>>> upstream/master
   const allSlugs = await engine.getAllSlugs();
   const slugList = Array.from(allSlugs);
   let processed = 0, created = 0;
 
-<<<<<<< HEAD
-=======
   // Dedup in dry-run only — DB enforces uniqueness via ON CONFLICT in batch writes.
   const dryRunSeen = dryRun ? new Set<string>() : null;
 
@@ -761,7 +606,6 @@ async function extractLinksFromDB(
     }
   }
 
->>>>>>> upstream/master
   for (let i = 0; i < slugList.length; i++) {
     const slug = slugList[i];
     const page = await engine.getPage(slug);
@@ -774,27 +618,6 @@ async function extractLinksFromDB(
     }
 
     const fullContent = page.compiled_truth + '\n' + page.timeline;
-<<<<<<< HEAD
-    const candidates = extractPageLinks(fullContent, page.frontmatter, page.type);
-
-    for (const c of candidates) {
-      if (!allSlugs.has(c.targetSlug)) continue;
-      if (dryRun) {
-        if (jsonMode) {
-          process.stdout.write(JSON.stringify({
-            action: 'add_link', from: slug, to: c.targetSlug,
-            type: c.linkType, context: c.context,
-          }) + '\n');
-        } else {
-          console.log(`  ${slug} → ${c.targetSlug} (${c.linkType})`);
-        }
-        created++;
-      } else {
-        try {
-          await engine.addLink(slug, c.targetSlug, c.context, c.linkType);
-          created++;
-        } catch { /* FK violation or other */ }
-=======
     // --include-frontmatter default OFF in v0.13 (codex tension 5, back-compat).
     // Migration orchestrator explicitly enables it for the one-time backfill;
     // user-invoked `gbrain extract links` stays outgoing-only.
@@ -835,7 +658,6 @@ async function extractLinksFromDB(
           origin_field: c.originField,
         });
         if (batch.length >= BATCH_SIZE) await flush();
->>>>>>> upstream/master
       }
     }
     processed++;
@@ -843,18 +665,11 @@ async function extractLinksFromDB(
       process.stderr.write(JSON.stringify({ event: 'progress', phase: 'extracting_links_db', done: processed, total: slugList.length }) + '\n');
     }
   }
-<<<<<<< HEAD
-=======
   await flush();
->>>>>>> upstream/master
 
   if (!jsonMode) {
     const label = dryRun ? '(dry run) would create' : 'created';
     console.log(`Links: ${label} ${created} from ${processed} pages (db source)`);
-<<<<<<< HEAD
-  }
-  return { created, pages: processed };
-=======
     if (includeFrontmatter && unresolved.length > 0) {
       // Top-20 preview of unresolvable frontmatter names so the user can
       // see where the graph has holes (codex tension 6.4).
@@ -871,7 +686,6 @@ async function extractLinksFromDB(
     }
   }
   return { created, pages: processed, unresolved };
->>>>>>> upstream/master
 }
 
 async function extractTimelineFromDB(
@@ -885,8 +699,6 @@ async function extractTimelineFromDB(
   const slugList = Array.from(allSlugs);
   let processed = 0, created = 0;
 
-<<<<<<< HEAD
-=======
   // Dedup in dry-run only — DB enforces uniqueness via ON CONFLICT in batch writes.
   const dryRunSeen = dryRun ? new Set<string>() : null;
 
@@ -907,7 +719,6 @@ async function extractTimelineFromDB(
     }
   }
 
->>>>>>> upstream/master
   for (let i = 0; i < slugList.length; i++) {
     const slug = slugList[i];
     const page = await engine.getPage(slug);
@@ -923,14 +734,10 @@ async function extractTimelineFromDB(
     const entries = parseTimelineEntries(fullContent);
 
     for (const entry of entries) {
-<<<<<<< HEAD
-      if (dryRun) {
-=======
       if (dryRunSeen) {
         const key = `${slug}::${entry.date}::${entry.summary}`;
         if (dryRunSeen.has(key)) continue;
         dryRunSeen.add(key);
->>>>>>> upstream/master
         if (jsonMode) {
           process.stdout.write(JSON.stringify({
             action: 'add_timeline', slug, date: entry.date,
@@ -941,19 +748,8 @@ async function extractTimelineFromDB(
         }
         created++;
       } else {
-<<<<<<< HEAD
-        try {
-          await engine.addTimelineEntry(
-            slug,
-            { date: entry.date, summary: entry.summary, detail: entry.detail || '' },
-            { skipExistenceCheck: true },
-          );
-          created++;
-        } catch { /* dedup constraint or other */ }
-=======
         batch.push({ slug, date: entry.date, summary: entry.summary, detail: entry.detail || '' });
         if (batch.length >= BATCH_SIZE) await flush();
->>>>>>> upstream/master
       }
     }
     processed++;
@@ -961,10 +757,7 @@ async function extractTimelineFromDB(
       process.stderr.write(JSON.stringify({ event: 'progress', phase: 'extracting_timeline_db', done: processed, total: slugList.length }) + '\n');
     }
   }
-<<<<<<< HEAD
-=======
   await flush();
->>>>>>> upstream/master
 
   if (!jsonMode) {
     const label = dryRun ? '(dry run) would create' : 'created';

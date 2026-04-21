@@ -11,8 +11,6 @@ import type {
   EngineConfig,
 } from './types.ts';
 
-<<<<<<< HEAD
-=======
 /** Input row for addLinksBatch. Optional fields default to '' (matches NOT NULL DDL). */
 export interface LinkBatchInput {
   from_slug: string;
@@ -41,7 +39,6 @@ export interface TimelineBatchInput {
   detail?: string;
 }
 
->>>>>>> upstream/master
 /** Maximum results returned by search operations. Internal bulk operations (listPages) are not clamped. */
 export const MAX_SEARCH_LIMIT = 100;
 
@@ -83,17 +80,6 @@ export interface BrainEngine {
   deleteChunks(slug: string): Promise<void>;
 
   // Links
-<<<<<<< HEAD
-  addLink(from: string, to: string, context?: string, linkType?: string): Promise<void>;
-  /**
-   * Remove links from `from` to `to`. If linkType is provided, only that specific
-   * (from, to, type) row is removed. If omitted, ALL link types between the pair
-   * are removed (matches pre-multi-type-link behavior).
-   */
-  removeLink(from: string, to: string, linkType?: string): Promise<void>;
-  getLinks(slug: string): Promise<Link[]>;
-  getBacklinks(slug: string): Promise<Link[]>;
-=======
   /**
    * Single-row link insert. linkSource defaults to 'markdown' for back-compat
    * with pre-v0.13 callers. Pass 'frontmatter' + originSlug + originField for
@@ -144,7 +130,6 @@ export interface BrainEngine {
     dirPrefix?: string,
     minSimilarity?: number,
   ): Promise<{ slug: string; similarity: number } | null>;
->>>>>>> upstream/master
   traverseGraph(slug: string, depth?: number): Promise<GraphNode[]>;
   /**
    * Edge-based graph traversal with optional type and direction filters.
@@ -182,8 +167,6 @@ export interface BrainEngine {
     entry: TimelineInput,
     opts?: { skipExistenceCheck?: boolean },
   ): Promise<void>;
-<<<<<<< HEAD
-=======
   /**
    * Bulk insert timeline entries via a single multi-row INSERT...SELECT FROM (VALUES)
    * JOIN pages statement with ON CONFLICT DO NOTHING. Returns the count of rows
@@ -191,7 +174,6 @@ export interface BrainEngine {
    * slugs don't exist). Used by extract.ts to avoid sequential round-trips.
    */
   addTimelineEntriesBatch(entries: TimelineBatchInput[]): Promise<number>;
->>>>>>> upstream/master
   getTimeline(slug: string, opts?: TimelineOpts): Promise<TimelineEntry[]>;
 
   // Raw data
