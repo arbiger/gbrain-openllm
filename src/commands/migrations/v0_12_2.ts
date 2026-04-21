@@ -26,10 +26,13 @@ import type { Migration, OrchestratorOpts, OrchestratorResult, OrchestratorPhase
 
 // ── Phase A — Schema ────────────────────────────────────────
 
+// Use the CURRENTLY-RUNNING binary path (not `gbrain` off $PATH).
+const GBRAIN = process.execPath;
+
 function phaseASchema(opts: OrchestratorOpts): OrchestratorPhaseResult {
   if (opts.dryRun) return { name: 'schema', status: 'skipped', detail: 'dry-run' };
   try {
-    execSync('gbrain init --migrate-only', { stdio: 'inherit', timeout: 60_000, env: process.env });
+    execSync(`${GBRAIN} init --migrate-only`, { stdio: 'inherit', timeout: 60_000, env: process.env });
     return { name: 'schema', status: 'complete' };
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
@@ -42,7 +45,7 @@ function phaseASchema(opts: OrchestratorOpts): OrchestratorPhaseResult {
 function phaseBRepair(opts: OrchestratorOpts): OrchestratorPhaseResult {
   if (opts.dryRun) return { name: 'jsonb_repair', status: 'skipped', detail: 'dry-run' };
   try {
-    execSync('gbrain repair-jsonb', { stdio: 'inherit', timeout: 600_000, env: process.env });
+    execSync(`${GBRAIN} repair-jsonb`, { stdio: 'inherit', timeout: 600_000, env: process.env });
     return { name: 'jsonb_repair', status: 'complete' };
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
@@ -55,7 +58,7 @@ function phaseBRepair(opts: OrchestratorOpts): OrchestratorPhaseResult {
 function phaseCVerify(opts: OrchestratorOpts): OrchestratorPhaseResult {
   if (opts.dryRun) return { name: 'verify', status: 'skipped', detail: 'dry-run' };
   try {
-    const out = execSync('gbrain repair-jsonb --dry-run --json', {
+    const out = execSync(`${GBRAIN} repair-jsonb --dry-run --json`, {
       encoding: 'utf-8', timeout: 60_000, env: process.env,
     });
     const parsed = JSON.parse(out) as { total_repaired?: number; engine?: string };
