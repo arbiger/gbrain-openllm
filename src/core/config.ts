@@ -105,4 +105,110 @@ export function getDbUrlSource(): DbUrlSource {
     // Config file exists but is unreadable/malformed — treat as null source.
     return null;
   }
+export function getEmbeddingProvider(config: GBrainConfig): { provider: ProviderConfig; model: ProviderModel } | null {
+  if (!config.providers || !config.brain) return null;
+  const providerName = config.brain.embedding_provider;
+  const provider = config.providers[providerName];
+  if (!provider) return null;
+  const model = provider.models.find(m => m.id === config.brain!.embedding_model);
+  if (!model) return null;
+  return { provider, model };
+}
+
+export function getEmbeddingFallback(config: GBrainConfig): { provider: ProviderConfig; model: ProviderModel } | null {
+  if (!config.providers || !config.brain?.embedding_fallback) return null;
+  const provider = config.providers[config.brain.embedding_fallback];
+  if (!provider) return null;
+  const modelId = config.brain.embedding_model;
+  const model = provider.models.find(m => m.id === modelId);
+  if (!model) return null;
+  return { provider, model };
+}
+
+export function getLLMProvider(config: GBrainConfig): { provider: ProviderConfig; model: ProviderModel } | null {
+  if (!config.providers || !config.brain) return null;
+  const providerName = config.brain.llm_provider;
+  const provider = config.providers[providerName];
+  if (!provider) return null;
+  const model = provider.models.find(m => m.id === config.brain!.llm_model);
+  if (!model) return null;
+  return { provider, model };
+}
+
+export function getLLMFallback(config: GBrainConfig): { provider: ProviderConfig; model: ProviderModel } | null {
+  if (!config.providers || !config.brain?.llm_fallback) return null;
+  const provider = config.providers[config.brain.llm_fallback];
+  if (!provider) return null;
+  const modelId = config.brain.llm_model;
+  const model = provider.models.find(m => m.id === modelId);
+  if (!model) return null;
+  return { provider, model };
+}
+
+export function createDefaultOpenClawConfig(): GBrainConfig {
+  return {
+    engine: 'pglite',
+    providers: {
+      omlx_embed: {
+        type: 'embedding',
+        baseUrl: 'http://127.0.0.1:8000/v1',
+        apiKey: 'unlimited',
+        api: 'openai-compatible',
+        models: [
+          {
+            id: 'bge-m3-mlx-fp16',
+            name: 'bge-m3 embedding',
+            dimensions: 1024,
+          },
+        ],
+      },
+      omlx_llm: {
+        type: 'llm',
+        baseUrl: 'http://127.0.0.1:8000/v1',
+        apiKey: 'unlimited',
+        api: 'openai-compatible',
+        models: [
+          {
+            id: 'Qwen3.6-35B-A3B-TurboQuant-MLX-4bit',
+            contextWindow: 131072,
+            maxTokens: 8192,
+          },
+        ],
+      },
+      openai: {
+        type: 'embedding',
+        baseUrl: 'https://api.openai.com/v1',
+        apiKey: process.env.OPENAI_API_KEY || '',
+        api: 'openai-compatible',
+        models: [
+          {
+            id: 'text-embedding-3-large',
+            dimensions: 1536,
+          },
+        ],
+      },
+      minimax: {
+        type: 'llm',
+        baseUrl: 'https://api.minimax.chat/v1',
+        apiKey: process.env.MINIMAX_API_KEY || '',
+        api: 'openai-compatible',
+        models: [
+          {
+            id: 'MiniMax-M2.7',
+            contextWindow: 204800,
+            maxTokens: 8192,
+          },
+        ],
+      },
+    },
+    brain: {
+      embedding_provider: 'omlx_embed',
+      embedding_model: 'bge-m3-mlx-fp16',
+      embedding_dimensions: 1024,
+      embedding_fallback: 'openai',
+      llm_provider: 'omlx_llm',
+      llm_model: 'Qwen3.6-35B-A3B-TurboQuant-MLX-4bit',
+      llm_fallback: 'minimax',
+    },
+  };
 }
