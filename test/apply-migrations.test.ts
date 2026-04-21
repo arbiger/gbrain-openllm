@@ -102,9 +102,17 @@ describe('buildPlan — diff against completed + installed VERSION', () => {
     expect(plan.applied).toEqual([]);
     expect(plan.partial).toEqual([]);
     expect(plan.pending.map(m => m.version)).toContain('0.11.0');
+<<<<<<< HEAD
     // v0.12.0 (Knowledge Graph auto-wire) is registered but installed VERSION
     // is 0.11.1, so it lands in skippedFuture until the binary catches up.
     expect(plan.skippedFuture.map(m => m.version)).toEqual(['0.12.0']);
+=======
+    // Future migrations (registered but newer than installed VERSION) land in
+    // skippedFuture until the binary catches up. v0.13.0 = frontmatter graph
+    // (master), v0.13.1 = Knowledge Runtime grandfather, v0.14.0 = shell
+    // jobs + autopilot cooperative.
+    expect(plan.skippedFuture.map(m => m.version)).toEqual(['0.12.0', '0.12.2', '0.13.0', '0.13.1', '0.14.0']);
+>>>>>>> upstream/master
   });
 
   test('already applied → v0.11.0 lands in `applied` bucket, not pending', () => {
@@ -140,7 +148,14 @@ describe('buildPlan — diff against completed + installed VERSION', () => {
     const idx = indexCompleted([]);
     const plan = buildPlan(idx, '0.12.0');
     expect(plan.pending.map(m => m.version)).toContain('0.11.0');
+<<<<<<< HEAD
     expect(plan.skippedFuture).toEqual([]);
+=======
+    // v0.12.2, v0.13.0, v0.13.1, and v0.14.0 were added later; installed=0.12.0
+    // means they belong in skippedFuture, not pending. v0.11.0 and v0.12.0
+    // stay pending despite being ≤ installed — that is the H9 invariant.
+    expect(plan.skippedFuture.map(m => m.version)).toEqual(['0.12.2', '0.13.0', '0.13.1', '0.14.0']);
+>>>>>>> upstream/master
   });
 
   test('--migration filter narrows to one version', () => {

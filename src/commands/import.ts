@@ -17,7 +17,20 @@ function defaultWorkers(): number {
   return Math.min(byPool, byCpu, byMem);
 }
 
+<<<<<<< HEAD
 export async function runImport(engine: BrainEngine, args: string[]) {
+=======
+/** Bug 9 — surface per-file failures so callers (performFullSync) can gate state advances. */
+export interface RunImportResult {
+  imported: number;
+  skipped: number;
+  errors: number;
+  chunksCreated: number;
+  failures: Array<{ path: string; error: string }>;
+}
+
+export async function runImport(engine: BrainEngine, args: string[], opts: { commit?: string } = {}): Promise<RunImportResult> {
+>>>>>>> upstream/master
   const noEmbed = args.includes('--no-embed');
   const fresh = args.includes('--fresh');
   const jsonOutput = args.includes('--json');
@@ -69,6 +82,10 @@ export async function runImport(engine: BrainEngine, args: string[]) {
   let chunksCreated = 0;
   const importedSlugs: string[] = [];
   const errorCounts: Record<string, number> = {};
+<<<<<<< HEAD
+=======
+  const failures: Array<{ path: string; error: string }> = []; // Bug 9
+>>>>>>> upstream/master
   const startTime = Date.now();
 
   function logProgress() {
@@ -91,6 +108,11 @@ export async function runImport(engine: BrainEngine, args: string[]) {
         skipped++;
         if (result.error && result.error !== 'unchanged') {
           console.error(`  Skipped ${relativePath}: ${result.error}`);
+<<<<<<< HEAD
+=======
+          // Bug 9 — non-"unchanged" skips carry a real error reason.
+          failures.push({ path: relativePath, error: result.error });
+>>>>>>> upstream/master
         }
       }
     } catch (e: unknown) {
@@ -104,6 +126,10 @@ export async function runImport(engine: BrainEngine, args: string[]) {
       }
       errors++;
       skipped++;
+<<<<<<< HEAD
+=======
+      failures.push({ path: relativePath, error: msg });
+>>>>>>> upstream/master
     }
     processed++;
     if (processed % 100 === 0 || processed === files.length) {
@@ -135,10 +161,22 @@ export async function runImport(engine: BrainEngine, args: string[]) {
       }
     } else {
     const { PostgresEngine } = await import('../core/postgres-engine.ts');
+<<<<<<< HEAD
     const workerEngines = await Promise.all(
       Array.from({ length: actualWorkers }, async () => {
         const eng = new PostgresEngine();
         await eng.connect({ database_url: config!.database_url!, poolSize: 2 });
+=======
+    const { resolvePoolSize } = await import('../core/db.ts');
+    // Default per-worker pool is 2 (small, parallel import case). Users on
+    // constrained poolers (e.g. Supabase port 6543) can cap below this via
+    // GBRAIN_POOL_SIZE=1.
+    const workerPoolSize = Math.min(2, resolvePoolSize(2));
+    const workerEngines = await Promise.all(
+      Array.from({ length: actualWorkers }, async () => {
+        const eng = new PostgresEngine();
+        await eng.connect({ database_url: config!.database_url!, poolSize: workerPoolSize });
+>>>>>>> upstream/master
         return eng;
       })
     );
@@ -198,6 +236,7 @@ export async function runImport(engine: BrainEngine, args: string[]) {
     summary: `Imported ${imported} pages, ${skipped} skipped, ${chunksCreated} chunks`,
   });
 
+<<<<<<< HEAD
   // Import → sync continuity: write sync checkpoint if this is a git repo
   try {
     if (existsSync(join(dir, '.git'))) {
@@ -209,6 +248,43 @@ export async function runImport(engine: BrainEngine, args: string[]) {
   } catch {
     // Not a git repo or git not available, skip checkpoint
   }
+=======
+  // Import → sync continuity: write sync checkpoint if this is a git repo.
+  // Bug 9 — gate last_commit on "no failures" so import doesn't silently
+  // stomp on the sync bookmark when parsing broke. We still write
+  // last_run + repo_path either way (those are progress indicators).
+  let gitHead: string | null = null;
+  try {
+    if (existsSync(join(dir, '.git'))) {
+      gitHead = execFileSync('git', ['-C', dir, 'rev-parse', 'HEAD'], { encoding: 'utf-8' }).trim();
+    }
+  } catch {
+    // Not a git repo or git not available
+  }
+
+  if (gitHead) {
+    // Record failures into the central JSONL so doctor can surface them.
+    // Use gitHead as the commit so a later sync can tell "same broken
+    // state as last time" from "new broken state."
+    if (failures.length > 0) {
+      const { recordSyncFailures } = await import('../core/sync.ts');
+      recordSyncFailures(failures, gitHead);
+    }
+    if (failures.length === 0) {
+      await engine.setConfig('sync.last_commit', gitHead);
+    } else {
+      console.error(
+        `\nImport completed with ${failures.length} failure(s). ` +
+        `sync.last_commit NOT advanced — re-run 'gbrain sync' to retry, or ` +
+        `'gbrain sync --skip-failed' to acknowledge and move past them.`,
+      );
+    }
+    await engine.setConfig('sync.last_run', new Date().toISOString());
+    await engine.setConfig('sync.repo_path', dir);
+  }
+
+  return { imported, skipped, errors, chunksCreated, failures };
+>>>>>>> upstream/master
 }
 
 export function collectMarkdownFiles(dir: string): string[] {

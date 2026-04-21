@@ -1,0 +1,553 @@
+---
+type: concept
+title: Person George Li
+---
+
+# person-george-li
+
+**Type:** person
+**Updated:** 2026-03-28T23:58:32.787Z
+
+## Summary
+
+Let me analyze the key facts about this entity: 1. Name: George Li (person) 2. Technical skills: Uses OpenClaw, local LLM setup 3. Industry/Domain: Retail/e-commerce with multi-channel pricing 4. Specific channels mentioned: Retail, Cost, QVC 5. Pricing model expertise: DDP+Local VAT pricing model 6. Business type: Product-based business with multi-tier pricing architecture 7. Languages: Bilingual in Chinese
+
+## Facts
+
+- Uses OpenClaw with local LLM setup
+- Works in retail/e-commerce with multi-channel pricing (Retail, Cost, QVC)
+- Uses DDP+Local VAT pricing model
+- Works with retail/QVC product pricing systems
+- Operates a product-based business with multi-tier pricing architecture
+- Communicates bilingually in Chinese and English
+- Uses LM Studio for local LLM inference
+- Runs Qwen models locally
+- Runs local Qwen models for inference
+- Uses MiniMax M2.7 for daily tasks and workflow analysis
+- Uses Antigravity model for bug fixes with higher success rate
+- Manages multiple business email accounts including customer service
+- Tracks and monitors LLM token usage and costs
+- Works at Precaster
+- Bilingual in Chinese and English
+- Uses OpenClaw for automation
+- Uses OpenClaw and local LLM setup
+- Industry: Retail/e-commerce with multi-channel pricing
+- Pricing model expertise: DDP+Local VAT pricing model
+- Runs local Qwen models in LM Studio
+- Cost-conscious about LLM token usage
+- Operates UK and US markets with different tariff/commission structures
+- Uses OpenClaw for local LLM inference
+- Operates product-based business with multi-tier pricing architecture
+- Uses OpenClaw with MiniMax M2.7
+- Uses OpenClaw, local LLM setup
+- Evaluating MiniMax vs OpenCode capabilities
+- Bilingual in Chinese/English
+- Bilingual in Chinese
+- Uses OpenClaw
+- Local LLM setup user
+- Retail/e-commerce industry with multi-channel pricing expertise
+- Uses OpenClaw for local LLM setup
+- Uses OpenClaw tool
+- Uses OpenClaw for local LLM inference setup
+- Uses local Qwen models for inference
+- Communicates bilingually in Chinese/English
+- Uses OpenClaw automation framework
+- Operates product-based business with multi-tier pricing
+- Prefers local LLM inference over cloud APIs
+- Cost-conscious about token usage
+- Operates a product-based business requiring complex multi-tier pricing architecture
+- Prefers local LLM inference over cloud APIs for privacy/cost reasons
+- Uses RTM model for UK (10% commission) and reps model for US (5% commission)
+- Connected to user's business operations
+- Operates product-based business with UK/US markets
+- Developing freight skill for tracking shipping costs between TW→UK and TW→US routes
+- Operates Precaster business
+- User name is George
+- Shared Google Drive folder 'Assets' with user
+- Uses openclaw-tui automation tool
+- Monitors email account megan@precaster.com.tw
+- Has email account megan@precaster.com.tw
+- Uses Google Drive for backups
+- Communicates via Telegram and Discord
+- Uses OpenClaw automation system
+- Manages Google Drive backups
+- Has Google Drive account for backups
+- Has Google Drive backup account
+- Monitors megan@precaster.com.tw email
+- Prefers Discord for notifications
+- Has Google Drive account george@precaster.com.tw
+- Has email megan@precaster.com.tw
+- Shares Google Drive folders
+- ID: 8244978129
+- Works with OpenClaw automation system
+- Uses Google Antigravity for error handling
+- Building ERP automation with LibreFang
+- Integrates FedEx API for delivery management
+- Uses fx-tracker for currency monitoring
+- Discord username: arbiger
+- Username is arbiger
+- Discord ID is 8244978129
+- Identified as George Li (ID: 8244978129)
+- Uses Obsidian vault for knowledge management
+- Collects AI-related YouTube shorts
+- GitHub username: arbiger
+- Prefers Apache 2.0 license for open source projects
+- Prefers Apache 2.0 license for all repos
+- Does not currently use OpenCode platform
+- Does not have OpenCode installed
+- Interested in understanding OpenCode
+- Does not currently use OpenCode
+- Interested in understanding MiniMax Skills
+- Works with fx-tracker cron job system
+- Works on investment analysis projects
+- Prefers analyzing open-source patterns before implementation
+- Can help with Mattermost admin tasks
+- Communicates about Mattermost integration
+- Shares daily_stock_analysis project analysis
+- Works with Mattermost platform
+- Interested in analyzing daily_stock_analysis project patterns
+- Investor building automated stock analysis system
+- Username: arbiger
+- Building investage investment tracking system
+- Email: george@precaster.com.tw
+- Has wife Ching/Seika
+- Works at Precaster (email: george@precaster.com.tw)
+- Has wife named Ching/Seika
+- Has investment portfolio tracked in investage database
+- Investor using investage system
+- Interested in financial analysis tools
+- Asks about Google Finance data sources
+- Uses gog for email automation
+- Receives reports at george@precaster.com.tw
+- Uses tool-gog for email automation
+- Communicates in Traditional Chinese
+- Manages email reporting via Python scripts
+- Uses gog tool for sending automated email reports
+- Email address: george@precaster.com.tw
+- Uses gog tool for email automation
+- Has contacts at george@precaster.com.tw and ching@precaster.com.tw
+- Name is George
+- Communicates via Mattermost DM
+- Manages Mattermost token access for the user
+- Communicates with Megan via Mattermost and Discord
+- Uses Mattermost for DM communication
+- Manages Mattermost instance configuration
+- Identified SiteURL mismatch as cause for websocket failure
+- Uses Mattermost for DMs
+- Uses Mattermost
+- Experienced v10 update behavior change
+- Uses Mattermost for internal communication
+- Evaluating OpenClaw bots for Rocket.Chat
+- Prefers Chinese documentation and App Store availability
+- Evaluating openclaw-rocketchat for installation
+- Interested in Chinese-friendly tools
+- Has local Python environment with OpenClaw project
+- Uses gog gmail search for email checks
+- Manages a WordPress blog at soundsofgeorge.com
+- Interested in automating content publishing workflows
+- Manages soundsofgeorge.com WordPress site
+- Manages an investment portfolio with 17 positions
+- Publishes skills/articles on WordPress
+- Uses Obsidian for knowledge collection
+- Has customer service email handling needs
+- Uses Customer Service Draft system for email correspondence
+- Manages customer service drafts for Megan Linn persona
+- Uses OpenClaw system
+- Manages the customer service draft system
+- Uses Shared Obsidian for cross-system memory syncing
+- Approves drafts sent as Megan Linn
+- Uses OpenClaw for workflow management
+- Interested in AI memory synchronization and automation
+- Uses Shared Obsidian for memory sync
+- Approves customer service drafts before sending
+- Manages Megan Linn assistant persona
+- Prefers Obsidian as central knowledge hub
+- Uses Obsidian for knowledge management
+- Approves customer email drafts before sending
+- Active in #framework-research and #ai-mation-thoughts channels
+- Works with automation frameworks (OpenClaw, LibreFang)
+- Uses MiniMax2.7 model for DB tasks
+- Uses Mac Mini M4 Pro 64GB RAM
+- Works on US market business model with 5% commission
+- Runs LM Studio with Qwen3.5 9B VLM locally
+- Works on investage investment tracking project
+- Works on investment tracking system
+- Prefers reviewing automation outputs before execution
+- Tracks investments via email reports
+- Prefers specific report formatting for portfolio tracking
+- Receives investment reports via email
+- Holds DHCNL stock
+- Uses investment tracking system
+- Works at Precaster (precaster.com.tw)
+- Manages investment portfolio
+- Uses WordPress + Divi for websites
+- Works with component-search skill
+- Owns automaticscript copywriting service platform
+- Rarely logs into the dashboard currently
+- Owns automaticscript.com copywriting service account
+- Rarely logs into the service
+- Uses AI for content generation now
+- Rarely logs into the account
+- Owns Automatic Script account
+- Rarely logs into the platform
+- Uses AI for content generation
+- User believes AI can be inspired more by him
+- Sender ID: 8244978129
+- Develops AI skills for automation workflows
+- Prefers interactive coaching for copywriting tasks
+- Develops AI skills for productivity and copywriting
+- Imports products from Taiwan to UK
+- Uses WordPress for publishing content
+- Uses WordPress for content publishing
+- Imports laser devices from Taiwan to UK
+- Publishes WordPress articles
+- Manages investment tracking projects
+- Publishes on WordPress at soundsofgeorge.com
+- Uses MiniMax for image generation
+- Works on HMRC tariff classification for wellness services
+- Active in Discord guild NuGORWS
+- Prefers current agent over Discord for image tasks
+- Works on inve-stage project
+- Handles UK import compliance for wellness equipment
+- Prefers localized content updates over full site changes
+- Uses openclaw CLI for portfolio management
+- Tracks Mag 7 stocks
+- Uses OpenClaw CLI for session management
+- Has Mag 7 investment portfolio
+- Uses openclaw CLI for investment tracking
+- Uses WordPress + Divi for website maintenance when designers are involved
+- Investor interested in dividend income
+- Concerned about geopolitical risks
+- Invests in dividend-focused stocks (CCI)
+- Monitors geopolitical risks affecting investments
+- Uses Mac system with dual Python installations
+- Prefers Traditional Chinese summaries
+- Prefers Traditional Chinese for summaries
+- Maintains Obsidian knowledge vault at ~/Documents/Georges/Knowledge/
+- Prefers Traditional Chinese for video summaries
+- Uses Obsidian as knowledge base
+- Maintains Obsidian knowledge vault
+- Has a daughter in Grade 10 (國一)
+- User of the system, manages knowledge in Obsidian vault
+- Tracks stock holdings
+- Interested in efficient AI agent search methods
+- Shared YouTube Shorts link with George
+- Uses Obsidian vault at ~/Documents/Georges/Knowledge/
+- Has Firecrawl API key configured
+- Has Firecrawl API access
+- Username is george
+- Uses OpenClaw workspace
+- Sender of messages in this session
+- Prefers web_search over browser screenshots for tech stack analysis
+- Prefers web_search over chrome for tech stack analysis
+- Uses gog CLI for Google Drive operations
+- Uses email george@precaster.com.tw
+- Has backup system on Google Drive
+- Has Obsidian knowledge base
+- Prioritizes stability over new features in tools
+- Uses OpenClaw for automation tasks
+- Has a skill named kb-collector within OpenClaw
+- Researching ERP automation frameworks
+- Interested in internal AI chat platforms
+- Communicates with Sammi Xiao regarding laser projects
+- Works on ERP automation framework
+- Uses OpenClaw for sub-agent management
+- Interested in autonomous AI agents for business development
+- Working on the 'investage' case
+- Interested in Paperclip AI for Investage automation
+- Communicates with Sammi from Max Plus Laser regarding laser specs
+- Decided to remove OpenWebUI Pipe script integration
+- Handles customer service for Max Plus Laser
+- Email: megan@precaster.com.tw
+- Exploring OpenClaw Google Ads MCP integration
+- Prefers Traditional Chinese
+- 聯絡郵箱：megan@precaster.com.tw
+- 興趣領域：AI Agent 自動化運營（Google Ads, 跨境電商）
+- Identified as George Li
+- Engages in investment analysis
+- Uses MiniMax AI Skills platform
+- Maintains Matrix server at 100.88.217.46
+- Uses Synapse backend on Docker
+- Working on Matrix AI integration project
+- Evaluating single vs multiple account architecture
+- Associated with Precaster Corp financial system
+- Receives investment reports
+- Uses Mac Mini M4 Pro with 64GB RAM for local AI tasks
+- Prefers memory-optimized models (MLX) on Mac hardware
+- Uses Mac Mini M4 Pro with 64GB RAM
+- Subscribes to MiniMax API for main inference
+- Has a Mac Mini M4 Pro with 64GB RAM
+- Building a hybrid local/cloud AI stack
+- Uses OpenClaw for Telegram automation
+- Works with OpenClaw system
+- Prefers local/offline solutions when possible
+- Building a voice customer service system locally
+- Exploring alternatives to Whisper for ASR
+- Building voice customer service system locally
+- Prefers local execution for privacy and cost savings
+- Building voice customer service system on Mac Mini
+- Prefers CLI/Python over GUI for automation
+- Has Mac Mini M4 Pro with 64GB RAM
+- Interested in local LLM inference tools
+- Prefers MLX over Ollama for local inference
+- Owns Mac Mini M4 Pro with 64GB RAM
+- Interested in local LLM inference
+- Works on AI customer service automation
+- Uses OpenClaw as core framework
+- Works on AI automation projects
+- Uses OpenClaw framework
+- Associated with Paperclip model (automatically running company)
+- Evaluating business automation priorities
+- Uses 6-perspective investment analysis framework
+- Maintains stock observation list
+- Investor with ~$792K portfolio
+- Uses dollar-cost averaging strategy
+- Prefers dividend stocks with growth positions
+- Portfolio cash position: $67K
+- User's total investment portfolio value is approximately $792K
+- User's portfolio annual dividend income is approximately $8,000-9,000
+- User's portfolio overall dividend yield is approximately 1%
+- User holds dividend-paying stocks: CCI, DHCNL, EPR, BTI, NVO, OBDC, OCSL, TSM
+- User is interested in dividend/income investing
+- User's name is George Li
+- Member of #skills-tools guild
+- Interested in memory system improvements
+- Uses Paperclip for task management
+- Building inveStage platform
+- User prefers to manually grant permissions for agent creation in Paperclip
+- Has a project called 'inveStage' with Paperclip integration
+- Born on 1980-09-18
+- Male
+- Born in Taichung City
+- Birth time: 21:30
+
+## Connected to
+
+- [[company-precaster]] — manages customer service for
+- [[email-megan-precaster]] — owns/operates
+- [[tool-lm-studio]] — uses for local inference
+- [[model-qwen]] — runs locally
+- [[model-glm-5]] — evaluating as alternative to
+- [[tool-lm-studio]] — uses for local LLM inference
+- [[company-zhipu-ai]] — evaluated but found unsuitable due to high token usage
+- [[company-zhipu-ai]] — evaluated but not suitable due to high token volume
+- [[tool-minimax-m2.7]] — primary model for daily tasks
+- [[tool-antigravity]] — premium model for important programming tasks
+- [[company-precaster]] — works at
+- [[model-glm-5.0]] — evaluating as potential replacement
+- [[tool-antigravity]] — uses for bug fixes
+- [[tool-minimax-m2.7]] — uses for daily tasks
+- [[company-precaster]] — operates
+- [[tool-lm-studio]] — uses
+- [[model-minimax-m2.7]] — subscribes to
+- [[company-precaster]] — operates business at
+- [[tool-dji-matrice-4e]] — evaluating for business applications
+- [[model-minimax-m2.7]] — currently uses as primary LLM
+- [[tool-openclaw]] — uses
+- [[model-minimax-m2.7]] — currently paired with
+- [[tool-opencode]] — evaluating as alternative to
+- [[tool-minimax-opencode]] — evaluating
+- [[framework-agent-squad]] — evaluating for use
+- [[tool-openclaw]] — used by (reverse)
+- [[tool-lm-studio]] — used by (reverse)
+- [[OpenClaw]] — uses framework
+- [[tool-lm-studio]] — configures for local inference
+- [[project-calling-agent-squad]] — owns
+- [[model-qwen]] — evaluating replacement for
+- [[model-qwen]] — uses for local inference
+- [[tool-lm-studio]] — uses for running local LLMs
+- [[model-minimax]] — prefers over pay-per-token models
+- [[device-dji-matrice-4e]] — evaluating for business applications
+- [[model-qwen]] — uses for inference
+- [[user]] — connected to
+- [[company-minimax]] — uses
+- [[tool-qwen-models]] — runs locally
+- [[device-dji-matrice-4e]] — exploring for business applications
+- [[project-freight-tracker]] — developing
+- [[product-uk-market]] — operates
+- [[product-us-market]] — operates
+- [[project-openclaw]] — uses
+- [[email-megan@precaster.com.tw]] — owns
+- [[project-openclaw-tui]] — uses
+- [[service-google-drive]] — backs up to
+- [[platform-discord]] — prefers for notifications
+- [[tool-openclaw-tui]] — uses
+- [[project-openclaw-backups]] — manages backups in
+- [[account-george-precaster-gdrive]] — owns
+- [[project-librefang-erp]] — building
+- [[company-fedex-corp]] — integrates API with
+- [[discord-guild-1476942886040899636]] — manages
+- [[tool-obsidian-vault]] — uses
+- [[tool-obsidian-vault]] — uses for knowledge management
+- [[project-coaching-me]] — created
+- [[github.com/arbiger]] — owns account
+- [[github-arbiger]] — owns
+- [[github.com/arbiger/coaching-me]] — hosts on
+- [[tool-open-code]] — interested in
+- [[company-minimax]] — uses API for
+- [[tool-opencode]] — does not use
+- [[person-megan-0310]] — collaborates with
+- [[platform-mattermost]] — uses
+- [[bot-mag]] — managed by (reverse)
+- [[project-pricing-skill]] — developing
+- [[fx-tracker-0200]] — manages cron job
+- [[fx-tracker-0200]] — manages
+- [[project-scenario-investment-analyst]] — works on
+- [[system-mattermost]] — can help with admin tasks
+- [[project-daily-stock-analysis]] — analyzes
+- [[project-daily-stock-analysis]] — analyzing for pattern borrowing
+- [[platform-mattermost]] — uses for skill testing
+- [[user]] — communicates with via Mattermost
+- [[user]] — manages Mattermost token access
+- [[user-megan]] — communicates with
+- [[tool-mattermost]] — uses
+- [[platform-discord]] — considering as alternative
+- [[project-openclaw-rocketchat]] — uses
+- [[project-kxiandaoyan-openclaw-rocketchat]] — selected
+- [[project-openclaw-rocketchat]] — evaluating
+- [[project-openclaw]] — developed by (reverse)
+- [[project-soundsofgeorge]] — manages
+- [[website-soundsofgeorge-com]] — manages
+- [[coaching-me-skill]] — owns
+- [[block-mr]] — subscribes to
+- [[article-coaching-me-skill]] — authored
+- [[youtube-mr-block]] — references
+- [[skill-coaching-me]] — created by
+- [[skill-coaching-me]] — created by (reverse)
+- [[project-kb-collector]] — created
+- [[project-valuation-calculator]] — created
+- [[project-calling-agent-squad]] — created
+- [[persona-megan-linn]] — uses for email correspondence
+- [[person-megan-linn]] — approves drafts for
+- [[system-customer-service-draft]] — manages
+- [[persona-megan-linn]] — approves drafts
+- [[skill-customer-service-draft-system]] — manages
+- [[tool-obsidian]] — uses for sync
+- [[skill-customer-service-draft]] — uses
+- [[tool-ai-chat-exporter-gemini-t]] — uses
+- [[person-megan-linn]] — manages
+- [[person-megan-linn]] — manages email drafts for
+- [[project-automaticscript]] — owns
+- [[service-automaticscript]] — owns account
+- [[service-automaticscript-com]] — owns
+- [[project-automatic-script]] — owns account
+- [[company-precaster]] — email domain belongs to
+- [[user]] — inspiration source
+- [[skill-copywriting-with-coach]] — develops
+- [[project-copywriting-with-coach]] — develops
+- [[github-arbiger]] — hosts on
+- [[copywriting-with-coach]] — created
+- [[project-copywriting-with-coach]] — created
+- [[skill-copywriting-with-coach]] — created
+- [[project-sounds-of-george]] — owns
+- [[product-auremacaron]] — develops
+- [[product-pawslight]] — develops
+- [[project-nugrows]] — leads
+- [[tool-minimax]] — uses
+- [[project-nu-grows]] — develops
+- [[tool-minimax]] — uses for image generation
+- [[project-inve-stage]] — works on
+- [[guild-nu-gorws]] — member of
+- [[organization-hmrc]] — deals with for compliance
+- [[product-scalp-massage-apparatus]] — develops
+- [[project-investage]] — develops
+- [[portfolio-mag7]] — manages
+- [[portfolio-mag-7]] — manages
+- [[tool-wordpress]] — uses for maintenance
+- [[tool-vibe-coding]] — uses for initial build
+- [[project-faster-whisper]] — uses
+- [[project-obsidian-vault]] — uses
+- [[tool-faster-whisper]] — utilizes
+- [[tool-obsidian]] — uses
+- [[project-openclaw]] — operates
+- [[tool-faster-whisper]] — uses for transcription
+- [[daughter-grade10]] — parent of
+- [[person-george-arbiger]] — shared content with
+- [[youtube-channel-thewealthrive]] — collects content from
+- [[tool-obsidian]] — uses for knowledge management
+- [[tool-obsidian]] — manages knowledge in
+- [[channel-thewealthrive]] — follows
+- [[topic-harness-engineering]] — interested in
+- [[website-pqpqpqpqdesignstudio]] — interested in
+- [[project-openclaw]] — uses workspace for
+- [[tool-web-search]] — prefers for tech stack analysis
+- [[tool-screenshot]] — uses as auxiliary tool
+- [[email-george-precaster-com-tw]] — owns
+- [[project-openclaw-backup]] — manages
+- [[project-openclaw-backup]] — owns
+- [[tool-gog-gmail-search]] — uses for email checking
+- [[account-megan-email]] — monitors via automation
+- [[service-google-drive]] — uses for backup storage
+- [[project-librefang]] — evaluates
+- [[project-investage]] — works on
+- [[tool-paperclip-ai]] — uses for automation
+- [[project-investage]] — leads
+- [[project-investage]] — owns
+- [[platform-openclaw]] — uses
+- [[tool-openclaw]] — uses for automation
+- [[tool-paperclip]] — intends to use
+- [[platform-minimax-ai]] — uses
+- [[tool-minimax-skills]] — uses
+- [[company-alphabet-inc]] — analyzes stock of
+- [[device-mac-mini-m4-pro]] — uses
+- [[project-mlx-tune]] — interested in
+- [[company-precaster-corp]] — works at
+- [[hardware-mac-mini-m4-pro]] — uses
+- [[project-mini-max-inference]] — subscribes to API
+- [[project-qwen-stack]] — runs locally
+- [[mac-mini-m4-pro]] — uses
+- [[mini-max-9b]] — subscribes to API
+- [[qwen-9b]] — runs locally
+- [[hardware-mac-mini-m4-pro]] — owns
+- [[model-mini-max-9b]] — uses for reasoning
+- [[model-qwen-9b]] — runs locally on hardware-mac-mini-m4-pro
+- [[automation-openclaw]] — managed by (reverse)
+- [[system-openclaw]] — works with
+- [[project-voice-customer-service]] — works on
+- [[project-voice-customer-service-pipeline]] — building
+- [[hardware-mac-mini]] — uses
+- [[tool-mlx-lm]] — prefers
+- [[tool-ollama]] — previously_used
+- [[tool-lm-studio]] — used_as_interface
+- [[tool-lm-studio]] — currently_uses
+- [[product-mac-mini-m4-pro]] — uses
+- [[project-openclaw]] — uses as core framework
+- [[project-paperclip]] — explores as upper-layer application
+- [[framework-openclaw]] — uses
+- [[bot-megan]] — manages
+- [[bot-megan]] — created
+- [[project-paperclip]] — associated with
+- [[tool-investage]] — uses
+- [[project-stock-observation-list]] — maintains
+- [[project-investment-analysis-framework]] — uses
+- [[project-lucky-da]] — owns
+- [[project-openclaw]] — owns
+- [[project-investage-platform]] — building
+- [[agent-megan]] — uses
+- [[person-sam-altman]] — references analysis style of
+- [[project-agent-squad]] — develops
+- [[project-erp-claw]] — develops
+- [[system-openclaw]] — uses
+
+## Activity
+
+- 2026-03-28: Mentioned in conversation
+- 2026-03-28: Mentioned in conversation
+- 2026-03-28: Mentioned in conversation
+- 2026-03-28: Mentioned in conversation
+- 2026-03-28: Mentioned in conversation
+- 2026-03-28: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation

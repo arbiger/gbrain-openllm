@@ -18,7 +18,11 @@ for (const op of operations) {
 }
 
 // CLI-only commands that bypass the operation layer
+<<<<<<< HEAD
 const CLI_ONLY = new Set(['init', 'upgrade', 'post-upgrade', 'check-update', 'integrations', 'publish', 'check-backlinks', 'lint', 'report', 'import', 'export', 'files', 'embed', 'serve', 'call', 'config', 'doctor', 'migrate', 'eval', 'sync', 'extract', 'features', 'autopilot', 'graph-query', 'jobs', 'apply-migrations', 'skillpack-check']);
+=======
+const CLI_ONLY = new Set(['init', 'upgrade', 'post-upgrade', 'check-update', 'integrations', 'publish', 'check-backlinks', 'lint', 'report', 'import', 'export', 'files', 'embed', 'serve', 'call', 'config', 'doctor', 'migrate', 'eval', 'sync', 'extract', 'features', 'autopilot', 'graph-query', 'jobs', 'apply-migrations', 'skillpack-check', 'resolvers', 'integrity', 'repair-jsonb', 'orphans']);
+>>>>>>> upstream/master
 
 async function main() {
   const args = process.argv.slice(2);
@@ -277,6 +281,19 @@ async function handleCliOnly(command: string, args: string[]) {
     await runIntegrations(args);
     return;
   }
+<<<<<<< HEAD
+=======
+  if (command === 'resolvers') {
+    const { runResolvers } = await import('./commands/resolvers.ts');
+    await runResolvers(args);
+    return;
+  }
+  if (command === 'integrity') {
+    const { runIntegrity } = await import('./commands/integrity.ts');
+    await runIntegrity(args);
+    return;
+  }
+>>>>>>> upstream/master
   if (command === 'publish') {
     const { runPublish } = await import('./commands/publish.ts');
     await runPublish(args);
@@ -306,6 +323,14 @@ async function handleCliOnly(command: string, args: string[]) {
     await runApplyMigrations(args);
     return;
   }
+<<<<<<< HEAD
+=======
+  if (command === 'repair-jsonb') {
+    const { runRepairJsonbCli } = await import('./commands/repair-jsonb.ts');
+    await runRepairJsonbCli(args);
+    return;
+  }
+>>>>>>> upstream/master
   if (command === 'skillpack-check') {
     // Agent-readable health report. Shells out to doctor + apply-migrations
     // internally; does not need its own DB connection.
@@ -317,8 +342,16 @@ async function handleCliOnly(command: string, args: string[]) {
     // Doctor runs filesystem checks first (no DB needed), then DB checks.
     // --fast skips DB checks entirely.
     const { runDoctor } = await import('./commands/doctor.ts');
+<<<<<<< HEAD
     if (args.includes('--fast')) {
       await runDoctor(null, args);
+=======
+    const { getDbUrlSource } = await import('./core/config.ts');
+    if (args.includes('--fast')) {
+      // Pass the DB URL source so doctor can tell "no config at all" from
+      // "user chose --fast while config is present".
+      await runDoctor(null, args, getDbUrlSource());
+>>>>>>> upstream/master
     } else {
       try {
         const eng = await connectEngine();
@@ -326,7 +359,11 @@ async function handleCliOnly(command: string, args: string[]) {
         await eng.disconnect();
       } catch {
         // DB unavailable — still run filesystem checks
+<<<<<<< HEAD
         await runDoctor(null, args);
+=======
+        await runDoctor(null, args, getDbUrlSource());
+>>>>>>> upstream/master
       }
     }
     return;
@@ -412,6 +449,14 @@ async function handleCliOnly(command: string, args: string[]) {
         await runGraphQuery(engine, args);
         break;
       }
+<<<<<<< HEAD
+=======
+      case 'orphans': {
+        const { runOrphans } = await import('./commands/orphans.ts');
+        await runOrphans(engine, args);
+        break;
+      }
+>>>>>>> upstream/master
     }
   } finally {
     if (command !== 'serve') await engine.disconnect();
@@ -520,6 +565,10 @@ TOOLS
   publish <page.md> [--password]     Shareable HTML (strips private data, optional AES-256)
   check-backlinks <check|fix> [dir]  Find/fix missing back-links across brain
   lint <dir|file> [--fix]            Catch LLM artifacts, placeholder dates, bad frontmatter
+<<<<<<< HEAD
+=======
+  orphans [--json] [--count]         Find pages with no inbound wikilinks
+>>>>>>> upstream/master
   report --type <name> --content ... Save timestamped report to brain/reports/
 
 JOBS (Minions)

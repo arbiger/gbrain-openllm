@@ -57,8 +57,13 @@ export async function runJobs(engine: BrainEngine, args: string[]): Promise<void
 
 USAGE
   gbrain jobs submit <name> [--params JSON] [--follow] [--priority N]
+<<<<<<< HEAD
                             [--delay Nms] [--max-attempts N] [--queue Q]
                             [--dry-run]
+=======
+                            [--delay Nms] [--timeout-ms Nms] [--max-attempts N]
+                            [--queue Q] [--dry-run]
+>>>>>>> upstream/master
   gbrain jobs list [--status S] [--queue Q] [--limit N]
   gbrain jobs get <id>
   gbrain jobs cancel <id>
@@ -68,6 +73,21 @@ USAGE
   gbrain jobs stats
   gbrain jobs smoke
   gbrain jobs work [--queue Q] [--concurrency N]
+<<<<<<< HEAD
+=======
+
+HANDLER TYPES (built in)
+  sync              Pull and embed new pages from the repo
+  embed             (Re-)embed pages; --params '{"slug":...}' or '{"all":true}'
+  lint              Run page linter; --params '{"dir":"...","fix":true}'
+  import            Bulk import markdown; --params '{"dir":"..."}'
+  extract           Extract links + timeline entries; '{"mode":"all"}'
+  backlinks         Check or fix back-links; '{"action":"fix"}'
+  autopilot-cycle   One autopilot pass (sync+extract+embed+backlinks)
+  shell             Run a command or argv. Requires GBRAIN_ALLOW_SHELL_JOBS=1
+                    on the worker. Params: {cmd?, argv?, cwd, env?}.
+                    See: docs/guides/minions-shell-jobs.md
+>>>>>>> upstream/master
 `);
     return;
   }
@@ -93,6 +113,15 @@ USAGE
       const delay = parseInt(parseFlag(args, '--delay') ?? '0', 10);
       const maxAttempts = parseInt(parseFlag(args, '--max-attempts') ?? '3', 10);
       const queueName = parseFlag(args, '--queue') ?? 'default';
+<<<<<<< HEAD
+=======
+      const timeoutMsRaw = parseFlag(args, '--timeout-ms');
+      const timeoutMs = timeoutMsRaw !== undefined ? parseInt(timeoutMsRaw, 10) : undefined;
+      if (timeoutMsRaw !== undefined && (isNaN(timeoutMs!) || timeoutMs! <= 0)) {
+        console.error('Error: --timeout-ms must be a positive integer (milliseconds)');
+        process.exit(1);
+      }
+>>>>>>> upstream/master
       const dryRun = hasFlag(args, '--dry-run');
       const follow = hasFlag(args, '--follow');
 
@@ -103,6 +132,10 @@ USAGE
         console.log(`  Priority: ${priority}`);
         console.log(`  Max attempts: ${maxAttempts}`);
         if (delay > 0) console.log(`  Delay: ${delay}ms`);
+<<<<<<< HEAD
+=======
+        if (timeoutMs) console.log(`  Timeout: ${timeoutMs}ms`);
+>>>>>>> upstream/master
         console.log(`  Data: ${JSON.stringify(data)}`);
         return;
       }
@@ -114,12 +147,58 @@ USAGE
         process.exit(1);
       }
 
+<<<<<<< HEAD
+=======
+      // The CLI path is a trusted submitter. Pass {allowProtectedSubmit: true}
+      // ONLY for protected names, not blanket-set for every submission, so any
+      // future protected name forces explicit opt-in at the call site.
+      const { isProtectedJobName } = await import('../core/minions/protected-names.ts');
+      const trusted = isProtectedJobName(name) ? { allowProtectedSubmit: true } : undefined;
+>>>>>>> upstream/master
       const job = await queue.add(name, data, {
         priority,
         delay: delay > 0 ? delay : undefined,
         max_attempts: maxAttempts,
         queue: queueName,
+<<<<<<< HEAD
       });
+=======
+        timeout_ms: timeoutMs,
+      }, trusted);
+
+      // Submission audit log (operational trace, not forensic insurance).
+      try {
+        const { logShellSubmission } = await import('../core/minions/handlers/shell-audit.ts');
+        if (name.trim() === 'shell') {
+          logShellSubmission({
+            caller: 'cli',
+            remote: false,
+            job_id: job.id,
+            cwd: typeof data.cwd === 'string' ? data.cwd : '',
+            cmd_display: typeof data.cmd === 'string' ? data.cmd.slice(0, 80) : undefined,
+            argv_display: Array.isArray(data.argv)
+              ? (data.argv as unknown[]).filter((a): a is string => typeof a === 'string').map((a) => a.slice(0, 80))
+              : undefined,
+          });
+        }
+      } catch { /* audit failures never block submission */ }
+
+      // Starvation warning (DX polish). Fire for every non-`--follow` shell submit
+      // regardless of the submitter's own `GBRAIN_ALLOW_SHELL_JOBS` — the submitter
+      // env is a weak proxy for the worker env (they may run on different machines),
+      // so the warning remains useful any time the job might sit in 'waiting'.
+      if (!follow && name.trim() === 'shell') {
+        process.stderr.write(
+          `\n⚠  Shell jobs require GBRAIN_ALLOW_SHELL_JOBS=1 on the worker process.\n` +
+          `   Your job was queued (id=${job.id}) but will sit in 'waiting' until a\n` +
+          `   worker with the env flag starts. To run now:\n\n` +
+          `     GBRAIN_ALLOW_SHELL_JOBS=1 gbrain jobs submit shell \\\n` +
+          `       --params '...' --follow\n\n` +
+          `   Or start a persistent worker (Postgres only — PGLite uses --follow):\n\n` +
+          `     GBRAIN_ALLOW_SHELL_JOBS=1 gbrain jobs work\n\n`,
+        );
+      }
+>>>>>>> upstream/master
 
       if (follow) {
         console.log(`Job #${job.id} submitted (${name}). Executing inline...`);
@@ -453,6 +532,7 @@ export async function registerBuiltinHandlers(worker: MinionWorker, engine: Brai
     const steps: Record<string, unknown> = {};
     const failed: string[] = [];
 
+<<<<<<< HEAD
     try { steps.sync = await performSync(engine, { repoPath, noEmbed: true }); }
     catch (e) { steps.sync = { error: e instanceof Error ? e.message : String(e) }; failed.push('sync'); }
 
@@ -461,6 +541,32 @@ export async function registerBuiltinHandlers(worker: MinionWorker, engine: Brai
 
     try { await runEmbedCore(engine, { stale: true }); steps.embed = { embedded: true }; }
     catch (e) { steps.embed = { error: e instanceof Error ? e.message : String(e) }; failed.push('embed'); }
+=======
+    // Bug 8 — Between phases, yield to the event loop. The worker's lock
+    // renewal runs on a timer (src/core/minions/worker.ts); without a
+    // periodic yield, long CPU-bound phases starve the renewal callback
+    // and the job gets killed by the stalled-sweeper. A single
+    // `await new Promise(r => setImmediate(r))` gives the timer a chance
+    // to fire. The per-phase body is async+await already, so each phase
+    // internally yields on its own I/O boundaries — this is a belt for
+    // the gap between phases.
+    //
+    // Follow-up (deferred to v0.15): thread ctx.signal / ctx.shutdownSignal
+    // through each core fn so mid-phase cancellation works on huge brains.
+    const yieldToLoop = () => new Promise<void>(r => setImmediate(r));
+
+    try { steps.sync = await performSync(engine, { repoPath, noEmbed: true }); }
+    catch (e) { steps.sync = { error: e instanceof Error ? e.message : String(e) }; failed.push('sync'); }
+    await yieldToLoop();
+
+    try { steps.extract = await runExtractCore(engine, { mode: 'all', dir: repoPath }); }
+    catch (e) { steps.extract = { error: e instanceof Error ? e.message : String(e) }; failed.push('extract'); }
+    await yieldToLoop();
+
+    try { await runEmbedCore(engine, { stale: true }); steps.embed = { embedded: true }; }
+    catch (e) { steps.embed = { error: e instanceof Error ? e.message : String(e) }; failed.push('embed'); }
+    await yieldToLoop();
+>>>>>>> upstream/master
 
     try { steps.backlinks = await runBacklinksCore({ action: 'fix', dir: repoPath }); }
     catch (e) { steps.backlinks = { error: e instanceof Error ? e.message : String(e) }; failed.push('backlinks'); }
@@ -470,4 +576,19 @@ export async function registerBuiltinHandlers(worker: MinionWorker, engine: Brai
     }
     return { partial: false, steps };
   });
+<<<<<<< HEAD
+=======
+
+  // Shell handler: registered ONLY when GBRAIN_ALLOW_SHELL_JOBS=1 is set on the
+  // worker process. Default-closed; opt-in per-host. Without the flag, shell
+  // jobs submitted via CLI insert rows but no worker claims them (they sit in
+  // 'waiting' — the CLI prints a starvation warning for that case).
+  if (process.env.GBRAIN_ALLOW_SHELL_JOBS === '1') {
+    const { shellHandler } = await import('../core/minions/handlers/shell.ts');
+    worker.register('shell', shellHandler);
+    process.stderr.write('[minion worker] shell handler enabled (GBRAIN_ALLOW_SHELL_JOBS=1)\n');
+  } else {
+    process.stderr.write('[minion worker] shell handler disabled (set GBRAIN_ALLOW_SHELL_JOBS=1 to enable)\n');
+  }
+>>>>>>> upstream/master
 }

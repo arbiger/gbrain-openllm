@@ -1,0 +1,344 @@
+---
+type: concept
+title: Person George Arbiger
+---
+
+# person-george-arbiger
+
+**Type:** person
+**Updated:** 2026-03-27T03:13:47.114Z
+
+## Summary
+
+Thinking Process: 1.  **Analyze the Request:** *   Task: Summarize the given entity in one sentence. *   Entity Type: Person (George Arbiger). *   Input Facts: ID, Username (arbiger), Works with FedEx API integration, Name (George), Prefers Discord for system updates, Uses OpenClaw automation system, Has Discord channels (#system-updates and #georges-stuffs). *   Constraints
+
+## Facts
+
+- ID: 781423566071660594
+- Username: arbiger
+- Works with FedEx API integration
+- Name: George
+- Username is arbiger
+- Prefers Discord for system updates
+- Uses OpenClaw automation system
+- Has Discord channels #system-updates and #georges-stuffs
+- Uses fx-tracker skill for currency tracking
+- Uses Discord for system notifications
+- Monitors FX rates
+- Uses OpenClaw + MiniMax for execution
+- Uses Gemini for planning
+- Runs Qwen3.5 9b VLM locally
+- Manages AI tool configurations
+- Uses MiniMax for execution, Gemini for planning, Antigravity for backup
+- Provided FedEx OAuth credentials for production mode switch
+- Discord user in #tool-making channel
+- Works on tool-making project
+- Provides FedEx OAuth credentials
+- Provided FedEx production credentials for delivery integration
+- Participates in #tool-making channel
+- Provides credentials for FedEx API integration
+- Active in #tool-making channel
+- Initiated documentation update request for delivery-manager project
+- Tracks progress via big-picture checkboxes
+- Works on Tool Making project
+- Part of Reps Team
+- Works on delivery-manager project
+- Developer of the tool-making system
+- Develops delivery-manager project
+- Works in Guild #Tool Making channel
+- Sent message regarding megan@precaster.com.tw email check status
+- Manages system updates channel
+- Investigating cron job delivery issues
+- Uses OpenClaw for automation and backups
+- Monitored email: megan@precaster.com.tw
+- Works at Precaster
+- Builds investment tracking system
+- Investor
+- Project owner
+- Email: george@precaster.com.tw
+- Building investment tracking system
+- Prefers HTML report format
+- Works at Precaster (email: george@precaster.com.tw)
+- Building investment tracking system 'investage'
+- Has wife Ching/Seika
+- Has investment portfolio with 17 holdings
+- Receives reports at george@precaster.com.tw
+- Main user managing investment tracking system
+- Builds investment tracking system 'investage'
+- Investor tracking 17 holdings
+- Uses yfinance for stock data retrieval
+- Involved in investment analysis discussions
+- Interested in financial analysis tools
+- Interested in investment analysis tools
+- Decided valuation strategy for inveStage project
+- Agreed to implement email functionality
+- Develops/uses project-investage
+- Uses gog skill for email handling
+- Uses gog skill for email automation
+- Interested in ERP automation
+- Works with LibreFang and OpenClaw frameworks
+- Works with LibreFang and OpenClaw automation systems
+- Works with ERP automation projects
+- Uses LibreFang and OpenClaw tools
+- Discord username: arbiger
+- Works with LibreFang and OpenClaw automation frameworks
+- Uses LM Studio with Qwen3.5 9b for memory plugin
+- Team member working on business/marketing notes
+- Has Mac Mini M4 Pro with 64GB RAM
+- Currently running LM Studio with Qwen3.5 9b model
+- Uses Apple Silicon Mac Mini M4 Pro with 64GB RAM
+- Runs LM Studio with Qwen3.5 9b model
+- Team member for reps/marketing
+- Uses LM Studio with Qwen3.5 9B for memory plugin
+- Works with Megan on a team
+- Prefers AI agent to agent communication for efficiency
+- Uses Mac Mini M4 Pro 64GB RAM
+- Runs Qwen3.5 9B VLM locally via LM Studio
+- Part of reps team with Megan
+- Works in team-reps-team
+- Uses LTX-Video Mac for local video generation
+- Prefers AI agent to agent communication
+- Runs Qwen3.5 9B VLM in LM Studio
+- Works on OpenClaw AI agent
+- Uses Mac Mini M4 Pro with 64GB RAM
+- Runs LM Studio with Qwen3.5 9B model
+- Operates OpenClaw automation system
+- Member of team-reps-team
+- Interested in Agent-to-Agent workflows for marketing/SEO
+- Interested in Generative Engine Optimization (GEO)
+- Active in #ai-mation-thoughts channel
+- Tracks stocks: AAPL, CRWD, PLTR, AMD, MNST, ZIM, QRVO
+- Primary email: george@precaster.com.tw
+- Prefers detailed investment reports
+- Uses email-based investment tracking reports
+- Needs barcode/labeling solutions for parts
+- Uses investment tracking system with email reports
+- Holds DHCNL stock position
+- Uses email for investment reports
+- Tracks DHCNL stock in portfolio
+- Develops investment tracking system 'investment-reports'
+- Aims to monetize investment skills
+- Works on investment tools
+- Has WordPress site at soundsofgeorge.com
+- Works on project with component-search skill
+- Uses Firecrawl and Tavily APIs for search
+- Works on SEO/GEO optimization tasks
+- Uses component-search skill for research
+- Works on component-search project
+- Decided to switch to Firecrawl for web search
+- Tag: arbiger
+- Creator of inveStage project
+- Imports products from Taiwan
+- Uses WordPress for publishing
+- Has inveStage investment tracker
+- Developing inveStage investment tool
+- Prefers email over Telegram for notifications
+- Prefers launching MVP content before branding assets
+- Works on inveStage project
+- Prefers not to use Telegram
+- Works on inveStage investment tracking system
+- Provides investment analysis in #analysis channel
+- Receives Investage daily reports
+- Has username arbiger
+- Uses investage database for investment tracking
+- Prefers token-efficient AI search methods
+- Active in #purchaser-tool-making channel
+- Has Firecrawl API key configured
+- Works with OpenClaw automation system
+- Has Firecrawl API access
+- Uses OpenClaw with Firecrawl integration
+- Works in Discord guild #purchaser-tool-making
+- Works with OpenClaw automation tools
+- Researching ERP automation frameworks
+- Evaluating open-source alternatives for internal communication tools
+- Researching framework options for internal AI chat platform
+- Prefers a Discord-like interface experience
+- Researching frameworks for internal AI chat platforms and ERP automation
+- Prefers Discord-like UI experiences
+- Email: megan@precaster.com.tw
+- Works on Investage case/project
+- Interested in AI automation platforms
+- Prefers connecting OpenWebUI to OpenClaw sub-agents
+- Discord user in #framework-research channel
+- Communicates about OpenClaw integration in #framework-research channel
+- Discord user in purchaser-tool-making and framework-research channels
+- Develops component-search project
+- Sets up Matrix server instance
+- Sets up Matrix server for Precaster
+- Prefers IP address over DNS for internal VPN usage
+- Setting up Matrix server on Synapse
+- Manages Synapse Matrix server
+- Planning migration from Discord to Matrix
+- Uses OpenClaw for AI automation
+- Uses Prostage DB for data layer
+- Uses OpenClaw for agent orchestration
+- Prefers Divi+WordPress for web platform
+- Decided to stop using Librefang
+- Works on ERP automation framework
+
+## Connected to
+
+- [[tool-openclaw-tui]] — uses
+- [[discord-channel-system-updates]] — receives notifications from
+- [[workspace-openclaw]] — works in
+- [[channel-system-updates]] — uses for notifications
+- [[skill-fx-tracker]] — manages
+- [[fx-tracker]] — uses
+- [[discord-system-updates]] — receives notifications in
+- [[skill-fx-tracker]] — uses for currency tracking
+- [[skill-fx-tracker]] — uses
+- [[fx-tracker]] — installed by (reverse)
+- [[service-openclaw-minimax]] — uses for execution
+- [[service-gemini]] — uses for planning
+- [[service-antigravity]] — uses for maintenance/backup
+- [[model-qwen3.5-9b-vlm]] — runs locally via LM Studio
+- [[tool-minimax-plus]] — uses for execution
+- [[tool-gemini-workspace]] — uses for planning
+- [[tool-antigravity]] — uses for backup/firefighting
+- [[model-qwen3.5-9b-vlm]] — runs locally for image recognition
+- [[project-delivery-manager]] — provided credentials for
+- [[channel-tool-making]] — participates in
+- [[person-megan-0310]] — collaborates with (reverse)
+- [[person-megan-0310]] — collaborates in #tool-making channel
+- [[project-delivery-manager]] — provides credentials for
+- [[tool-delivery-manager]] — provided credentials for
+- [[project-delivery-manager]] — works on
+- [[team-reps-team]] — member of
+- [[project-tool-making]] — works on
+- [[project-delivery-manager]] — develops
+- [[person-megan-0310]] — works with
+- [[system-openclaw]] — uses
+- [[person-ching-seika]] — married to
+- [[company-precaster]] — works at
+- [[project-investage]] — built by (reverse)
+- [[person-ching-seika]] — married
+- [[project-investage]] — owns
+- [[person-seika-ching]] — married to
+- [[project-investage]] — building
+- [[company-precaster-corp]] — works at
+- [[person-ching-seika]] — married to (reverse)
+- [[project-investage]] — owns/manages
+- [[project-investage]] — manages
+- [[person-ching-seika]] — spouse
+- [[project-investage]] — builds
+- [[person-seika-ching]] — married_to
+- [[project-investage]] — managed by (reverse)
+- [[project-investment-analysis]] — works on
+- [[tool-yfinance]] — uses
+- [[tool-yfinance]] — uses for data retrieval
+- [[tool-google-finance]] — interested in as alternative source
+- [[project-invest-stage]] — works on
+- [[project-investage]] — develops
+- [[tool-gog]] — uses for email automation
+- [[tool-gog]] — uses
+- [[channel-skills-tools]] — participates in
+- [[framework-librefang]] — used by (reverse)
+- [[framework-openclaw]] — used by (reverse)
+- [[project-librefang]] — uses for social posting
+- [[system-erp-system]] — manages
+- [[project-librefang]] — uses for social automation
+- [[project-openclaw]] — compares with LibreFang
+- [[system-erp-server]] — manages/operates
+- [[tool-librefang]] — uses for social posting automation
+- [[project-erp-system]] — manages/works with
+- [[person-megan-0310]] — team member
+- [[project-business-model-reps]] — works with
+- [[tool-lm-studio]] — uses for memory plugin
+- [[project-business-model-reps]] — managed by (reverse)
+- [[project-business-model-model-reps]] — managed by (reverse)
+- [[tool-ltx-video-mac]] — uses for video generation
+- [[model-qwen3.5-9b-vlm]] — runs via LM Studio
+- [[project-ltx-video-mac]] — uses locally
+- [[service-creatok-ai]] — evaluates for API integration
+- [[team-team-reps-team]] — member of
+- [[project-openclaw]] — develops
+- [[system-openclaw]] — operates
+- [[platform-lm-studio]] — uses for memory plugin
+- [[tool-stock-report-generator]] — uses
+- [[company-precaster]] — associated with
+- [[person-ching]] — shares portfolio data with
+- [[tool-openclaw]] — uses for automation
+- [[person-ching]] — shares investment tracking with
+- [[stock-dhcnl]] — holds
+- [[email-reporting-system]] — uses
+- [[stock-dhcnl]] — owns
+- [[email-george-precaster-com-tw]] — uses for reports
+- [[project-investment-reports]] — develops
+- [[project-investment-reports]] — manages
+- [[skill-investage]] — uses
+- [[project-component-search]] — works on
+- [[project-nugrows-com]] — analyzes for GEO optimization
+- [[project-component-search]] — manages
+- [[skill-component-search]] — owns/manages
+- [[project-inve-stage]] — owns
+- [[project-invest-stage]] — creator of
+- [[project-inve-stage]] — develops
+- [[project-inve-stage]] — creator
+- [[project-invest-stage]] — building
+- [[project-investage]] — created
+- [[stock-cci-crown-castle]] — provides analysis for
+- [[project-investage-reporter]] — receives demo reports
+- [[project-investage-reporting]] — receives reports from
+- [[tool-investage]] — uses for investment tracking
+- [[company-murata]] — evaluating components from
+- [[tool-tavily]] — prefers over Brave for AI searches
+- [[person-george-li]] — shared content with (reverse)
+- [[channel-purchaser-tool-making]] — participates in
+- [[tool-firecrawl-search]] — evaluating for installation
+- [[tool-firecrawl-cli]] — evaluating for installation
+- [[project-openclaw]] — uses
+- [[tool-firecrawl]] — has API access to
+- [[tool-openclaw]] — uses
+- [[tool-firecrawl]] — configured with API key
+- [[service-firecrawl]] — integrates with
+- [[tool-firecrawl-search]] — uses
+- [[project-openclaw]] — configures
+- [[project-openclaw]] — researches
+- [[channel-framework-research]] — researching in
+- [[project-openclaw]] — researches for ERP automation
+- [[tool-openwebui]] — evaluating for internal AI platform
+- [[tool-openclaw]] — wants to integrate automation with
+- [[project-openwebui]] — deploys
+- [[project-investage]] — working on
+- [[project-openwebui]] — configures with MiniMax API
+- [[project-openwebui]] — configures
+- [[channel-framework-research]] — active in
+- [[person-megan-0310]] — collaborates on framework research
+- [[project-component-search-skill]] — develops
+- [[project-component-search]] — develops
+- [[project-matrix-instance]] — manages
+- [[project-matrix-server]] — manages
+- [[project-synapse]] — uses
+- [[tool-discrawl]] — evaluating for migration
+- [[project-synapse-server]] — manages
+- [[database-prostage-db]] — uses
+- [[platform-divi-wordpress]] — uses
+- [[erp-shanghua-erp]] — uses
+- [[tool-openclaw]] — uses for agent orchestration
+- [[tool-prostage-db]] — uses as data layer
+- [[tool-divi-wordpress]] — uses for website platform
+- [[project-paperclip]] — prefers model
+- [[project-agent-squad]] — compares with
+
+## Activity
+
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-27: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation
+- 2026-03-26: Mentioned in conversation

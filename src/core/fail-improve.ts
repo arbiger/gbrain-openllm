@@ -49,6 +49,29 @@ const LOG_DIR = join(homedir(), '.gbrain', 'fail-improve');
 const MAX_ENTRIES = 1000;
 
 // ---------------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+// AbortSignal helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * Construct a DOM-style AbortError. Matches what fetch() throws on
+ * AbortController.abort(), so downstream callers that already branch on
+ * `err.name === 'AbortError'` work without change.
+ */
+function makeAbortError(where: string): Error {
+  const err = new Error(`Aborted at ${where}`);
+  err.name = 'AbortError';
+  return err;
+}
+
+function isAbortError(err: unknown): boolean {
+  return !!err && typeof err === 'object' &&
+    ('name' in err && (err as { name: string }).name === 'AbortError');
+}
+
+// ---------------------------------------------------------------------------
+>>>>>>> upstream/master
 // Core class
 // ---------------------------------------------------------------------------
 
@@ -62,28 +85,68 @@ export class FailImproveLoop {
   /**
    * Try deterministic first, fall back to LLM, log mismatches.
    * When both fail, throws the LLM error and logs both failures.
+<<<<<<< HEAD
+=======
+   *
+   * Optional `opts.signal` threads an AbortSignal through the flow:
+   *   - Checked before the deterministic call and again before the LLM call.
+   *   - Forwarded to both callbacks as an optional second arg. Existing
+   *     callbacks that take only `(input: string)` are structurally compatible
+   *     and ignore the extra arg (TypeScript widens on call).
+   *   - When aborted, throws an Error with name='AbortError' (standard Web
+   *     AbortController semantics). Does not write a failure log entry for
+   *     aborted runs since they're not informative.
+>>>>>>> upstream/master
    */
   async execute<T>(
     operation: string,
     input: string,
+<<<<<<< HEAD
     deterministicFn: (input: string) => T | null,
     llmFallbackFn: (input: string) => Promise<T>,
   ): Promise<T> {
+=======
+    deterministicFn: (input: string, signal?: AbortSignal) => T | null,
+    llmFallbackFn: (input: string, signal?: AbortSignal) => Promise<T>,
+    opts?: { signal?: AbortSignal },
+  ): Promise<T> {
+    // Pre-flight abort check
+    if (opts?.signal?.aborted) throw makeAbortError('fail-improve:before-start');
+
+>>>>>>> upstream/master
     // Track call
     this.incrementCallCount(operation, 'total');
 
     // Try deterministic first
+<<<<<<< HEAD
     const deterResult = deterministicFn(input);
+=======
+    const deterResult = deterministicFn(input, opts?.signal);
+>>>>>>> upstream/master
     if (deterResult !== null && deterResult !== undefined) {
       this.incrementCallCount(operation, 'deterministic');
       return deterResult;
     }
 
+<<<<<<< HEAD
     // Deterministic failed, try LLM
     let llmResult: T;
     try {
       llmResult = await llmFallbackFn(input);
     } catch (llmError: any) {
+=======
+    // Abort check between deterministic miss and LLM call
+    if (opts?.signal?.aborted) throw makeAbortError('fail-improve:before-fallback');
+
+    // Deterministic failed, try LLM
+    let llmResult: T;
+    try {
+      llmResult = await llmFallbackFn(input, opts?.signal);
+    } catch (llmError: any) {
+      // Abort propagates unlogged — not a useful failure record
+      if (isAbortError(llmError)) throw llmError;
+
+>>>>>>> upstream/master
       // Both failed — log both, throw LLM error
       this.logFailure({
         timestamp: new Date().toISOString(),

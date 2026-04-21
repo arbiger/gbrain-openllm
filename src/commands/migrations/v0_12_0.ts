@@ -32,14 +32,25 @@
 
 import { execSync } from 'child_process';
 import type { Migration, OrchestratorOpts, OrchestratorResult, OrchestratorPhaseResult } from './types.ts';
+<<<<<<< HEAD
 import { appendCompletedMigration } from '../../core/preferences.ts';
+=======
+// Bug 3 — ledger writes moved to the runner (apply-migrations.ts).
+>>>>>>> upstream/master
 
 // ── Phase A — Schema ────────────────────────────────────────
 
 function phaseASchema(opts: OrchestratorOpts): OrchestratorPhaseResult {
   if (opts.dryRun) return { name: 'schema', status: 'skipped', detail: 'dry-run' };
   try {
+<<<<<<< HEAD
     execSync('gbrain init --migrate-only', { stdio: 'inherit', timeout: 60_000, env: process.env });
+=======
+    // 10-minute budget. Migrations v8/v9 dedup with helper-index should be sub-second
+    // even on 80K-duplicate brains, but the outer wall-clock cap shouldn't be the
+    // failure mode (the prior 60s ceiling tripped Garry's production upgrade).
+    execSync('gbrain init --migrate-only', { stdio: 'inherit', timeout: 600_000, env: process.env });
+>>>>>>> upstream/master
     return { name: 'schema', status: 'complete' };
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
@@ -222,6 +233,7 @@ async function orchestrator(opts: OrchestratorOpts): Promise<OrchestratorResult>
 }
 
 function finalizeResult(phases: OrchestratorPhaseResult[], status: 'complete' | 'partial' | 'failed'): OrchestratorResult {
+<<<<<<< HEAD
   if (status !== 'failed') {
     try {
       appendCompletedMigration({ version: '0.12.0', status: status as 'complete' | 'partial' });
@@ -229,6 +241,9 @@ function finalizeResult(phases: OrchestratorPhaseResult[], status: 'complete' | 
       // Recording is best-effort.
     }
   }
+=======
+  // Ledger write lives in the runner now (Bug 3).
+>>>>>>> upstream/master
   return {
     version: '0.12.0',
     status,

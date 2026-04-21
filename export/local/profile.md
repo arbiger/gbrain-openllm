@@ -1,0 +1,285 @@
+---
+type: concept
+title: Profile
+---
+
+# Behavioral Profile
+
+## AI Infrastructure & Models
+- Runs local Qwen/GLM-5.0 models for inference, prefers over cloud APIs for privacy/cost
+- Maintains hybrid AI infrastructure with cloud services (MiniMax, Gemini, Antigravity) and local models (Qwen3.5 VLM)
+- Tracks LLM token usage and costs, cost-conscious about optimization (disabling reasoning mode)
+- Prefers subscription-based models (MiniMax) over pay-per-token for high volume usage
+- Evaluating Claude Code Max 5x after testing current MiniMax + Antigravity setup
+- Uses LM Studio with Qwen3.5 9b model for memory plugin purposes
+- Utilizes Apple Silicon Mac Mini for local AI model execution (LTX-Video)
+- Prefers understanding tool capabilities before making installation decisions
+- Prioritizes fixing automation errors before starting new feature development
+- Values local open-source solutions over cloud services when possible
+
+## Business Operations
+- Operates a product-based business with multi-tier pricing across UK/US markets
+- Managing investment portfolio with 17 stock holdings for long-term investing
+- Developing freight skill for tracking shipping costs between TW→UK and TW→US routes
+- Prefers manual contract-based freight rate tracking over API scraping for business logistics
+- Adopting incremental approach: manual contract rates first, API integration later
+- Part of US-focused marketing/business team (team-reps-team)
+- Collaborates with Megan on team initiatives
+- Works with commercial laser hair growth devices requiring UK customs classification
+- Imports laser hair growth devices into UK and prioritizes low import duty solutions
+
+## Communication & Notifications
+- Communicates bilingually in Chinese and English with casual, friendly tone using emojis
+- Uses Traditional Chinese for some communications
+- Prefers receiving system notifications via Discord #system-updates channel over Telegram
+- Manages communication across multiple platforms (Mattermost, Discord, Telegram) integrated with automation tasks
+- Sensitive to platform stability issues and seeks alternatives when current tools are unreliable
+- Prefers human-in-the-loop approval workflow for sensitive communication drafts
+- George prefers email over Telegram for receiving investment reports
+
+## Investment Tracking System
+- Follows value investing philosophy with valuation priority
+- Tracks investments using Reddit + Polymarket sentiment sources instead of X/Twitter API
+- Wants AI-generated investment logic based on financial reports/news that can be manually modified later
+- Values version control for investment thesis (tracks when logic changes to identify sell signals)
+- Prefers HTML format for investment report emails over plain text
+- Wife Ching/Seika receives investment reports as reader
+- Interested in financial analysis tools like yfinance and Google Finance
+- Prefers valuation metrics based on analyst consensus over conservative DCF models
+- Tracks specific stocks: AAPL, CRWD, PLTR, AMD, MNST, ZIM, QRVO
+- Prefers detailed stock reports including market indices (S&P, Nasdaq, Dow, VIX), cash position, and volume change indicators
+- Requires email reports before cron automation runs are enabled
+- User prefers email investment reports with market value column after cost basis
+- User wants cash position shown at bottom of holdings section in reports
+- Actively developing an AI-driven investment tracking service called inveStage
+- Tracks 'Mag 7' portfolio with specific allocation rules (10 shares per stock, $1000 cash)
+- Separates watchlist data from actual holdings in portfolio reports
+- Monitors dividend payout ratios as a key investment metric
+- Actively tracks REIT/telecom infrastructure stocks (CCI)
+- Prefers starting analysis from highest priority website first
+- Prefers testing multiple APIs when search quality varies
+- Prefers trying new tools (Firecrawl) for web scraping/search tasks over traditional web_search APIs
+- George prioritizes dividend income as a key factor in investment recovery speed
+- User evaluates investment decisions based on fundamental stability rather than immediate price action
+- George monitors geopolitical risks affecting investment decisions
+
+## Automation & Development
+- Uses Git CLI commands (add, commit, push) for version control
+- Has two GitHub tokens stored as backup
+- Wants to publish coaching skill on GitHub with full documentation
+- Relies on OpenClaw automation platform with skills like fx-tracker for currency monitoring
+- Interested in stock analysis automation and risk management features
+- Building automated stock analysis dashboard integrating technical indicators and sentiment data
+- Prefers learning from open-source architecture patterns over direct code copying
+- Evaluating agent environments (OpenCode vs OpenClaw) for persistent memory and automation capabilities
+- Believes AI agent to agent communication is more efficient than traditional methods
+- Interested in Agentic SEO (ASEO) automation concepts
+- Researching AI SEO tools for integration into OpenClaw workflow
+- Building AI workflow for marketing operations with multiple tool integrations
+- Interested in AI-focused content optimization strategies
+- Wants to make content that AI search engines can understand and cite
+- Actively developing and publishing AI skills to GitHub
+- Actively building AI skills (e.g., copywriting-with-coach) to automate tasks like sales copy generation
+- Prefers AI-driven dynamic questioning over fixed option menus for copywriting tasks
+- Uses HEARTBEAT.md to check for new tasks in workspace
+- Prioritizes content publishing (WordPress) over immediate logo design completion
+- Prefers launching MVP content on WordPress before resolving branding assets like logos
+- Values open-source availability and user-owned data security in product design
+- User prefers consolidated documentation over fragmented tables for review
+- Uses WordPress using 'category' fields for classification instead of 'tag'
+- Publishes content via WordPress and reviews drafts before posting
+- Prefers localized content updates rather than modifying the entire website structure
+- Prefers WordPress + Divi stack when non-technical staff need to update content
+- Uses Chrome extensions (e.g., AI Chat Exporter) to automate workflow data collection
+- Has customer service responsibilities handling emails from megan@precaster.com.tw
+- Manages a customer service email workflow involving approval steps before sending
+- User is actively learning copywriting skills with a coach.
+- Values quick reference lists for categories and titles
+- Utilizes specific terminology (Binary, Continuity, Trip Zap) in sales/marketing context
+- Developing AI Skills for automation workflows
+- Prefers AI-driven dynamic interaction over static script options
+- Uses MiniMax2.7 model for database extraction tasks
+- Interested in ERP automation projects involving VM cloning and database extraction
+- Prefers starting with Skill mode before automating into Hand mode
+- Uses LibreFang and OpenClaw automation frameworks
+- Prefers LibreFang for social posting due to built-in hands
+
+## Security & Dependencies Philosophy
+- Prioritizes security over convenience regarding dependencies
+- Growing aversion to dependencies due to supply chain attack risks
+- Prefers LLMs for simple functionality instead of traditional dependencies
+- Uses Apache 2.0 license for all open source repositories (believes patent protection is important)
+- Uses Google Drive for backups and maintains hourly backup cron jobs
+- Utilizes Obsidian vault as primary destination for saving collected digital content
+- Collects and curates AI-related YouTube shorts for learning
+- Interested in automating content publishing workflows to cross-post skills
+- Prefers using REST API or plugins for automation integration
+- Uses Obsidian as the single source of truth for AI-generated insights
+- Maintains organized file structure with separate files for different purposes (team-reps-team, holdings.md, ERP_current_progress_project.md)
+- Organizes business/marketing notes in dedicated files (team-reps-team.md, business_model-model-reps)
+- User is building a paid investment tracking system using automation platforms (ClawHub, GitHub, WordPress)
+- User prioritizes validating logic before monetizing investment skills
+- Prefers preserving existing server infrastructure (PVE + Tailscale) in documentation rather than rebuild
+- Works with LibreFang and OpenClaw automation frameworks
+- User rarely logs into the automaticscript.com copywriting service account
+- User now uses AI for content generation instead of manual writing
+- User prefers external tools over Discord UI for certain operations
+- Prefers current agent over Discord for image generation tasks due to convenience
+- User prefers using Homebrew Python (3.14.3) over system Python for package installations
+- User manages knowledge using Obsidian vault at ~/Documents/Georges/Knowledge/
+- User collects YouTube shorts to Obsidian with tags (youtube, short, topic-specific)
+- User values trust-based business relationships over contractual obligations
+- Works with OpenClaw automation platform and has Firecrawl API access configured
+- User prefers Firecrawl for AI search tasks over Brave Search fallback
+- George (arbiger) prefers using OpenClaw with Firecrawl integration for web search tasks
+- Prefers installing Firecrawl skill over CLI tool for web fetching tasks
+- Prefers creating custom skills when external services are rate-limited
+- Works primarily with OpenClaw automation system
+- User reads technical articles about AI agent architecture and engineering systems
+- User is interested in Harness Engineering concepts and multi-agent system design
+- User prefers strict adherence to workspace protocols defined in HEARTBEAT.md
+- User is interested in website building technologies and platform comparisons (STUDIO vs traditional static HTML)
+- User prefers search-based tool usage (web_search) over direct browser interaction for technology stack research
+- User values direct search results (Builtwith, Wappalyzer) over manual browser inspection
+- User optimizes for token efficiency in tool usage
+- Uses gog CLI for Google Drive automation tasks
+- Uses gog gmail search for email checking
+- Prefers text-based tools over visual analysis for token efficiency
+- Uses OpenClaw automation system with Google Drive backup storage
+
+## Language & Communication Preferences
+- Communicates bilingually in Chinese and English with casual, friendly tone using emojis
+- User prefers Traditional Chinese for summaries, TLDR, and content generation tasks
+- Prefers Simplified Chinese at 14-year-old reading level for detailed explanations
+- User prefers to communicate with daughter using accessible language suitable for her age group
+- Values clear, analogy-based explanations for complex topics
+- User stores knowledge in Obsidian vault at ~/Documents/Georges/Knowledge/
+- Collects YouTube videos to Obsidian using Python scripts (scripts/collect.py)
+- Uses a subagent workflow for content collection tasks
+- Prefers Markdown format for exporting AI conversations
+- Prefers automation tools that are stable rather than cutting-edge but unstable
+- User prioritizes stability over new features when choosing automation tools
+- User is interested in consolidating communication tools (Discord, Mattermost) into a single platform.
+- User prefers optimizing system backup sizes by relocating transient directories to external storage.
+- User prefers unified entry points for automation tools over fragmented channels like Discord or Mattermost.
+- User is considering coexistence of OpenClaw and LibreFang rather than replacing one with the other.
+- George is actively researching ERP automation frameworks and open-source alternatives for internal communication tools.
+- User prefers a Discord-like interface experience for chat platforms
+- User is interested in integrating OpenClaw with an internal AI dialogue platform
+- User is researching frameworks for internal AI chat platforms and ERP automation
+- User prefers Discord-like UI experiences (Fluxer/Spacebar) over Mattermost alternatives
+- User is researching frameworks to replace Mattermost with a Discord-like internal AI chat platform
+- User wants to integrate OpenClaw automation with their chat platform
+- User prefers self-hosted solutions for internal company use
+- User is researching AI chat platforms for company internal use (ERP automation context)
+- User interested in RAG capabilities for company knowledge base integration
+- User is researching ERP automation frameworks and prefers AI platforms with RAG capabilities for internal knowledge bases.
+- User considers replacing Mattermost/Discord alternatives for internal AI chat platform.
+- User researching AI chat platforms for company deployment with RAG knowledge base capabilities
+- Prefers OpenWebUI as the primary UI interface for automation tools
+- User prefers Docker-based deployment for AI infrastructure
+- User is building an ERP automation framework using OpenClaw and OpenWebUI
+- User prefers Docker-based deployment for OpenWebUI
+- George Li is exploring autonomous AI agents for business development and client acquisition
+- George Li is interested in autonomous AI agents for business development and investor outreach
+- Interested in autonomous AI agent systems for business development (Paperclip AI concept)
+- User is interested in AI orchestration platforms like Paperclip for automating business development tasks
+- Interested in AI agent orchestration platforms for business automation
+- User prefers integrating OpenWebUI with OpenClaw sub-agents rather than standalone AI client mode
+- User is interested in OpenClaw automation framework integration
+- User was initially confused about whether someone was connecting to OpenClaw agent vs standalone mode
+- User is interested in integrating OpenWebUI with OpenClaw sub-agents rather than using Standalone mode immediately
+- Prefers Standalone mode over complex WebSocket/integration setups initially
+- Defer OpenClaw integration research until later if technical threshold is high
+- User prefers simpler OpenWebUI setups initially before integrating complex automation tools like OpenClaw
+- User prefers Traditional Chinese communication
+- User is interested in LLM agent automation tools like OpenClaw
+- 用戶正在評估 OpenClaw MCP 技能（如 Google Ads）的整合應用
+- 用戶有明確意向利用 AI Agent 進行跨境電商運營自動化
+- User prefers a dual-storage workflow separating knowledge from actionable tasks
+- User values self-controlled/open-source solutions for automation (e.g., OpenClaw)
+- User applies structured quantitative frameworks to stock trading decisions
+- User is interested in integrating AI automation tools (MiniMax) into workflow
+- User is interested in self-hosting Matrix communication platform
+- User is working on a component-search skill that needs web scraping integration
+- User is interested in self-hosting Matrix server with Element desktop client and FluffyChat mobile client
+- User prefers IP-based connections for internal Matrix server setup
+- User is interested in self-hosted Matrix servers and migration tools from Discord
+- User prefers role separation (Admin vs General User) for server management
+- User is transitioning communication infrastructure from Discord to Matrix for ERP automation context
+- User prefers integrating AI agents directly into the Matrix server environment
+- User is interested in local LLM fine-tuning on Apple Silicon (Mac Mini M4 Pro)
+- User distinguishes between model fine-tuning and inference workflows
+- User is currently evaluating single vs multiple account architecture for Matrix AI agents
+- User prefers to pause implementation to consider architectural options before proceeding
+- User prefers replacing Whisper API with local Qwen ASR/TTS to save costs and improve privacy.
+- User values memory optimization on Mac hardware using MLX framework.
+- User prefers a hybrid architecture combining local Qwen models with cloud MiniMax API for main inference
+- User values memory optimization when selecting local models (e.g., MLX framework)
+- Prefers running AI models locally on Mac Mini M4 Pro when possible to save API costs and improve privacy
+- Building a hybrid AI stack combining local Qwen 9B with MiniMax API for reasoning
+- User works with MLX models on Mac Mini 64GB RAM
+- User prefers 4-bit quantization for ASR/TTS when precision requirements are low
+- User is interested in running Qwen models on MLX with Mac Mini 64GB hardware constraints
+- User is evaluating local ASR stacks like faster-whisper or Qwen3-ASR
+- User prefers exploring GGUF models over MLX due to LM Studio compatibility issues
+- User is evaluating Qwen3-ASR and Qwen3-TTS alternatives for OpenClaw system
+- User is actively researching local voice AI stack options beyond standard LLMs like LM Studio
+- User prefers local deployment (Mac Mini) over cloud-only solutions for privacy/cost reasons
+- User is exploring local AI stack on Apple Silicon specifically for voice applications (ASR/TTS)
+- User prefers privacy-preserving and cost-effective local solutions over cloud-only APIs where possible
+- User prefers local processing (ASR) to save costs and ensure privacy
+- User understands mlx-tune is for fine-tuning, not inference
+- User is exploring local LLM inference options on Apple Silicon
+- User prefers running models locally rather than cloud APIs
+- User is evaluating local LLM inference tools (Ollama, MLX, Jan) for their Mac Mini environment
+- User prefers MLX ecosystem for local LLMs on Mac over Ollama/LM Studio
+- User has experience with Ollama but removed it to use MLX-based solutions
+- Prefers Apple Silicon native tools (MLX) over generic ones like Ollama/GGUF
+- Uses LM Studio for UI management when not using CLI-based MLX
+- User is interested in running LLMs locally on Apple Silicon using MLX
+- User prefers CLI-style tools or understands them as such (compares MLX to LM Studio CLI)
+- Prefers reviewing documentation before installing new software
+- User is exploring multi-agent collaboration frameworks for business applications
+- User tests AI bots in Element with DM and channel functionality
+- User is exploring multi-agent AI systems for customer service automation
+- George prioritizes OpenClaw as his core AI automation framework over Paperclip
+- User prefers to research Matrix integration later rather than immediately
+- User prefers OpenClaw as primary AI agent framework over Paperclip for current use case
+- User understands the difference between temporary task teams and permanent virtual companies for AI agents
+- Interested in AI-driven organizational structures (Paperclip vs Agent Squad)
+- Prefers modular architecture with Discord + OpenClaw + Skills
+- George is building a business automation framework using AI agents
+- George prefers task-driven agent models (Agent Squad) over autonomous company models (Paperclip)
+- George wants to expand marketing automation capabilities through ClawHub skills
+- George prefers to remember framework architecture decisions for future conversations
+- George is building an ERP automation system with AI agents
+- User values system stability over rapid tool addition
+- User acknowledges coaching-style interaction patterns
+- User follows a structured 6-perspective investment analysis methodology
+- User maintains a personal stock observation list for tracking investments
+- George uses dollar-cost averaging strategy for stock purchases
+- George prefers phased entry into positions rather than lump-sum purchases
+- George analyzes investments using 6 perspectives framework
+- George's portfolio is a mix of dividend stocks and growth stocks
+- User is interested in dividend/income investing
+- User has a diversified stock portfolio with ~$792K total value
+- User prefers to build positions in batches rather than all at once
+- User is mindful of cash position when making investment decisions
+- User uses Obsidian for knowledge management
+- User has a YouTube video processing workflow
+- User prefers markdown output for processed content
+- Prefers automated memory management over manual updates
+- Interested in improving memory retention across sessions
+- User prefers using subagent sessions to resolve session conflicts
+- User uses Paperclip for task management and orchestration
+- User employs subagents for parallel task execution
+- User prefers building multi-agent systems for platform development
+- User prefers to manually grant permissions for agent creation in Paperclip
+- User works with Paperclip system for task management and agent orchestration
+- User is interested in astrology and astrological chart analysis
+- User prefers analysis style similar to Sam Altman's approach
+- User is interested in astrology and natal chart analysis
+- User is building AI agent systems with squad architecture
+- User prefers File + Reviewer + Manager pattern for agent coordination
+- User values a Reviewer function that reviews files before they move to the next agent
